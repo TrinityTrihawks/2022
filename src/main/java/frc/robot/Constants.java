@@ -27,9 +27,9 @@ public final class Constants {
     public static final class DriveConstants {
         // TODO: Spark IDs
         public static final int kFrontLeftMotorId = 0;
-        public static final int kFrontMotorRightId = 0;
-        public static final int kBackMotorLeftId = 0;
-        public static final int kBackMotorRightId = 0;
+        public static final int kFrontRightMotorId = 0;
+        public static final int kBackLeftMotorId = 0;
+        public static final int kBackRightMotorId = 0;
 
         public static final int kPidgeonId = 0;
 

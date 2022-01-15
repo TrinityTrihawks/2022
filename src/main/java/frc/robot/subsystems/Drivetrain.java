@@ -17,10 +17,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
 public class Drivetrain extends SubsystemBase {
-  private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftId, MotorType.kBrushless);
-  private final CANSparkMax m_rearLeft = new CANSparkMax(DriveConstants.kBackLeftId, MotorType.kBrushless);
-  private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightId, MotorType.kBrushless);
-  private final CANSparkMax m_rearRight = new CANSparkMax(DriveConstants.kBackRightId, MotorType.kBrushless);
+  private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
+  private final CANSparkMax m_rearLeft = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
+  private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
+  private final CANSparkMax m_rearRight = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
 
   private final MecanumDrive m_drive =
       new MecanumDrive(m_frontLeft, m_rearLeft, m_frontRight, m_rearRight);
@@ -28,30 +28,30 @@ public class Drivetrain extends SubsystemBase {
   // The front-left-side drive encoder
   private final Encoder m_frontLeftEncoder =
       new Encoder(
-          DriveConstants.kFrontLeftEncoderPorts[0],
-          DriveConstants.kFrontLeftEncoderPorts[1],
+          DriveConstants.kFrontLeftEncoderIds[0],
+          DriveConstants.kFrontLeftEncoderIds[1],
           DriveConstants.kFrontLeftEncoderReversed);
 
   // The rear-left-side drive encoder
   private final Encoder m_rearLeftEncoder =
       new Encoder(
-          DriveConstants.kRearLeftEncoderPorts[0],
-          DriveConstants.kRearLeftEncoderPorts[1],
-          DriveConstants.kRearLeftEncoderReversed);
+          DriveConstants.kBackLeftEncoderIds[0],
+          DriveConstants.kBackLeftEncoderIds[1],
+          DriveConstants.kBackLeftEncoderReversed);
 
   // The front-right--side drive encoder
   private final Encoder m_frontRightEncoder =
       new Encoder(
-          DriveConstants.kFrontRightEncoderPorts[0],
-          DriveConstants.kFrontRightEncoderPorts[1],
+          DriveConstants.kFrontRightEncoderIds[0],
+          DriveConstants.kFrontRightEncoderIds[1],
           DriveConstants.kFrontRightEncoderReversed);
 
   // The rear-right-side drive encoder
   private final Encoder m_rearRightEncoder =
       new Encoder(
-          DriveConstants.kRearRightEncoderPorts[0],
-          DriveConstants.kRearRightEncoderPorts[1],
-          DriveConstants.kRearRightEncoderReversed);
+          DriveConstants.kBackRightEncoderIds[0],
+          DriveConstants.kBackRightEncoderIds[1],
+          DriveConstants.kBackRightEncoderReversed);
 
   // The gyro sensor
   private final WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(DriveConstants.kPidgeonId);
