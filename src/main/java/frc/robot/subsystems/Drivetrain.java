@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.Constants.DriveConstants;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -55,7 +54,7 @@ public class Drivetrain extends SubsystemBase {
           DriveConstants.kRearRightEncoderReversed);
 
   // The gyro sensor
-  private final WPI_PidgeonIMU pigeon = new WPI_PidgeonIMU(DriveConstants.kPidgeonId);
+  private final WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(DriveConstants.kPidgeonId);
   
 
   // Odometry class for tracking robot pose
