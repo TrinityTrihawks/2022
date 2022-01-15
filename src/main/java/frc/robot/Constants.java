@@ -26,10 +26,10 @@ public final class Constants {
      */
     public static final class DriveConstants {
         // TODO: Spark IDs
-        public static final int kFrontLeftId = 0;
-        public static final int kFrontRightId = 0;
-        public static final int kBackLeftId = 0;
-        public static final int kBackRightId = 0;
+        public static final int kFrontLeftMotorId = 0;
+        public static final int kFrontMotorRightId = 0;
+        public static final int kBackMotorLeftId = 0;
+        public static final int kBackMotorRightId = 0;
 
         public static final int kPidgeonId = 0;
 
@@ -43,16 +43,16 @@ public final class Constants {
         // vvv From https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/mecanumcontrollercommand/Constants.java
 
         // Encoder IDs
-        public static final int[] kFrontLeftEncoderPorts = new int[] {0, 1};
-        public static final int[] kRearLeftEncoderPorts = new int[] {2, 3};
-        public static final int[] kFrontRightEncoderPorts = new int[] {4, 5};
-        public static final int[] kRearRightEncoderPorts = new int[] {6, 7};
+        public static final int[] kFrontLeftEncoderIds = new int[] {0, 1};
+        public static final int[] kBackLeftEncoderIds = new int[] {2, 3};
+        public static final int[] kFrontRightEncoderIds = new int[] {4, 5};
+        public static final int[] kBackRightEncoderIds = new int[] {6, 7};
     
         // Encoder direction
         public static final boolean kFrontLeftEncoderReversed = false;
-        public static final boolean kRearLeftEncoderReversed = true;
+        public static final boolean kBackLeftEncoderReversed = true;
         public static final boolean kFrontRightEncoderReversed = false;
-        public static final boolean kRearRightEncoderReversed = true;
+        public static final boolean kBackRightEncoderReversed = true;
         
         // TODO: Set these vvv
         // Distance between centers of right and left wheels on robot    
