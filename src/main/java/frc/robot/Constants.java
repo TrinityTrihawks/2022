@@ -22,11 +22,13 @@ public final class Constants {
      * Drive Constants
      */
     public static final class DriveConstants {
-        // TODO: Talon IDs
+        // TODO: Spark IDs
         public static final int kFrontLeftId = 0;
         public static final int kFrontRightId = 0;
         public static final int kBackLeftId = 0;
         public static final int kBackRightId = 0;
+
+        public static final int kPidgeonId = 0;
 
         // TODO: Polarity (reversed or not)
         // These should be either 1 to signify normal op or -1 for reversed
