@@ -54,7 +54,7 @@ public class Drivetrain extends SubsystemBase {
           DriveConstants.kBackRightEncoderReversed);
 
   // The gyro sensor
-  private final WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(DriveConstants.kPidgeonId);
+  private final WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(DriveConstants.kPigeonId);
   
 
   // Odometry class for tracking robot pose

@@ -31,7 +31,7 @@ public final class Constants {
         public static final int kBackLeftMotorId = 0;
         public static final int kBackRightMotorId = 0;
 
-        public static final int kPidgeonId = 0;
+        public static final int kPigeonId = 0;
 
         // TODO: Polarity (reversed or not)
         // These should be either 1 to signify normal op or -1 for reversed
@@ -54,11 +54,12 @@ public final class Constants {
         public static final boolean kFrontRightEncoderReversed = false;
         public static final boolean kBackRightEncoderReversed = true;
         
-        // TODO: Set these vvv
+        // TODO: Set these 
+        // AAG: set these assuming meters
         // Distance between centers of right and left wheels on robot    
-        public static final double kTrackWidth = 0.5;
+        public static final double kTrackWidth = 0.56; // 22in
         // Distance between centers of front and back wheels on robot
-        public static final double kWheelBase = 0.7;
+        public static final double kWheelBase = 0.5; // 20in
     
         public static final MecanumDriveKinematics kDriveKinematics =
             new MecanumDriveKinematics(
@@ -67,13 +68,11 @@ public final class Constants {
                 new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));    
         
-        // TODO: What does kEncoderCPR represent?
-        public static final int kEncoderCPR = 1024;
-        // TODO: Get wheel diameter
-        public static final double kWheelDiameterMeters = 0.15;
+        public static final double kGearRatio = 10.1; //10.1:1
+        public static final int kEncoderCPR = 42; //counts per revolution
+        public static final double kWheelDiameterMeters = 0.15; // 6in
         public static final double kEncoderDistancePerPulse =
-        // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+        ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR) / kGearRatio;
     }
 
     /**
