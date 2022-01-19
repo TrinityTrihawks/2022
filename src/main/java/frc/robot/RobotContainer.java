@@ -4,13 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.Constants.JoystickConstants;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,16 +26,44 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+  // Subsystems
   private final Drivetrain drivetrain = Drivetrain.getInstance();
 
-  private final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
+  // Commands
+
+  // Joysticks
+  private final Joystick mainJoystick = new Joystick(JoystickConstants.kMainJoystickPort);
+  private final Joystick auxJoystick = new Joystick(JoystickConstants.kAuxJoystickPort);
+
+  final NetworkTable subtable;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
+    
+    // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
+    CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
+        "Command initialized", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker(
+        "Command interrupted", command.getName(), EventImportance.kHigh));
+    CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker(
+        "Command finished", command.getName(), EventImportance.kNormal));
+
+    configureDefaultCommands();
+    
     // Configure the button bindings
     configureButtonBindings();
+  }
+
+  private void configureDefaultCommands() {
+      // Drivetrain default
+      drivetrain.setDefaultCommand(new DriveSingleJoystick(
+        drivetrain,
+        () -> mainJoystick.getX(),
+        () -> mainJoystick.getY(),
+        () -> mainJoystick.getTwist()
+      ));
   }
 
   /**
@@ -46,6 +81,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoCommand;
+    return null;
   }
 }
