@@ -10,13 +10,13 @@ public class DriveSingleJoystick extends CommandBase {
     private final Drivetrain drivetrain;
     private final DoubleSupplier xSupplier;
     private final DoubleSupplier ySupplier;
-    private final DoubleSupplier rotSupplier;
+    private final DoubleSupplier twistSupplier;
 
-    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier rot) {
+    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist) {
         this.drivetrain = drivetrain;
         this.xSupplier = x;
         this.ySupplier = y;
-        this.rotSupplier = rot;
+        this.twistSupplier = twist;
         addRequirements(drivetrain);
 
     }
@@ -34,19 +34,19 @@ public class DriveSingleJoystick extends CommandBase {
         x = Math.pow(x, 2) * Math.signum(x);
 
         double y = ySupplier.getAsDouble();
-        double rot = rotSupplier.getAsDouble();
+        double twist = twistSupplier.getAsDouble();
 
         System.out.print("X: "+x+"; ");
         System.out.print("Y: "+y+"; ");
-        System.out.print("Rotation: "+rot+"; ");
+        System.out.print("twistation: "+twist+"; ");
         
         System.out.println();
 
         SmartDashboard.putNumber("X", x);
         SmartDashboard.putNumber("Y", y);
-        SmartDashboard.putNumber("Rotation", rot);
+        SmartDashboard.putNumber("twistation", twist);
 
-        drivetrain.drive(x, y, rot, false);
+        drivetrain.drive(x, y, twist, false);
     }
 
     // Called once the command ends or is interrupted.
