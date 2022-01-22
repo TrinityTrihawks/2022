@@ -60,7 +60,8 @@ public class RobotContainer {
         drivetrain,
         () -> mainJoystick.getX(),
         () -> mainJoystick.getY(),
-        () -> mainJoystick.getTwist()
+        () -> mainJoystick.getTwist(),
+        JoystickConstants.scale
       ));
   }
 

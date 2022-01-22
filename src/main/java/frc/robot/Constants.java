@@ -81,11 +81,14 @@ public final class Constants {
     public static final class JoystickConstants {
 
         public static final int kMainJoystickPort = 0;
-        public static final int kAuxJoystickPort  = 0;
+        public static final int kAuxJoystickPort  = 1;
 
-        public static final double kXDeadZone = 0.0; // Left-Right
-        public static final double kYDeadZone = 0.0; // Front-Back
-        public static final double kZDeadZone = 0.0; // Twist
+        public static final double kXDeadZone = 0.4; // Left-Right
+        public static final double kYDeadZone = 0.4; // Front-Back
+        public static final double kZDeadZone = 0.4; // Twist
+
+        // TODO: Map to joystick slider
+        public static final double scale = 0.2; // multiple inputs values by this
 
     }
 

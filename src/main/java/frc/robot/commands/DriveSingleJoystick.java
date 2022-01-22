@@ -11,12 +11,14 @@ public class DriveSingleJoystick extends CommandBase {
     private final DoubleSupplier xSupplier;
     private final DoubleSupplier ySupplier;
     private final DoubleSupplier twistSupplier;
+    private final double scale;
 
-    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist) {
+    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist, double scale) {
         this.drivetrain = drivetrain;
         this.xSupplier = x;
         this.ySupplier = y;
         this.twistSupplier = twist;
+        this.scale = scale;
         addRequirements(drivetrain);
 
     }
@@ -32,9 +34,12 @@ public class DriveSingleJoystick extends CommandBase {
     public void execute() {
         double x = xSupplier.getAsDouble();
         x = Math.pow(x, 2) * Math.signum(x);
+        x = x * scale;
 
         double y = ySupplier.getAsDouble();
+        y = y * scale;
         double twist = twistSupplier.getAsDouble();
+        twist = twist * scale;
 
         System.out.print("X: "+x+"; ");
         System.out.print("Y: "+y+"; ");
