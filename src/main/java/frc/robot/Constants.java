@@ -26,10 +26,10 @@ public final class Constants {
      */
     public static final class DriveConstants {
         // TODO: Spark IDs
-        public static final int kFrontLeftMotorId = 0;
-        public static final int kFrontRightMotorId = 0;
-        public static final int kBackLeftMotorId = 0;
-        public static final int kBackRightMotorId = 0;
+        public static final int kFrontLeftMotorId = 11;
+        public static final int kFrontRightMotorId = 12;
+        public static final int kBackLeftMotorId = 13;
+        public static final int kBackRightMotorId = 14;
 
         public static final int kPigeonId = 0;
 
