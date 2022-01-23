@@ -31,7 +31,7 @@ public class RobotContainer {
 
   // Joysticks
   private final Joystick mainJoystick = new Joystick(JoystickConstants.kMainJoystickPort);
-  private final Joystick auxJoystick = new Joystick(JoystickConstants.kAuxJoystickPort);
+  //private final Joystick auxJoystick = new Joystick(JoystickConstants.kAuxJoystickPort);
 
   final NetworkTable subtable;
 
@@ -61,7 +61,7 @@ public class RobotContainer {
         () -> mainJoystick.getX(),
         () -> mainJoystick.getY(),
         () -> mainJoystick.getTwist(),
-        JoystickConstants.scale
+        () -> mainJoystick.getThrottle()
       ));
   }
 

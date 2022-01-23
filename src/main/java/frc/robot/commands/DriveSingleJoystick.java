@@ -5,20 +5,22 @@ import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.Constants.JoystickConstants;
 
 public class DriveSingleJoystick extends CommandBase {
     private final Drivetrain drivetrain;
     private final DoubleSupplier xSupplier;
     private final DoubleSupplier ySupplier;
     private final DoubleSupplier twistSupplier;
-    private final double scale;
+    private final DoubleSupplier throttleSupplier;
 
-    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist, double scale) {
+    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist, DoubleSupplier throttle) {
         this.drivetrain = drivetrain;
         this.xSupplier = x;
         this.ySupplier = y;
         this.twistSupplier = twist;
-        this.scale = scale;
+        this.throttleSupplier = throttle;
+
         addRequirements(drivetrain);
 
     }
@@ -33,23 +35,26 @@ public class DriveSingleJoystick extends CommandBase {
     @Override
     public void execute() {
         double x = xSupplier.getAsDouble();
-        x = Math.pow(x, 2) * Math.signum(x);
-        x = x * scale;
-
         double y = ySupplier.getAsDouble();
-        y = y * scale;
         double twist = twistSupplier.getAsDouble();
-        twist = twist * scale;
+        
+        // scale x, y, twist against throttle and throttle scalar
+        double throttle = throttleSupplier.getAsDouble();
+        x = x * throttle * JoystickConstants.kStaticThrottleScalar;
+        y = y * throttle * JoystickConstants.kStaticThrottleScalar;
+        twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
 
         System.out.print("X: "+x+"; ");
         System.out.print("Y: "+y+"; ");
-        System.out.print("twistation: "+twist+"; ");
+        System.out.print("Twistation: "+twist+"; ");
+        System.out.print("Throttle:"+throttle+"; ");
         
         System.out.println();
 
         SmartDashboard.putNumber("X", x);
         SmartDashboard.putNumber("Y", y);
-        SmartDashboard.putNumber("twistation", twist);
+        SmartDashboard.putNumber("Twistation", twist);
+        SmartDashboard.putNumber("Throttle", throttle);
 
         drivetrain.drive(x, y, twist, false);
     }

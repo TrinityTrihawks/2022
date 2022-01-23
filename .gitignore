@@ -163,3 +163,7 @@ bin/
 
 # checksums 
 .gradle/7.3.3/checksums/*
+
+# sim stuff
+simgui-ds.json
+simgui.json
