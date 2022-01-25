@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -22,28 +25,61 @@ public final class Constants {
      * Drive Constants
      */
     public static final class DriveConstants {
-        // TODO: Talon IDs
-        public static final int kFrontLeftId = 0;
-        public static final int kFrontRightId = 0;
-        public static final int kBackLeftId = 0;
-        public static final int kBackRightId = 0;
+        // Spark IDs
+        public static final int kFrontLeftMotorId = 11;
+        public static final int kFrontRightMotorId = 12;
+        public static final int kBackLeftMotorId = 13;
+        public static final int kBackRightMotorId = 14;
 
-        // TODO: Polarity (reversed or not)
-        // These should be either 1 to signify normal op or -1 for reversed
-        public static final int kFLPolarity = 1;
-        public static final int kFRPolarity = 1;
-        public static final int kBLPolarity = 1;
-        public static final int kBRPolarity = 1;
+        public static final int kPigeonId = 0;
 
+        // vvv From https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/mecanumcontrollercommand/Constants.java
+
+        // Encoder IDs
+        public static final int[] kFrontLeftEncoderIds = new int[] {0, 1};
+        public static final int[] kBackLeftEncoderIds = new int[] {2, 3};
+        public static final int[] kFrontRightEncoderIds = new int[] {4, 5};
+        public static final int[] kBackRightEncoderIds = new int[] {6, 7};
+    
+        // Encoder direction
+        public static final boolean kFrontLeftEncoderReversed = false;
+        public static final boolean kBackLeftEncoderReversed = true;
+        public static final boolean kFrontRightEncoderReversed = false;
+        public static final boolean kBackRightEncoderReversed = true;
+        
+        // Distance between centers of right and left wheels on robot    
+        public static final double kTrackWidth = 0.56; // 22in
+        // Distance between centers of front and back wheels on robot
+        public static final double kWheelBase = 0.5; // 20in
+    
+        public static final MecanumDriveKinematics kDriveKinematics =
+            new MecanumDriveKinematics(
+                new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));    
+        
+        public static final double kGearRatio = 10.1; //10.1:1
+        public static final int kEncoderCPR = 42; //counts per revolution
+        public static final double kWheelDiameterMeters = 0.15; // 6in
+        public static final double kEncoderDistancePerPulse =
+        ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR) / kGearRatio;
     }
 
     /**
      * Joystick Constants
      */
     public static final class JoystickConstants {
-        public static final double kXDeadZone = 0.0; // Left-Right
-        public static final double kYDeadZone = 0.0; // Front-Back
-        public static final double kZDeadZone = 0.0; // Twist
+
+        public static final int kMainJoystickPort = 0;
+        public static final int kAuxJoystickPort  = 1;
+
+        public static final double kXDeadZone = 0.4; // Left-Right
+        public static final double kYDeadZone = 0.4; // Front-Back
+        public static final double kZDeadZone = 0.4; // Twist
+
+        public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
+
     }
 
     /**
