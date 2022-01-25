@@ -46,10 +46,8 @@ public class DriveSingleJoystick extends CommandBase {
         // Deadzone Logic
         x = x < JoystickConstants.kXDeadZone ? 0.0 : x;
         y = y < JoystickConstants.kYDeadZone ? 0.0 : y;
-        twist = twist < JoystickConstants.kZDeadZone ? 0.0 : twist;
-
+        twist = twist < JoystickConstants.kTwistDeadZone ? 0.0 : twist;
         
-
         System.out.print("X: "+x+"; ");
         System.out.print("Y: "+y+"; ");
         System.out.print("Twistation: "+twist+"; ");
