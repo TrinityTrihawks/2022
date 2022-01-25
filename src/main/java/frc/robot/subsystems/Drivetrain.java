@@ -9,23 +9,23 @@ import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import static frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.DriveConstants;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import static com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
-
+    // todo: remove hungarian pollution
     /**
      * Use this method to create a drivetrain instance. This method ensures that the
      * drivetrain class is a singleton, aka, that only one drivetrain object ever
      * gets created
      * 
-     * @return
+     * 
      */
     public static Drivetrain getInstance() {
         if (subsystemInst == null) {
@@ -54,6 +54,7 @@ public class Drivetrain extends SubsystemBase {
 
     /** Creates a new Drivetrain. */
     public Drivetrain() {
+
         // Sets the distance per pulse for the encoders
         // frontLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         // backLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -84,8 +85,7 @@ public class Drivetrain extends SubsystemBase {
 
     /**
      * Returns the currently-estimated pose of the robot.
-     *
-     * @return The pose.
+     * 
      */
     public Pose2d getPose() {
         return mecanumOdometry.getPoseMeters();
@@ -136,6 +136,7 @@ public class Drivetrain extends SubsystemBase {
         backRightEncoder.setPosition(0);
     }
 
+    // todo: do we need to expose the encoders like this?
     /**
      * Gets the front left drive encoder.
      *
