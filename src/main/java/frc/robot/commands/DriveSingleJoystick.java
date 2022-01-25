@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -39,7 +40,11 @@ public class DriveSingleJoystick extends CommandBase {
         double twist = twistSupplier.getAsDouble();
         double throttle = throttleSupplier.getAsDouble();
 
-        throttle = (throttle+1)/2;
+        // Deadzone Logic
+        x = x < JoystickConstants.kXDeadZone ? 0.0 : x;
+        y = y < JoystickConstants.kYDeadZone ? 0.0 : y;
+        twist = twist < JoystickConstants.kZDeadZone ? 0.0 : twist;
+
         
         // scale x, y, twist against throttle and throttle scalar
         x = x * JoystickConstants.kStaticThrottleScalar;
