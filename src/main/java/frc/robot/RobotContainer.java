@@ -75,7 +75,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //todo: implement zeroing
     Runnable zero = () -> mainJoystick.zero();
-    zeroButton.whenReleased(zero);
+    zeroButton.whenReleased(zero, drivetrain);
   }
 
   /**
