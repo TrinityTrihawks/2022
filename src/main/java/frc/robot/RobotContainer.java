@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,6 +15,7 @@ import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,8 +30,9 @@ public class RobotContainer {
   // Commands
 
   // Joysticks
-  private final Joystick mainJoystick = new Joystick(JoystickConstants.kMainJoystickPort);
+  private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort);
   //private final Joystick auxJoystick = new Joystick(JoystickConstants.kAuxJoystickPort);
+  private final JoystickButton zeroButton = new JoystickButton(mainJoystick, 7);
 
   final NetworkTable subtable;
 
@@ -58,10 +59,10 @@ public class RobotContainer {
       // Drivetrain default
       drivetrain.setDefaultCommand(new DriveSingleJoystick(
         drivetrain,
-        () -> mainJoystick.getX(),
-        () -> mainJoystick.getY(),
-        () -> mainJoystick.getTwist(),
-        () -> mainJoystick.getThrottle()
+        () -> mainJoystick.getZeroedX(),
+        () -> mainJoystick.getZeroedY(),
+        () -> mainJoystick.getZeroedTwist(),
+        () -> mainJoystick.getZeroedThrottle()
       ));
   }
 
@@ -71,7 +72,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    //todo: implement zeroing
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

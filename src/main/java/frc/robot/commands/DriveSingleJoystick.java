@@ -19,7 +19,7 @@ public class DriveSingleJoystick extends CommandBase {
         this.xSupplier = x;
         this.ySupplier = y;
         this.twistSupplier = twist;
-        this.throttleSupplier = throttle;
+        this.throttleSupplier = throttle; // todo: remove unnecessary thises
 
         addRequirements(drivetrain);
 
@@ -37,11 +37,11 @@ public class DriveSingleJoystick extends CommandBase {
         double x = xSupplier.getAsDouble();
         double y = ySupplier.getAsDouble();
         double twist = twistSupplier.getAsDouble();
-        
-        // scale x, y, twist against throttle and throttle scalar
         double throttle = throttleSupplier.getAsDouble();
+        
+        // scale x, y, and twist by throttle and sanity limit
         x = x * throttle * JoystickConstants.kStaticThrottleScalar;
-        y = y * throttle * JoystickConstants.kStaticThrottleScalar;
+        y = y * throttle * JoystickConstants.kStaticThrottleScalar * -1; //correct the y-axis (backwards is now backwards!)
         twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
 
         System.out.print("X: "+x+"; ");

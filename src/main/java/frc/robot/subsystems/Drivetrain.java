@@ -10,21 +10,21 @@ import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
-import frc.robot.Constants.DriveConstants;
+import static frc.robot.Constants.DriveConstants;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import static com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
-
+    // todo: remove hungarian pollution
     /**
      * Use this method to create a drivetrain instance. This method ensures that the
      * drivetrain class is a singleton, aka, that only one drivetrain object ever
      * gets created
      * 
-     * @return
+     * 
      */
     public static Drivetrain getInstance() {
         if (subsystemInst == null) {
@@ -72,15 +72,14 @@ public class Drivetrain extends SubsystemBase {
     MecanumDriveOdometry m_odometry = new MecanumDriveOdometry(DriveConstants.kDriveKinematics, m_gyro.getRotation2d());
 
     /** Creates a new DriveSubsystem. */
-    public Drivetrain() {
+    private Drivetrain() {
         // Sets the distance per pulse for the encoders
         m_frontLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         m_rearLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         m_frontRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         m_rearRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         // We need to invert one side of the drivetrain so that positive voltages
-        // result in both sides moving forward. Depending on how your robot's
-        // gearbox is constructed, you might have to invert the left side instead.
+        // result in both sides moving forward.
         m_frontRight.setInverted(true);
         m_rearRight.setInverted(true);
     }
@@ -99,8 +98,7 @@ public class Drivetrain extends SubsystemBase {
 
     /**
      * Returns the currently-estimated pose of the robot.
-     *
-     * @return The pose.
+     * 
      */
     public Pose2d getPose() {
         return m_odometry.getPoseMeters();
@@ -151,6 +149,7 @@ public class Drivetrain extends SubsystemBase {
         m_rearRightEncoder.reset();
     }
 
+    // todo: do we need to expose the encoders like this?
     /**
      * Gets the front left drive encoder.
      *

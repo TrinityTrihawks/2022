@@ -76,7 +76,7 @@ public final class Constants {
 
         public static final double kXDeadZone = 0.4; // Left-Right
         public static final double kYDeadZone = 0.4; // Front-Back
-        public static final double kZDeadZone = 0.4; // Twist
+        public static final double kTwistDeadZone = 0.4; // Twist
 
         public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
 
