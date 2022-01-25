@@ -5,5 +5,5 @@
 *Trinity School at River Ridge, FRC Team 4215*
 
 ## Features
- * Mecanum Drivetrain (Probably)
+ * Mecanum Drivetrain ~~(Probably)~~ Definitely
  * Ask me the rest later
