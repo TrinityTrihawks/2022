@@ -8,15 +8,16 @@ public class ZeroableJoystick extends Joystick {
     private double offsetTwist = 0;
     private double offsetThrottle = 0;
 
-    public ZeroableJoystick(int arg0) {
-        super(arg0);
+    public ZeroableJoystick(int port) {
+        super(port);
     }
 
-    public void Zero() {
+    public void zero() {
         offsetX = getX();
         offsetY = getY();
         offsetTwist = getTwist();
         offsetThrottle = getThrottle();
+        System.out.println("00000000000000000 ZEROED 00000000000000000");
     }
 
     public double getZeroedX() {

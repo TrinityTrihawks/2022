@@ -62,7 +62,7 @@ public class RobotContainer {
         () -> mainJoystick.getZeroedX(),
         () -> mainJoystick.getZeroedY(),
         () -> mainJoystick.getZeroedTwist(),
-        () -> mainJoystick.getZeroedThrottle()
+        () -> mainJoystick.getThrottle()
       ));
   }
 
@@ -74,6 +74,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //todo: implement zeroing
+    Runnable zero = () -> mainJoystick.zero();
+    zeroButton.whenReleased(zero);
   }
 
   /**
