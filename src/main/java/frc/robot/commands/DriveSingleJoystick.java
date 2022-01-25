@@ -37,12 +37,14 @@ public class DriveSingleJoystick extends CommandBase {
         double x = xSupplier.getAsDouble();
         double y = ySupplier.getAsDouble();
         double twist = twistSupplier.getAsDouble();
+        double throttle = throttleSupplier.getAsDouble();
+
+        throttle = (throttle+1)/2;
         
         // scale x, y, twist against throttle and throttle scalar
-        double throttle = throttleSupplier.getAsDouble();
-        x = x * throttle * JoystickConstants.kStaticThrottleScalar;
-        y = y * throttle * JoystickConstants.kStaticThrottleScalar;
-        twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
+        x = x * JoystickConstants.kStaticThrottleScalar;
+        y = y * JoystickConstants.kStaticThrottleScalar;
+        twist = twist * JoystickConstants.kStaticThrottleScalar;
 
         System.out.print("X: "+x+"; ");
         System.out.print("Y: "+y+"; ");
