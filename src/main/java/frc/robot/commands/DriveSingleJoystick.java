@@ -45,6 +45,7 @@ public class DriveSingleJoystick extends CommandBase {
         y = y < JoystickConstants.kYDeadZone ? 0.0 : y;
         twist = twist < JoystickConstants.kTwistDeadZone ? 0.0 : twist;
         
+        throttle = (throttle + 1)/2;
 
         // scale x, y, and twist by throttle and sanity limit
         x = x * throttle * JoystickConstants.kStaticThrottleScalar;
