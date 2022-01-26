@@ -53,7 +53,7 @@ public class Drivetrain extends SubsystemBase {
     MecanumDriveOdometry mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
 
     /** Creates a new Drivetrain. */
-    public Drivetrain() {
+    private Drivetrain() {
 
         // Sets the distance per pulse for the encoders
         // frontLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
