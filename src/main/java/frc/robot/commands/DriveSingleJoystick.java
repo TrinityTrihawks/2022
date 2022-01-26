@@ -25,11 +25,9 @@ public class DriveSingleJoystick extends CommandBase {
         addRequirements(drivetrain);
 
     }
-    // isaac helped 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("Drivetrain Initialized");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
