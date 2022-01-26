@@ -74,9 +74,9 @@ public final class Constants {
         public static final int kMainJoystickPort = 0;
         public static final int kAuxJoystickPort  = 1;
 
-        public static final double kXDeadZone = 0.4; // Left-Right
-        public static final double kYDeadZone = 0.4; // Front-Back
-        public static final double kTwistDeadZone = 0.4; // Twist
+        public static final double kXDeadZone = 0.1; // Left-Right
+        public static final double kYDeadZone = 0.1; // Front-Back
+        public static final double kTwistDeadZone = 0.1; // Twist
 
         public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
 

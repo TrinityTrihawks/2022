@@ -40,16 +40,17 @@ public class DriveSingleJoystick extends CommandBase {
         double twist = twistSupplier.getAsDouble();
         double throttle = throttleSupplier.getAsDouble();
         
-        // scale x, y, and twist by throttle and sanity limit
-        x = x * throttle * JoystickConstants.kStaticThrottleScalar;
-        y = y * throttle * JoystickConstants.kStaticThrottleScalar * -1; //correct the y-axis (backwards is now backwards!)
-        twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
-
         // Deadzone Logic
         x = x < JoystickConstants.kXDeadZone ? 0.0 : x;
         y = y < JoystickConstants.kYDeadZone ? 0.0 : y;
         twist = twist < JoystickConstants.kTwistDeadZone ? 0.0 : twist;
         
+
+        // scale x, y, and twist by throttle and sanity limit
+        x = x * throttle * JoystickConstants.kStaticThrottleScalar;
+        y = y * throttle * JoystickConstants.kStaticThrottleScalar * -1; //correct the y-axis (backwards is now backwards!)
+        twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
+
         // System.out.print("X: "+x+"; ");
         // System.out.print("Y: "+y+"; ");
         // System.out.print("Twistation: "+twist+"; ");
