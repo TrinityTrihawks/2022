@@ -25,11 +25,10 @@ public class DriveSingleJoystick extends CommandBase {
         addRequirements(drivetrain);
 
     }
-    // isaac helped 
+    // issac helped
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        System.out.println("Drivetrain Initialized");
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -41,11 +40,11 @@ public class DriveSingleJoystick extends CommandBase {
         double throttle = throttleSupplier.getAsDouble();
         
         // Deadzone Logic
-        x = x < JoystickConstants.kXDeadZone ? 0.0 : x;
-        y = y < JoystickConstants.kYDeadZone ? 0.0 : y;
-        twist = twist < JoystickConstants.kTwistDeadZone ? 0.0 : twist;
+        x = Math.abs(x) < JoystickConstants.kXDeadZone ? 0.0 : x;
+        y = Math.abs(y) < JoystickConstants.kYDeadZone ? 0.0 : y;
+        twist = Math.abs(twist) < JoystickConstants.kTwistDeadZone ? 0.0 : twist;
         
-        throttle = (throttle + 1)/2;
+        throttle = (-throttle + 1)/2;
 
         // scale x, y, and twist by throttle and sanity limit
         x = x * throttle * JoystickConstants.kStaticThrottleScalar;
