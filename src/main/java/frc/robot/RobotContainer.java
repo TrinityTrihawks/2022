@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -34,6 +33,7 @@ public class RobotContainer {
   private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
   private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort, "Loki (balthazar)"); // balthazar
   private final JoystickButton zeroButton = new JoystickButton(mainJoystick, 7);
+  private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, 11);
 
   // Commands
   DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -53,16 +53,12 @@ public class RobotContainer {
   );
 
   final NetworkTable subtable;
-  final NetworkTableEntry singleStick;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
-    singleStick = Shuffleboard.getTab("SmartDashboard")
-      .add("SingleStick?", false)
-      .withWidget("Toggle Button")
-      .getEntry();
+    
     
     // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
     CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
@@ -80,26 +76,43 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
       // Drivetrain default
-      if(singleStick.getBoolean(false)) {
-        drivetrain.setDefaultCommand(singleDefault);
-      } else {
-        drivetrain.setDefaultCommand(doubleDefault);
-      }
+      drivetrain.setDefaultCommand(doubleDefault);
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * This method defines the button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    bindZeroButton();
+    bindSwitchDriveModeButton();
+  }
+
+  /**
+   * Isaac helped more than Luca
+   */
+  private void bindZeroButton() {
     Runnable zero = () -> {
       mainJoystick.zero();
       auxJoystick.zero();
     };
     zeroButton.debounce(0.5).whenActive(zero, drivetrain);
   }
+
+  private void bindSwitchDriveModeButton() {
+    Runnable switchDriveMode = () -> {
+      if (drivetrain.getDefaultCommand() == singleDefault) {
+        drivetrain.setDefaultCommand(doubleDefault);
+      } else {
+        drivetrain.setDefaultCommand(singleDefault);
+      }
+    };
+    switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
+  }
+
+  //
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
