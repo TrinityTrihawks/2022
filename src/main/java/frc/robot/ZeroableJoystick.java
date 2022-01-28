@@ -24,21 +24,17 @@ public class ZeroableJoystick extends Joystick {
 
     public double getZeroedX() {
         double retval = getX() - offsetX;
-        return retval > 1? 1 : (retval < -1? -1 : retval);
+        return retval > 1 ? 1 : (retval < -1 ? -1 : retval);
     }
 
     public double getZeroedY() {
         double retval = getY() - offsetY;
-        return retval > 1? 1 : (retval < -1? -1 : retval);
+        return retval > 1 ? 1 : (retval < -1 ? -1 : retval);
     }
 
     public double getZeroedTwist() {
         double retval = getTwist() - offsetTwist;
-        return retval > 1? 1 : (retval < -1? -1 : retval);
+        return retval > 1 ? 1 : (retval < -1 ? -1 : retval);
     }
 
-    public double getZeroedThrottle() {
-        double retval = getThrottle() - offsetThrottle;
-        return retval > 1? 1 : (retval < -1? -1 : retval);
-    }
 }
