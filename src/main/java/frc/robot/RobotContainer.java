@@ -32,7 +32,7 @@ public class RobotContainer {
 
   // Joysticks
   private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
-  private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort, "Loki (bathazar)"); // balthazar
+  private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort, "Loki (balthazar)"); // balthazar
   private final JoystickButton zeroButton = new JoystickButton(mainJoystick, 7);
 
   // Commands
@@ -47,8 +47,8 @@ public class RobotContainer {
   DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
     drivetrain,
     () -> auxJoystick.getZeroedX(), 
-    () -> mainJoystick.getZeroedY(), 
     () -> auxJoystick.getZeroedY(), 
+    () -> mainJoystick.getZeroedY(), 
     () -> mainJoystick.getThrottle()
   );
 
