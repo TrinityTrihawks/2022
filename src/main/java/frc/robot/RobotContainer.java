@@ -46,6 +46,7 @@ public class RobotContainer {
 
   DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
     drivetrain,
+    () -> auxJoystick.getZeroedX(),
     () -> auxJoystick.getZeroedX(), 
     () -> auxJoystick.getZeroedY(), 
     () -> mainJoystick.getZeroedY(), 
