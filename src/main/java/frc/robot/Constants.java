@@ -72,7 +72,7 @@ public final class Constants {
     public static final class JoystickConstants {
 
         public static final int kMainJoystickPort = 0;
-        public static final int kAuxJoystickPort  = 1;
+        public static final int kAuxJoystickPort  = 4;
 
         public static final double kXDeadZone = 0.1; // Left-Right
         public static final double kYDeadZone = 0.1; // Front-Back

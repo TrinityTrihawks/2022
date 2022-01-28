@@ -7,9 +7,11 @@ public class ZeroableJoystick extends Joystick {
     private double offsetY = 0;
     private double offsetTwist = 0;
     private double offsetThrottle = 0;
+    private String name;
 
-    public ZeroableJoystick(int port) {
+    public ZeroableJoystick(int port, String name) {
         super(port);
+        this.name = name;
     }
 
     public void zero() {
@@ -17,22 +19,26 @@ public class ZeroableJoystick extends Joystick {
         offsetY = getY();
         offsetTwist = getTwist();
         offsetThrottle = getThrottle();
-        System.out.println("00000000000000000 ZEROED 00000000000000000");
+        System.out.println("00000000000000000 " + name + " ZEROED 00000000000000000");
     }
 
     public double getZeroedX() {
-        return getX() - offsetX;
+        double retval = getX() - offsetX;
+        return retval > 1? 1 : (retval < -1? -1 : retval);
     }
 
     public double getZeroedY() {
-        return getY() - offsetY;
+        double retval = getY() - offsetY;
+        return retval > 1? 1 : (retval < -1? -1 : retval);
     }
 
     public double getZeroedTwist() {
-        return getTwist() - offsetTwist;
+        double retval = getTwist() - offsetTwist;
+        return retval > 1? 1 : (retval < -1? -1 : retval);
     }
 
     public double getZeroedThrottle() {
-        return getThrottle() - offsetThrottle;
+        double retval = getThrottle() - offsetThrottle;
+        return retval > 1? 1 : (retval < -1? -1 : retval);
     }
 }

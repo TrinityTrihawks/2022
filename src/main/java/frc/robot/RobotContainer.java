@@ -5,12 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,19 +29,40 @@ public class RobotContainer {
   // Subsystems
   private final Drivetrain drivetrain = Drivetrain.getInstance();
 
-  // Commands
 
   // Joysticks
-  private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort);
-  //private final Joystick auxJoystick = new Joystick(JoystickConstants.kAuxJoystickPort);
+  private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
+  private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort, "Loki (balthazar)"); // balthazar
   private final JoystickButton zeroButton = new JoystickButton(mainJoystick, 7);
 
+  // Commands
+  DriveSingleJoystick singleDefault = new DriveSingleJoystick(
+    drivetrain,
+    () -> mainJoystick.getZeroedX(),
+    () -> mainJoystick.getZeroedY(),
+    () -> mainJoystick.getZeroedTwist(),
+    () -> mainJoystick.getThrottle()
+  );
+
+  DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
+    drivetrain,
+    () -> auxJoystick.getZeroedX(), 
+    () -> auxJoystick.getZeroedY(), 
+    () -> mainJoystick.getZeroedY(), 
+    () -> mainJoystick.getThrottle()
+  );
+
   final NetworkTable subtable;
+  final NetworkTableEntry singleStick;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
     subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
+    singleStick = Shuffleboard.getTab("SmartDashboard")
+      .add("SingleStick?", false)
+      .withWidget("Toggle Button")
+      .getEntry();
     
     // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
     CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
@@ -57,13 +80,11 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
       // Drivetrain default
-      drivetrain.setDefaultCommand(new DriveSingleJoystick(
-        drivetrain,
-        () -> mainJoystick.getZeroedX(),
-        () -> mainJoystick.getZeroedY(),
-        () -> mainJoystick.getZeroedTwist(),
-        () -> mainJoystick.getThrottle()
-      ));
+      if(singleStick.getBoolean(false)) {
+        drivetrain.setDefaultCommand(singleDefault);
+      } else {
+        drivetrain.setDefaultCommand(doubleDefault);
+      }
   }
 
   /**
@@ -73,8 +94,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //todo: implement zeroing
-    Runnable zero = () -> mainJoystick.zero();
+    Runnable zero = () -> {
+      mainJoystick.zero();
+      auxJoystick.zero();
+    };
     zeroButton.debounce(0.5).whenActive(zero, drivetrain);
   }
 

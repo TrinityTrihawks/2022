@@ -8,24 +8,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.JoystickConstants;
 
-public class DriveSingleJoystick extends CommandBase {
+public class DriveDoubleJoystick extends CommandBase {
     private final Drivetrain drivetrain;
     private final DoubleSupplier xSupplier;
-    private final DoubleSupplier ySupplier;
-    private final DoubleSupplier twistSupplier;
+    private final DoubleSupplier y1Supplier;
+    private final DoubleSupplier y2Supplier;
     private final DoubleSupplier throttleSupplier;
 
-    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist, DoubleSupplier throttle) {
+    public DriveDoubleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y1, DoubleSupplier y2, DoubleSupplier throttle) {
         this.drivetrain = drivetrain;
         xSupplier = x;
-        ySupplier = y;
-        twistSupplier = twist;
-        throttleSupplier = throttle; // todo: remove unnecessary thises
-
+        y1Supplier = y1;
+        y2Supplier = y2;
+        throttleSupplier = throttle; 
         addRequirements(drivetrain);
 
     }
-    
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
@@ -35,15 +33,19 @@ public class DriveSingleJoystick extends CommandBase {
     @Override
     public void execute() {
         double x = xSupplier.getAsDouble();
-        double y = ySupplier.getAsDouble();
-        double twist = twistSupplier.getAsDouble();
+        double y1 = y1Supplier.getAsDouble();
+        double y2 = y2Supplier.getAsDouble();
         double throttle = throttleSupplier.getAsDouble();
         
         // Deadzone Logic
         x = Math.abs(x) < JoystickConstants.kXDeadZone ? 0.0 : x;
-        y = Math.abs(y) < JoystickConstants.kYDeadZone ? 0.0 : y;
-        twist = Math.abs(twist) < JoystickConstants.kTwistDeadZone ? 0.0 : twist;
-        
+        y1 = Math.abs(y1) < JoystickConstants.kYDeadZone ? 0.0 : y1;
+        y2 = Math.abs(y2) < JoystickConstants.kYDeadZone ? 0.0 : y2;
+
+        // Double joystick math (courtesy of Peter & Veronica)
+        double y = (y1 + y2) / 2;
+        double twist = (y2 - y1) / 2;
+
         throttle = (-throttle + 1)/2;
 
         // scale x, y, and twist by throttle and sanity limit
