@@ -27,6 +27,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
     @Override
     public void initialize() {
         drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+        finished = false;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -55,9 +56,9 @@ public class Drive5ftInAutoOdo extends CommandBase {
     @Override
     public boolean isFinished() {
         MecanumDriveWheelSpeeds speeds = drivetrain.getCurrentWheelSpeeds();
-        return speeds.frontLeftMetersPerSecond +
-                speeds.frontRightMetersPerSecond +
-                speeds.rearLeftMetersPerSecond +
-                speeds.rearRightMetersPerSecond > 0 && finished;
+        return Math.abs(speeds.frontLeftMetersPerSecond) +
+                Math.abs(speeds.frontRightMetersPerSecond) +
+                Math.abs(speeds.rearLeftMetersPerSecond) +
+                Math.abs(speeds.rearRightMetersPerSecond) > 0 && finished;
     }
 }
