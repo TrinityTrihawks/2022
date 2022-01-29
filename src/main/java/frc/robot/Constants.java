@@ -31,7 +31,7 @@ public final class Constants {
         public static final int kBackLeftMotorId = 13;
         public static final int kBackRightMotorId = 14;
 
-        public static final int kPigeonId = 0;
+        public static final int kPigeonId = 15;
 
         // vvv From https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/mecanumcontrollercommand/Constants.java
 
