@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.subsystems.Drivetrain;
@@ -52,6 +53,8 @@ public class RobotContainer {
     () -> mainJoystick.getZeroedY(), 
     () -> mainJoystick.getThrottle()
   );
+
+  Drive5ftInAutoOdo auto5ft = new Drive5ftInAutoOdo(drivetrain);
 
   final NetworkTable subtable;
 
@@ -121,7 +124,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+    return auto5ft;
   }
 }
