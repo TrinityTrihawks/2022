@@ -80,6 +80,9 @@ public final class Constants {
 
         public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
 
+        public static final int kZeroButtonId = 7;
+        public static final int kSwitchDriveModeButtonId = 9;
+
     }
 
     /**

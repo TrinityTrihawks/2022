@@ -33,8 +33,8 @@ public class RobotContainer {
   // Joysticks
   private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
   private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort, "Loki (balthazar)"); // balthazar
-  private final JoystickButton zeroButton = new JoystickButton(mainJoystick, 7);
-  private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, 11);
+  private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
+  private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, JoystickConstants.kSwitchDriveModeButtonId);
 
   // Commands
   DriveSingleJoystick singleDefault = new DriveSingleJoystick(
