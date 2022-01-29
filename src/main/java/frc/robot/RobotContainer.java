@@ -48,7 +48,7 @@ public class RobotContainer {
   DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
     drivetrain,
     () -> auxJoystick.getZeroedX(),
-    () -> auxJoystick.getZeroedX(), 
+    () -> mainJoystick.getZeroedX(), 
     () -> auxJoystick.getZeroedY(), 
     () -> mainJoystick.getZeroedY(), 
     () -> mainJoystick.getThrottle()
@@ -109,8 +109,10 @@ public class RobotContainer {
     Runnable switchDriveMode = () -> {
       if (drivetrain.getDefaultCommand() == singleDefault) {
         drivetrain.setDefaultCommand(doubleDefault);
+        System.out.print("===== SWITCHED MODE TO DOUBLE JOYSTICK =====");
       } else {
         drivetrain.setDefaultCommand(singleDefault);
+        System.out.print("===== SWITCHED MODE TO SINGLE JOYSTICK =====");
       }
     };
     switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
