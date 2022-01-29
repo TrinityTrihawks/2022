@@ -116,8 +116,6 @@ public class RobotContainer {
     switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
   }
 
-  //
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
