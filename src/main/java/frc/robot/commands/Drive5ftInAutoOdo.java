@@ -56,8 +56,8 @@ public class Drive5ftInAutoOdo extends CommandBase {
     public boolean isFinished() {
         MecanumDriveWheelSpeeds speeds = drivetrain.getCurrentWheelSpeeds();
         return speeds.frontLeftMetersPerSecond +
-               speeds.frontRightMetersPerSecond +
-               speeds.rearLeftMetersPerSecond +
-               speeds.rearRightMetersPerSecond > 0;
+                speeds.frontRightMetersPerSecond +
+                speeds.rearLeftMetersPerSecond +
+                speeds.rearRightMetersPerSecond > 0 && finished;
     }
 }
