@@ -14,12 +14,40 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
-    // todo: remove hungarian pollution
+    
+    private final CANSparkMax frontLeftSparkMax = 
+        new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearLeftSparkMax = 
+        new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax frontRightSparkMax = 
+        new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearRightSparkMax = 
+        new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
+    
+    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,rearRightSparkMax);
+    
+    private final RelativeEncoder frontLeftEncoder = 
+        frontLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+    private final RelativeEncoder frontRightEncoder = 
+        frontRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+    private final RelativeEncoder backLeftEncoder = 
+        rearLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+    private final RelativeEncoder backRightEncoder = 
+        rearRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+        
+    // The gyro sensor
+    private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
+    
+    // Odometry class for tracking robot pose
+    MecanumDriveOdometry mecanumOdometry = 
+        new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
+    
     /**
      * Use this method to create a drivetrain instance. This method ensures that the
      * drivetrain class is a singleton, aka, that only one drivetrain object ever
@@ -35,31 +63,10 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
-    private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
-
-    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,rearRightSparkMax);
-
-    private final RelativeEncoder frontLeftEncoder = frontLeftSparkMax.getEncoder();
-    private final RelativeEncoder frontRightEncoder = frontRightSparkMax.getEncoder();
-    private final RelativeEncoder backLeftEncoder = rearLeftSparkMax.getEncoder();
-    private final RelativeEncoder backRightEncoder = rearRightSparkMax.getEncoder();
-    // The gyro sensor
-    private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
-
-    // Odometry class for tracking robot pose
-    MecanumDriveOdometry mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
-
     /** Creates a new Drivetrain. */
     private Drivetrain() {
 
         // Sets the distance per pulse for the encoders
-        // frontLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-        // backLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-        // frontRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-        // backRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         // We need to invert one side of the drivetrain so that positive voltages
         // result in both sides moving forward. Depending on how your robot's
         // gearbox is constructed, you might have to invert the left side instead.
@@ -136,7 +143,7 @@ public class Drivetrain extends SubsystemBase {
         backRightEncoder.setPosition(0);
     }
 
-    // todo: do we need to expose the encoders like this?
+    // TODO: do we need to expose the encoders like this?
     /**
      * Gets the front left drive encoder.
      *
