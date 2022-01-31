@@ -33,6 +33,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        System.out.print(drivetrain.getPose().getY());
         if (finished) {
             System.out.println("Finished");
             drivetrain.drive(0, 0, 0, false);
