@@ -49,7 +49,8 @@ public class Drivetrain extends SubsystemBase {
         new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
     
     /**
-     * Use this method to create a drivetrain instance. This method ensures that the
+     * Use this method to create a drivetrain instance. This method, in conjunction with a private constructor,
+     * ensures that the
      * drivetrain class is a singleton, aka, that only one drivetrain object ever
      * gets created
      * 
@@ -76,7 +77,14 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Update the odometry in the periodic block
+        updateOdometry();
+        
+        putMotorRPMToSmartDashboard();
+
+
+    }
+
+    private void updateOdometry() {
         mecanumOdometry.update(
                 pigeon.getRotation2d(),
                 new MecanumDriveWheelSpeeds(
@@ -84,11 +92,16 @@ public class Drivetrain extends SubsystemBase {
                         backLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
                         frontRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
                         backRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60));
+    }
+
+    private void putMotorRPMToSmartDashboard() {
         SmartDashboard.putNumber("FLEnc", frontLeftEncoder.getVelocity());
         SmartDashboard.putNumber("FREnc", frontRightEncoder.getVelocity());
         SmartDashboard.putNumber("BLEnc", backLeftEncoder.getVelocity());
         SmartDashboard.putNumber("BREnc", backRightEncoder.getVelocity());
     }
+
+    
 
     /**
      * Returns the currently-estimated pose of the robot.
@@ -113,8 +126,8 @@ public class Drivetrain extends SubsystemBase {
      * speeds have no effect on the angular speed.
      *
      * @param xSpeed        Speed of the robot in the x direction
-     *                      (forward/backwards).
-     * @param ySpeed        Speed of the robot in the y direction (sideways).
+     *                      (sideways).
+     * @param ySpeed        Speed of the robot in the y direction (forward/backwards).
      * @param rot           Angular rate of the robot.
      * @param fieldRelative Whether the provided x and y speeds are relative to the
      *                      field.
