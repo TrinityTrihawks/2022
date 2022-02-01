@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-//import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-/** An example command that uses an example subsystem. */
+/** a command that (ideally) drives the robot 2m forward. currently actually about 1.3m */
 public class Drive5ftInAutoOdo extends CommandBase {
     private final Drivetrain drivetrain;
     private boolean finished = false;
@@ -45,6 +45,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
             System.out.println("Finished (pose)");
             finished = true;
         }
+        SmartDashboard.putNumber("BLEnc (rotations)", drivetrain.getRearLeftEncoder().getPosition());
     }
 
     // Called once the command ends or is interrupted.
