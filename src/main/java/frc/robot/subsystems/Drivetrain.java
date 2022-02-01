@@ -187,11 +187,12 @@ public class Drivetrain extends SubsystemBase {
      */
     public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
         return new MecanumDriveWheelSpeeds(
-                frontLeftEncoder.getVelocity(),
-                backLeftEncoder.getVelocity(),
-                frontRightEncoder.getVelocity(),
-                backRightEncoder.getVelocity());
+                frontLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60, //rotations per minute * meters per rotation * minute per seconds
+                backLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
+                frontRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
+                backRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60);
     }
+    
 
     /**
      * Sets the max output of the drive. Useful for scaling the drive to drive more
