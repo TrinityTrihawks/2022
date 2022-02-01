@@ -56,10 +56,14 @@ public class Drive5ftInAutoOdo extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
+        return isStopped() && finished;
+    }
+
+    private boolean isStopped() {
         MecanumDriveWheelSpeeds speeds = drivetrain.getCurrentWheelSpeeds();
         return Math.abs(speeds.frontLeftMetersPerSecond) +
                 Math.abs(speeds.frontRightMetersPerSecond) +
                 Math.abs(speeds.rearLeftMetersPerSecond) +
-                Math.abs(speeds.rearRightMetersPerSecond) > 0 && finished;
+                Math.abs(speeds.rearRightMetersPerSecond) > 0;
     }
 }

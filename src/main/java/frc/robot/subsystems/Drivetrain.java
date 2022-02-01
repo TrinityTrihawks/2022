@@ -80,8 +80,6 @@ public class Drivetrain extends SubsystemBase {
         updateOdometry();
         
         putMotorRPMToSmartDashboard();
-
-
     }
 
     private void updateOdometry() {
@@ -95,10 +93,10 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private void putMotorRPMToSmartDashboard() {
-        SmartDashboard.putNumber("FLEnc", frontLeftEncoder.getVelocity());
-        SmartDashboard.putNumber("FREnc", frontRightEncoder.getVelocity());
-        SmartDashboard.putNumber("BLEnc", backLeftEncoder.getVelocity());
-        SmartDashboard.putNumber("BREnc", backRightEncoder.getVelocity());
+        SmartDashboard.putNumber("FLEnc (RPM)", frontLeftEncoder.getVelocity());
+        SmartDashboard.putNumber("FREnc (RPM)", frontRightEncoder.getVelocity());
+        SmartDashboard.putNumber("BLEnc (RPM)", backLeftEncoder.getVelocity());
+        SmartDashboard.putNumber("BREnc (RPM)", backRightEncoder.getVelocity());
     }
 
     
@@ -140,7 +138,7 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
-    /** Sets the front left drive MotorController to a voltage. */
+    /** Sets the MotorControllers to a voltage. */
     public void setDriveMotorControllersVolts(MecanumDriveMotorVoltages volts) {
         frontLeftSparkMax.setVoltage(volts.frontLeftVoltage);
         rearLeftSparkMax.setVoltage(volts.rearLeftVoltage);
