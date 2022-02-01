@@ -28,6 +28,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
     public void initialize() {
         drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
         finished = false;
+        drivetrain.resetEncoders();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +42,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
             System.out.println("Not Finished");
             drivetrain.drive(0, 0.3, 0, false);
         }
-        if (drivetrain.getPose().getY() >= 2) {
+        if (drivetrain.getPose().getY() >= 200) {
             System.out.println("Finished (pose)");
             finished = true;
         }
