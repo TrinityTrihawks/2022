@@ -63,7 +63,9 @@ public final class Constants {
         public static final int kEncoderCPR = 42; //counts per revolution
         public static final double kWheelDiameterMeters = 0.15; // 6in
         public static final double kEncoderDistancePerPulse =
-            ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR) * kGearRatio; //see Trinity Tritons/2022 Season/Programming
+            (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR * kGearRatio); 
+        public static final double kMotorRotationsPerMeter = 
+            (kWheelDiameterMeters * Math.PI) / kGearRatio;
 
     }
 

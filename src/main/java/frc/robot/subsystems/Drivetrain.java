@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
         rearLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
     private final RelativeEncoder backRightEncoder = 
         rearRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-        
+
     // The gyro sensor
     private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
     
@@ -80,10 +80,10 @@ public class Drivetrain extends SubsystemBase {
         mecanumOdometry.update(
                 pigeon.getRotation2d(),
                 new MecanumDriveWheelSpeeds(
-                        frontLeftEncoder.getVelocity(),
-                        backLeftEncoder.getVelocity(),
-                        frontRightEncoder.getVelocity(),
-                        backRightEncoder.getVelocity()));
+                        frontLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60, // rotations per minute * meters per rotation * minute per seconds
+                        backLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
+                        frontRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
+                        backRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60));
         SmartDashboard.putNumber("FLEnc", frontLeftEncoder.getVelocity());
         SmartDashboard.putNumber("FREnc", frontRightEncoder.getVelocity());
         SmartDashboard.putNumber("BLEnc", backLeftEncoder.getVelocity());
