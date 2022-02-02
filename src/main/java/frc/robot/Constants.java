@@ -59,9 +59,9 @@ public final class Constants {
                 new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));   // TODO: "The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This class should not be used for any other purpose."
         
-        public static final double kGearRatio = 10.1; //10.1:1
+        public static final double kGearRatio = 10.71; //10.71:1
         public static final int kEncoderCPR = 42; //counts per revolution
-        public static final double kWheelDiameterMeters = 0.15; // 6in
+        public static final double kWheelDiameterMeters = 0.1524; // 6in
         public static final double kEncoderDistancePerPulse =
             (kWheelDiameterMeters * Math.PI) / ((double) kEncoderCPR * kGearRatio); 
         public static final double kMotorRotationsPerMeter = 
