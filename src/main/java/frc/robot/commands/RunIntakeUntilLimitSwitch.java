@@ -17,13 +17,22 @@ public class RunIntakeUntilLimitSwitch extends CommandBase {
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(intake);
     }
+
     @Override
     public void initialize() {
-
+        intake.setIntakeVoltage(0.5);
     }
+
+    @Override
+    public void execute() {
+        if (intake.getLimitSwitchState()) {
+            intake.setIntakeVoltage(0.0);
+        }
+    }
+
     @Override
     public boolean isFinished() {
         return false;
-        //return intake.getLimitSwitchState();
+        // return intake.getLimitSwitchState();
     }
 }

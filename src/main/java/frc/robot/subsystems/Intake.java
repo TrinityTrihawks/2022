@@ -45,9 +45,6 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        if (limitSwitch.get()) {
-            intakeMotor.set(ControlMode.PercentOutput, 0.0);
-        }
     }
 
     @Override
