@@ -82,6 +82,11 @@ public final class Constants {
 
     }
 
+    public static final class IntakeConstants {
+        public static final int kIntakeMotorPort = 0;
+    }
+
+
     /**
      * Network Constants (IP addreses and related info)
      */
