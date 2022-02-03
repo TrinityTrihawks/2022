@@ -11,10 +11,10 @@ public class Intake extends SubsystemBase {
     private static Intake subsystemInst = null;
 
     private final TalonSRX intakeMotor = new TalonSRX(IntakeConstants.kIntakeMotorPort);
-    private final DigitalInput limitSwitch = new DigitalInput(0);
+    private final DigitalInput limitSwitch = new DigitalInput(IntakeConstants.kLimitSwitchPort);
+
 
     /** Creates a new Intake. */
-    // todo: remove hungarian pollution
     /**
      * Use this method to create a Intake instance. This method ensures that the
      * Intake class is a singleton, aka, that only one Intake object ever

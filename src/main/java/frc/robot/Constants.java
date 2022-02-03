@@ -83,7 +83,8 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final int kIntakeMotorPort = 9;
+        public static final int kIntakeMotorPort = 16;
+        public static final int kLimitSwitchPort = 0;
     }
 
 
