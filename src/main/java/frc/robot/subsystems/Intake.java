@@ -13,7 +13,6 @@ public class Intake extends SubsystemBase {
     private final TalonSRX intakeMotor = new TalonSRX(IntakeConstants.kIntakeMotorPort);
     private final DigitalInput limitSwitch = new DigitalInput(IntakeConstants.kLimitSwitchPort);
 
-
     /** Creates a new Intake. */
     /**
      * Use this method to create a Intake instance. This method ensures that the
@@ -32,14 +31,14 @@ public class Intake extends SubsystemBase {
     }
 
     public void setIntakeVoltage(double percentOutput) {
-        if (limitSwitch.get()) {
+        if (!limitSwitch.get()) {
             return;
         }
         intakeMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
     public boolean getLimitSwitchState() {
-        return limitSwitch.get();
+        return !limitSwitch.get();
     }
 
     @Override
