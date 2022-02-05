@@ -31,39 +31,38 @@ public final class Constants {
         public static final int kBackLeftMotorId = 13;
         public static final int kBackRightMotorId = 14;
 
-        public static final int kPigeonId = 0;
+        public static final int kPigeonId = 15;
 
-        // vvv From https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/mecanumcontrollercommand/Constants.java
+        // https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/mecanumcontrollercommand/Constants.java
 
         // Encoder IDs
-        public static final int[] kFrontLeftEncoderIds = new int[] {0, 1};
-        public static final int[] kBackLeftEncoderIds = new int[] {2, 3};
-        public static final int[] kFrontRightEncoderIds = new int[] {4, 5};
-        public static final int[] kBackRightEncoderIds = new int[] {6, 7};
-    
+        public static final int[] kFrontLeftEncoderIds = new int[] { 0, 1 };
+        public static final int[] kBackLeftEncoderIds = new int[] { 2, 3 };
+        public static final int[] kFrontRightEncoderIds = new int[] { 4, 5 };
+        public static final int[] kBackRightEncoderIds = new int[] { 6, 7 };
+
         // Encoder direction
         public static final boolean kFrontLeftEncoderReversed = false;
         public static final boolean kBackLeftEncoderReversed = true;
         public static final boolean kFrontRightEncoderReversed = false;
         public static final boolean kBackRightEncoderReversed = true;
-        
-        // Distance between centers of right and left wheels on robot    
+
+        // Distance between centers of right and left wheels on robot
         public static final double kTrackWidth = 0.56; // 22in
         // Distance between centers of front and back wheels on robot
         public static final double kWheelBase = 0.5; // 20in
-    
-        public static final MecanumDriveKinematics kDriveKinematics =
-            new MecanumDriveKinematics(
+
+        public static final MecanumDriveKinematics kDriveKinematics = new MecanumDriveKinematics(
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2),
                 new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
                 new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));    
-        
-        public static final double kGearRatio = 10.1; //10.1:1
-        public static final int kEncoderCPR = 42; //counts per revolution
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+
+        public static final double kGearRatio = 10.1; // 10.1:1
+        public static final int kEncoderCPR = 42; // counts per revolution
         public static final double kWheelDiameterMeters = 0.15; // 6in
-        public static final double kEncoderDistancePerPulse =
-        ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR) / kGearRatio;
+        public static final double kEncoderDistancePerPulse = ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR)
+                / kGearRatio;
     }
 
     /**
@@ -72,7 +71,7 @@ public final class Constants {
     public static final class JoystickConstants {
 
         public static final int kMainJoystickPort = 0;
-        public static final int kAuxJoystickPort  = 4;
+        public static final int kAuxJoystickPort = 4;
 
         public static final double kXDeadZone = 0.1; // Left-Right
         public static final double kYDeadZone = 0.1; // Front-Back
@@ -80,6 +79,11 @@ public final class Constants {
 
         public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
 
+    }
+
+    public static final class IntakeConstants {
+        public static final int kIntakeMotorPort = 16;
+        public static final int kLimitSwitchPort = 0;
     }
 
     /**
