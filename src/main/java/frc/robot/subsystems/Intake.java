@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -28,17 +29,16 @@ public class Intake extends SubsystemBase {
     }
 
     private Intake() {
+        intakeMotor.configFactoryDefault();
+        intakeMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public void setIntakeVoltage(double percentOutput) {
-        if (!limitSwitch.get()) {
-            return;
-        }
         intakeMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
     public boolean getLimitSwitchState() {
-        return !limitSwitch.get();
+        return limitSwitch.get();
     }
 
     @Override

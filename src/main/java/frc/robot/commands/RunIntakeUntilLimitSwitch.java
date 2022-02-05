@@ -6,6 +6,7 @@ import frc.robot.subsystems.Intake;
 public class RunIntakeUntilLimitSwitch extends CommandBase {
 
     private final Intake intake;
+    private boolean finished = false;
 
     /**
      * Creates a new RunIntakeUntilLimitSwitch.
@@ -20,20 +21,20 @@ public class RunIntakeUntilLimitSwitch extends CommandBase {
 
     @Override
     public void initialize() {
-        intake.setIntakeVoltage(0.5);
+        intake.setIntakeVoltage(0.2);
     }
 
     @Override
     public void execute() {
-        if (intake.getLimitSwitchState()) {
+        if (intake.getLimitSwitchState() == true) {
             intake.setIntakeVoltage(0.0);
+            finished = true;
         }
         // System.out.println(intake.getLimitSwitchState());
     }
 
     @Override
     public boolean isFinished() {
-        return false;
-        // return intake.getLimitSwitchState();
+        return finished;
     }
 }
