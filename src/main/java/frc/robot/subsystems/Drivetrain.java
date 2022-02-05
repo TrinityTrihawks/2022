@@ -80,6 +80,8 @@ public class Drivetrain extends SubsystemBase {
         updateOdometry();
         
         putMotorRPMToSmartDashboard();
+
+        putGyroAngleToSmartDashboard();
     }
 
     private void updateOdometry() {
@@ -99,7 +101,9 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("BREnc (RPM)", backRightEncoder.getVelocity());
     }
 
-    
+    private void putGyroAngleToSmartDashboard() {
+        SmartDashboard.putNumber("Gyro angle", pigeon.getRotation2d().getDegrees());
+    }
 
     /**
      * Returns the currently-estimated pose of the robot.

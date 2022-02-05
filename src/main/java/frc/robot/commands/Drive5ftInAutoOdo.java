@@ -42,7 +42,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
             System.out.println("Not Finished");
             drivetrain.drive(0, 0.3, 0, false);
         }
-        if (drivetrain.getPose().getY() >= 200) {
+        if (drivetrain.getPose().getY() >= 10) {
             System.out.println("Finished (pose)");
             finished = true;
         }
