@@ -73,7 +73,7 @@ public class Drivetrain extends SubsystemBase {
         // gearbox is constructed, you might have to invert the left side instead.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
-        pigeon.reset();
+        zeroHeading();
     }
 
     @Override
@@ -88,11 +88,7 @@ public class Drivetrain extends SubsystemBase {
     private void updateOdometry() {
         mecanumOdometry.update(
                 pigeon.getRotation2d(),
-                new MecanumDriveWheelSpeeds(
-                        frontLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60, // rotations per minute * meters per rotation * minute per seconds
-                        backLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
-                        frontRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
-                        backRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60));
+                getCurrentWheelSpeeds());
     }
 
     private void putMotorRPMToSmartDashboard() {
@@ -103,7 +99,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     private void putGyroAngleToSmartDashboard() {
-        SmartDashboard.putNumber("Gyro angle", pigeon.getRotation2d().getDegrees());
+        SmartDashboard.putNumber("Gyro angle", getHeading());
     }
 
     /**

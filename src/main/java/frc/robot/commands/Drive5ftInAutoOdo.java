@@ -29,6 +29,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
         drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
         finished = false;
         drivetrain.resetEncoders();
+        drivetrain.zeroHeading();
     }
 
     // Called every time the scheduler runs while the command is scheduled.

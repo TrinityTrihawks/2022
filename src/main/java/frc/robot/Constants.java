@@ -62,8 +62,8 @@ public final class Constants {
         public static final double kGearRatio = 10.71; // 10.71:1
         public static final int kEncoderCPR = 42; // counts per revolution
         public static final double kWheelDiameterMeters = 0.1524; // 6in
-        public static final double kEncoderDistancePerPulse = (kWheelDiameterMeters * Math.PI)
-                / ((double) kEncoderCPR * kGearRatio);
+        // public static final double kEncoderDistancePerPulse = (kWheelDiameterMeters * Math.PI)
+        //         / ((double) kEncoderCPR * kGearRatio);
         public static final double kMotorRotationsPerMeter = (kWheelDiameterMeters * Math.PI) / kGearRatio;
 
     }
