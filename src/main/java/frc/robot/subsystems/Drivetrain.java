@@ -73,6 +73,7 @@ public class Drivetrain extends SubsystemBase {
         // gearbox is constructed, you might have to invert the left side instead.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
+        pigeon.reset();
     }
 
     @Override
