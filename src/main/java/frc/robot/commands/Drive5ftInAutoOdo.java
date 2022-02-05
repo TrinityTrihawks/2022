@@ -12,7 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive5ftInAutoOdo extends CommandBase {
     private final Drivetrain drivetrain;
     private boolean finished = false;
-    private SlewRateLimiter filter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter rateLimiter = new SlewRateLimiter(0.5);
 
     /*
      * Creates a new Drive5ftInAutoOdo.
@@ -40,10 +40,10 @@ public class Drive5ftInAutoOdo extends CommandBase {
         System.out.print(drivetrain.getPose().getY());
         if (finished) {
             System.out.println("Finished");
-            drivetrain.drive(0, filter.calculate(0), 0, false);
+            drivetrain.drive(0, rateLimiter.calculate(0), 0, false);
         } else {
             System.out.println("Not Finished");
-            drivetrain.drive(0, filter.calculate(0.3), 0, false);
+            drivetrain.drive(0, rateLimiter.calculate(0.3), 0, false);
         }
         if (drivetrain.getPose().getY() >= 1) {
             System.out.println("Finished (pose)");
