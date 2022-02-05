@@ -6,11 +6,15 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 /** a command that (ideally) drives the robot 2m forward. currently actually about 1.3m */
 public class Drive5ftInAutoOdo extends CommandBase {
     private final Drivetrain drivetrain;
     private boolean finished = false;
+    private TrapezoidProfile = new TrapezoidProfile(new TrapezoidProfile.Constraints(5, 10),
+        new TrapezoidProfile.State(5, 0),
+        new TrapezoidProfile.State(0, 0));
 
     /**
      * Creates a new Drive5ftInAutoOdo.
