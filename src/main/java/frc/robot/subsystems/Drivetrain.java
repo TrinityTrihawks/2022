@@ -75,8 +75,8 @@ public class Drivetrain extends SubsystemBase {
         zeroHeading();
         frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
         frontRightSparkMax.setIdleMode(IdleMode.kBrake);
-        backLeftSparkMax.setIdleMode(IdleMode.kBrake);
-        backRightSparkMax.setIdleMode(IdleMode.kBrake);
+        rearLeftSparkMax.setIdleMode(IdleMode.kBrake);
+        rearRightSparkMax.setIdleMode(IdleMode.kBrake);
     }
 
     @Override
