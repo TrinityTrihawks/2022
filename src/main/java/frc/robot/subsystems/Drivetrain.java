@@ -15,6 +15,7 @@ import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
@@ -66,14 +67,16 @@ public class Drivetrain extends SubsystemBase {
 
     /** Creates a new Drivetrain. */
     private Drivetrain() {
-
-        // Sets the distance per pulse for the encoders
         // We need to invert one side of the drivetrain so that positive voltages
         // result in both sides moving forward. Depending on how your robot's
         // gearbox is constructed, you might have to invert the left side instead.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
         zeroHeading();
+        frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
+        frontRightSparkMax.setIdleMode(IdleMode.kBrake);
+        backLeftSparkMax.setIdleMode(IdleMode.kBrake);
+        backRightSparkMax.setIdleMode(IdleMode.kBrake);
     }
 
     @Override
