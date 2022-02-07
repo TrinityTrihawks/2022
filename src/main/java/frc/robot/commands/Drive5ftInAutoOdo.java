@@ -12,7 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive5ftInAutoOdo extends CommandBase {
     private final Drivetrain drivetrain;
     private boolean finished = false;
-    private SlewRateLimiter rateLimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter rateLimiter = new SlewRateLimiter(0.3);
 
     /*
      * Creates a new Drive5ftInAutoOdo.
@@ -32,6 +32,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
         finished = false;
         drivetrain.resetEncoders();
         drivetrain.zeroHeading();
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -43,7 +44,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
             drivetrain.drive(0, rateLimiter.calculate(0), 0, false);
         } else {
             System.out.println("Not Finished");
-            drivetrain.drive(0, rateLimiter.calculate(0.3), 0, false);
+            drivetrain.drive(0, rateLimiter.calculate(0.03), 0, false);
         }
         if (drivetrain.getPose().getY() >= 1) {
             System.out.println("Finished (pose)");
