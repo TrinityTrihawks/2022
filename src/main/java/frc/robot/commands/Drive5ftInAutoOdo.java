@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-/** a command that (ideally) drives the robot 2m forward. currently actually about 1.3m */
+/** a command that (ideally) drives the robot 2m forward.*/
 public class Drive5ftInAutoOdo extends CommandBase {
     private final Drivetrain drivetrain;
     private boolean finished = false;
-    private SlewRateLimiter rateLimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter rateLimiter = new SlewRateLimiter(0.6);
 
     /*
      * Creates a new Drive5ftInAutoOdo.
@@ -28,10 +28,10 @@ public class Drive5ftInAutoOdo extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
-        finished = false;
         drivetrain.resetEncoders();
         drivetrain.zeroHeading();
+        drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
+        finished = false;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -43,7 +43,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
             drivetrain.drive(0, rateLimiter.calculate(0), 0, false);
         } else {
             System.out.println("Not Finished");
-            drivetrain.drive(0, rateLimiter.calculate(0.3), 0, false);
+            drivetrain.drive(0, rateLimiter.calculate(0.1), 0, false);
         }
         if (drivetrain.getPose().getY() >= 1) {
             System.out.println("Finished (pose)");
