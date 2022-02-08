@@ -21,6 +21,7 @@ import com.revrobotics.RelativeEncoder;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
+    private int schedulerIncrement = 0;
     
     private final CANSparkMax frontLeftSparkMax = 
         new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
@@ -72,7 +73,7 @@ public class Drivetrain extends SubsystemBase {
         // gearbox is constructed, you might have to invert the left side instead.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
-        zeroHeading();
+        //zeroHeading();  // Axed, as per docs (automatically calibrates on boot up)
         frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
         frontRightSparkMax.setIdleMode(IdleMode.kBrake);
         rearLeftSparkMax.setIdleMode(IdleMode.kBrake);
@@ -86,6 +87,15 @@ public class Drivetrain extends SubsystemBase {
         putMotorRPMToSmartDashboard();
 
         putGyroAngleToSmartDashboard();
+        if (schedulerIncrement % 10 == 0) {
+            //System.out.println("X: "+getPose().getY());
+            System.out.println("Y: "+getPose().getX());
+            //System.out.println("R: "+getPose().getRotation().getDegrees());
+            //System.out.println("T: "+getPose().getTranslation());
+        } else {
+            //System.out.println("I"+schedulerIncrement);
+        }
+        schedulerIncrement++;
     }
 
     private void updateOdometry() {
