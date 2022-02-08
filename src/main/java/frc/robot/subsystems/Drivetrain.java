@@ -86,6 +86,8 @@ public class Drivetrain extends SubsystemBase {
         putMotorRPMToSmartDashboard();
 
         putGyroAngleToSmartDashboard();
+
+        printWheelSpeeds();
     }
 
     private void updateOdometry() {
@@ -103,6 +105,15 @@ public class Drivetrain extends SubsystemBase {
 
     private void putGyroAngleToSmartDashboard() {
         SmartDashboard.putNumber("Gyro angle", getHeading());
+    }
+
+    private void printWheelSpeeds() {
+        MecanumDriveWheelSpeeds spds = getCurrentWheelSpeeds();
+        System.out.println(spds.frontLeftMetersPerSecond + "," +
+                           spds.frontRightMetersPerSecond + "," +
+                           spds.rearLeftMetersPerSecond + "," +
+                           spds.rearRightMetersPerSecond + "," +
+                           pigeon.getRotation2d().getDegrees());
     }
 
     /**
@@ -202,10 +213,10 @@ public class Drivetrain extends SubsystemBase {
      */
     public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
         return new MecanumDriveWheelSpeeds(
-                frontLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60, //rotations per minute * meters per rotation * minute per seconds
-                backLeftEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
-                frontRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60,
-                backRightEncoder.getVelocity() / DriveConstants.kMotorRotationsPerMeter / 60);
+                frontLeftEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60, //rotations per minute * meters per rotation * minute per seconds
+                frontRightEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60,
+                backLeftEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60,
+                backRightEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60);
     }
     
 

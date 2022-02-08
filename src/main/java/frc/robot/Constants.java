@@ -64,7 +64,7 @@ public final class Constants {
         public static final double kWheelDiameterMeters = 0.1524; // 6in
         // public static final double kEncoderDistancePerPulse = (kWheelDiameterMeters * Math.PI)
         //         / ((double) kEncoderCPR * kGearRatio);
-        public static final double kMotorRotationsPerMeter = (kWheelDiameterMeters * Math.PI) / kGearRatio;
+        public static final double kMetersPerMotorRotation = (kWheelDiameterMeters * Math.PI) / kGearRatio;
 
     }
 
