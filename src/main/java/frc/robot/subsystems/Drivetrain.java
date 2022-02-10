@@ -134,7 +134,7 @@ public class Drivetrain extends SubsystemBase {
         double xSkewSpeed = xlimiter.calculate(xSpeed);
         double rotSkew = zlimiter.calculate(rot);
 
-        System.out.println(xSpeed+","+xSkewSpeed+",,"+ySpeed+","+ySkewSpeed+",,"+rot+","+rotSkew);
+        //System.out.println(xSpeed+","+xSkewSpeed+",,"+ySpeed+","+ySkewSpeed+",,"+rot+","+rotSkew);
 
         if (fieldRelative) {
             mecanumDrive.driveCartesian(ySkewSpeed, xSkewSpeed, rotSkew, -pigeon.getAngle());
