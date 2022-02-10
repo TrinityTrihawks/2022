@@ -41,6 +41,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
         if (drivetrain.getPose().getY() >= 1) { // meters
             finished = true;
         }
+        System.out.println(drivetrain.getPose().getY());
     }
 
     // Called once the command ends or is interrupted.
