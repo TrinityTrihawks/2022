@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
@@ -12,9 +11,6 @@ import frc.robot.subsystems.Drivetrain;
 public class Drive5ftInAutoOdo extends CommandBase {
     private final Drivetrain drivetrain;
     private boolean finished = false;
-    private SlewRateLimiter rateLimiter = new SlewRateLimiter(0.6);
-    private int schedulerIncrement = 0;
-
     /*
      * Creates a new Drive5ftInAutoOdo.
      *
@@ -38,24 +34,12 @@ public class Drive5ftInAutoOdo extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (schedulerIncrement % 10 == 0) {
-            //System.out.println("X: "+drivetrain.getPose().getY());
-            //System.out.println("Y: "+drivetrain.getPose().getX());
-            System.out.println("R: "+drivetrain.getPose().getRotation().getDegrees());
-            //System.out.println("T: "+drivetrain.getPose().getTranslation());
-        } else {
-            //System.out.println("I"+schedulerIncrement);
-        }
-        schedulerIncrement++;
         if (finished) {
-            //System.out.println("Finished");
-            drivetrain.drive(0, rateLimiter.calculate(0), 0, false);
+            drivetrain.drive(0, 0, 0, false);
         } else {
-            //System.out.println("Not Finished");
-            drivetrain.drive(0, rateLimiter.calculate(0.1), 0, false);
+            drivetrain.drive(0, 0.1, 0, false);
         }
         if (drivetrain.getPose().getY() >= 1) {
-            //System.out.println("Finished (pose)");
             finished = true;
         }
         SmartDashboard.putNumber("BLEnc (rotations)", drivetrain.getRearLeftEncoder().getPosition());

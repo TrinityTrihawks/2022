@@ -18,10 +18,10 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
-    private int schedulerIncrement = 0;
     
     private final CANSparkMax frontLeftSparkMax = 
         new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
@@ -47,8 +47,12 @@ public class Drivetrain extends SubsystemBase {
     private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
     
     // Odometry class for tracking robot pose
-    MecanumDriveOdometry mecanumOdometry = 
+    private MecanumDriveOdometry mecanumOdometry = 
         new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
+
+    private SlewRateLimiter ylimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter xlimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter zlimiter = new SlewRateLimiter(0.5);
     
     /**
      * Use this method to create a drivetrain instance. This method, in conjunction with a private constructor,
@@ -87,16 +91,6 @@ public class Drivetrain extends SubsystemBase {
         putMotorRPMToSmartDashboard();
 
         putGyroAngleToSmartDashboard();
-
-        if (schedulerIncrement % 10 == 0) {
-            //System.out.println("X: "+getPose().getY());
-            System.out.println("Y: "+getPose().getX());
-            //System.out.println("R: "+getPose().getRotation().getDegrees());
-            //System.out.println("T: "+getPose().getTranslation());
-        } else {
-            //System.out.println("I"+schedulerIncrement);
-        }
-        schedulerIncrement++;
     }
 
     private void updateOdometry() {
@@ -155,6 +149,9 @@ public class Drivetrain extends SubsystemBase {
      *                      field.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+        ySpeed = ylimiter.calculate(ySpeed);
+        xSpeed = xlimiter.calculate(xSpeed);
+        rot = zlimiter.calculate(rot);
         if (fieldRelative) {
             mecanumDrive.driveCartesian(ySpeed, xSpeed, rot, -pigeon.getAngle());
         } else {
