@@ -66,6 +66,7 @@ public final class Constants {
         //         / ((double) kEncoderCPR * kGearRatio);
         public static final double kMetersPerMotorRotation = (kWheelDiameterMeters * Math.PI) / kGearRatio;
 
+        public static final double kSlewValue = 0.5;
     }
 
     /**

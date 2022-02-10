@@ -26,7 +26,6 @@ public class Drive5ftInAutoOdo extends CommandBase {
     @Override
     public void initialize() {
         drivetrain.resetEncoders();
-        drivetrain.zeroHeading();
         drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
         finished = false;
     }
@@ -39,10 +38,9 @@ public class Drive5ftInAutoOdo extends CommandBase {
         } else {
             drivetrain.drive(0, 0.1, 0, false);
         }
-        if (drivetrain.getPose().getY() >= 1) {
+        if (drivetrain.getPose().getY() >= 1) { // meters
             finished = true;
         }
-        SmartDashboard.putNumber("BLEnc (rotations)", drivetrain.getRearLeftEncoder().getPosition());
     }
 
     // Called once the command ends or is interrupted.
@@ -62,6 +60,6 @@ public class Drive5ftInAutoOdo extends CommandBase {
         return Math.abs(speeds.frontLeftMetersPerSecond) +
                 Math.abs(speeds.frontRightMetersPerSecond) +
                 Math.abs(speeds.rearLeftMetersPerSecond) +
-                Math.abs(speeds.rearRightMetersPerSecond) > 0;
+                Math.abs(speeds.rearRightMetersPerSecond) == 0;
     }
 }

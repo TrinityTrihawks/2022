@@ -50,9 +50,9 @@ public class Drivetrain extends SubsystemBase {
     private MecanumDriveOdometry mecanumOdometry = 
         new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
 
-    private SlewRateLimiter ylimiter = new SlewRateLimiter(0.5);
-    private SlewRateLimiter xlimiter = new SlewRateLimiter(0.5);
-    private SlewRateLimiter zlimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter ylimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
+    private SlewRateLimiter xlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
+    private SlewRateLimiter zlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
     
     /**
      * Use this method to create a drivetrain instance. This method, in conjunction with a private constructor,
