@@ -130,16 +130,16 @@ public class Drivetrain extends SubsystemBase {
      *                      field.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-        double ySkewSpeed = ylimiter.calculate(ySpeed);
-        double xSkewSpeed = xlimiter.calculate(xSpeed);
-        double rotSkew = zlimiter.calculate(rot);
+        double ySlewSpeed = ylimiter.calculate(ySpeed);
+        double xSlewSpeed = xlimiter.calculate(xSpeed);
+        double rotSlew = zlimiter.calculate(rot);
 
-        //System.out.println(xSpeed+","+xSkewSpeed+",,"+ySpeed+","+ySkewSpeed+",,"+rot+","+rotSkew);
+        //System.out.println(xSpeed+","+xSlewSpeed+",,"+ySpeed+","+ySlewSpeed+",,"+rot+","+rotSlew);
 
         if (fieldRelative) {
-            mecanumDrive.driveCartesian(ySkewSpeed, xSkewSpeed, rotSkew, -pigeon.getAngle());
+            mecanumDrive.driveCartesian(ySlewSpeed, xSlewSpeed, rotSlew, -pigeon.getAngle());
         } else {
-            mecanumDrive.driveCartesian(ySkewSpeed, xSkewSpeed, rotSkew);
+            mecanumDrive.driveCartesian(ySlewSpeed, xSlewSpeed, rotSlew);
         }
     }
 
