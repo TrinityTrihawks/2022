@@ -54,10 +54,10 @@ public final class Constants {
         public static final double kWheelBase = 0.5; // 20in
 
         public static final MecanumDriveKinematics kDriveKinematics = new MecanumDriveKinematics(
-                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
                 new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
         public static final double kGearRatio = 10.71; // 10.71:1
         public static final int kEncoderCPR = 42; // counts per revolution
