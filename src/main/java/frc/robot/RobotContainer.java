@@ -14,10 +14,13 @@ import frc.robot.Constants.JoystickConstants;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
+import frc.robot.commands.ResetGyro;
 import frc.robot.commands.TestSlewLimiter;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -127,6 +130,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return auto5ft;
+    return new SequentialCommandGroup(
+		new ResetGyro(Drivetrain.getInstance()),
+		new WaitCommand(4),
+		auto5ft
+    );
   }
 }
