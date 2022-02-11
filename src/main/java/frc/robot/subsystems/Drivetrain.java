@@ -23,25 +23,17 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
     
-    private final CANSparkMax frontLeftSparkMax = 
-        new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearLeftSparkMax = 
-        new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax frontRightSparkMax = 
-        new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearRightSparkMax = 
-        new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
+    private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
     
     private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,rearRightSparkMax);
     
-    private final RelativeEncoder frontLeftEncoder = 
-        frontLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-    private final RelativeEncoder frontRightEncoder = 
-        frontRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-    private final RelativeEncoder backLeftEncoder = 
-        rearLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-    private final RelativeEncoder backRightEncoder = 
-        rearRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+    private final RelativeEncoder frontLeftEncoder = frontLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+    private final RelativeEncoder frontRightEncoder = frontRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+    private final RelativeEncoder backLeftEncoder = rearLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
+    private final RelativeEncoder backRightEncoder = rearRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
 
     // The gyro sensor
     private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
@@ -86,10 +78,8 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updateOdometry();
-        
+        updateOdometry();  
         putMotorRPMToSmartDashboard();
-
         putGyroAngleToSmartDashboard();
     }
 
@@ -108,15 +98,6 @@ public class Drivetrain extends SubsystemBase {
 
     private void putGyroAngleToSmartDashboard() {
         SmartDashboard.putNumber("Gyro angle", getHeading());
-    }
-
-    private void printWheelSpeeds() {
-        MecanumDriveWheelSpeeds spds = getCurrentWheelSpeeds();
-        System.out.println(spds.frontLeftMetersPerSecond + "," +
-                           spds.frontRightMetersPerSecond + "," +
-                           spds.rearLeftMetersPerSecond + "," +
-                           spds.rearRightMetersPerSecond + "," +
-                           pigeon.getRotation2d().getDegrees());
     }
 
     /**
@@ -149,13 +130,16 @@ public class Drivetrain extends SubsystemBase {
      *                      field.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-        ySpeed = ylimiter.calculate(ySpeed);
-        xSpeed = xlimiter.calculate(xSpeed);
-        rot = zlimiter.calculate(rot);
+        double ySlewSpeed = ylimiter.calculate(ySpeed);
+        double xSlewSpeed = xlimiter.calculate(xSpeed);
+        double rotSlew = zlimiter.calculate(rot);
+
+        //System.out.println(xSpeed+","+xSlewSpeed+",,"+ySpeed+","+ySlewSpeed+",,"+rot+","+rotSlew);
+
         if (fieldRelative) {
-            mecanumDrive.driveCartesian(ySpeed, xSpeed, rot, -pigeon.getAngle());
+            mecanumDrive.driveCartesian(ySlewSpeed, xSlewSpeed, rotSlew, -pigeon.getAngle());
         } else {
-            mecanumDrive.driveCartesian(ySpeed, xSpeed, rot);
+            mecanumDrive.driveCartesian(ySlewSpeed, xSlewSpeed, rotSlew);
         }
     }
 
@@ -175,6 +159,45 @@ public class Drivetrain extends SubsystemBase {
         backRightEncoder.setPosition(0);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Gets the front left drive encoder.
+     *
+     * @return the front left drive encoder
+     */
+    public RelativeEncoder getFrontLeftEncoder() {
+        return frontLeftEncoder;
+    }
+
+    /**
+     * Gets the rear left drive encoder.
+     *
+     * @return the rear left drive encoder
+     */
+    public RelativeEncoder getRearLeftEncoder() {
+        return backLeftEncoder;
+    }
+
+    /**
+     * Gets the front right drive encoder.
+     *
+     * @return the front right drive encoder
+     */
+    public RelativeEncoder getFrontRightEncoder() {
+        return frontRightEncoder;
+    }
+
+    /**
+     * Gets the rear right drive encoder.
+     *
+     * @return the rear right encoder
+     */
+    public RelativeEncoder getRearRightEncoder() {
+        return backRightEncoder;
+    }
+
+>>>>>>> 9b15de093ac994b13d8176236da3d9a20548ae8c
     /**
      * Gets the current wheel speeds.
      *
