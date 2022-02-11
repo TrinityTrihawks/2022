@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;

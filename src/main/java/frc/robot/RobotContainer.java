@@ -35,28 +35,33 @@ public class RobotContainer {
     private final Intake intake = Intake.getInstance();
 
     // Joysticks
-    private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
-    private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort,
-            "Loki (balthazar)"); // balthazar
-    private final JoystickButton zeroButton = new JoystickButton(mainJoystick, 7);
-    private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, 11);
-    private final JoystickButton startIntakeMotorButton = new JoystickButton(mainJoystick, 12);
+    private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor");  // Thor
+    private final ZeroableJoystick leftJoystick = new ZeroableJoystick(JoystickConstants.kLeftJoystickPort, "Loki");    // Loki
+    private final XboxController xboxController = new XboxController(JoystickConstants.kXboxControllerPort);            // Odin
+
+    // Thor and Loki
+    private final JoystickButton zeroButton = new JoystickButton(rightJoystick, 7);
+    private final JoystickButton switchDriveModeButton = new JoystickButton(rightJoystick, 11);
+    private final JoystickButton startIntakeMotorButton = new JoystickButton(rightJoystick, 12);
+
+    // Odin
+    private final JoystickButton intakeForward = new JoystickButton(xboxController, 0);
 
     // Commands
     DriveSingleJoystick singleDefault = new DriveSingleJoystick(
             drivetrain,
-            () -> mainJoystick.getZeroedX(),
-            () -> mainJoystick.getZeroedY(),
-            () -> mainJoystick.getZeroedTwist(),
-            () -> mainJoystick.getThrottle());
+            () -> rightJoystick.getZeroedX(),
+            () -> rightJoystick.getZeroedY(),
+            () -> rightJoystick.getZeroedTwist(),
+            () -> rightJoystick.getThrottle());
 
     DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
             drivetrain,
-            () -> auxJoystick.getZeroedX(),
-            () -> auxJoystick.getZeroedX(),
-            () -> auxJoystick.getZeroedY(),
-            () -> mainJoystick.getZeroedY(),
-            () -> mainJoystick.getThrottle());
+            () -> leftJoystick.getZeroedX(),
+            () -> leftJoystick.getZeroedX(),
+            () -> leftJoystick.getZeroedY(),
+            () -> rightJoystick.getZeroedY(),
+            () -> rightJoystick.getThrottle());
 
     RunIntakeUntilLimitSwitch runIntake = new RunIntakeUntilLimitSwitch(intake);
 
@@ -100,6 +105,7 @@ public class RobotContainer {
         bindZeroButton();
         bindSwitchDriveModeButton();
         bindStartIntakeMotorButton();
+        bindXboxButtons();
     }
 
     /**
@@ -107,8 +113,8 @@ public class RobotContainer {
      */
     private void bindZeroButton() {
         Runnable zero = () -> {
-            mainJoystick.zero();
-            auxJoystick.zero();
+            rightJoystick.zero();
+            leftJoystick.zero();
         };
         zeroButton.debounce(0.5).whenActive(zero, drivetrain);
     }
@@ -124,14 +130,16 @@ public class RobotContainer {
         switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
     }
 
-  private void bindStartIntakeMotorButton() {
-    Runnable startIntakeMotor = () -> {
-      intake.setDefaultCommand(runIntake);
-    };
-    startIntakeMotorButton.debounce(0.5).whenActive(startIntakeMotor, intake);
-  }
+    private void bindStartIntakeMotorButton() {
+        Runnable startIntakeMotor = () -> {
+            intake.setDefaultCommand(runIntake);
+        };
+        startIntakeMotorButton.debounce(0.5).whenActive(startIntakeMotor, intake);
+    }
 
-    //
+    private void bindXboxButtons() {
+        
+    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
