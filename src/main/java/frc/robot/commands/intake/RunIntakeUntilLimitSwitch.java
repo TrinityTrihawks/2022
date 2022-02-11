@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -21,13 +21,13 @@ public class RunIntakeUntilLimitSwitch extends CommandBase {
 
     @Override
     public void initialize() {
-        intake.setIntakeVoltage(0.2);
+        intake.vacuum();
     }
 
     @Override
     public void execute() {
         if (intake.getLimitSwitchState() == true) {
-            intake.setIntakeVoltage(0.0);
+            intake.off();
             finished = true;
         }
         // System.out.println(intake.getLimitSwitchState());

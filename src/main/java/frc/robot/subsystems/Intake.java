@@ -33,8 +33,18 @@ public class Intake extends SubsystemBase {
         intakeMotor.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setIntakeVoltage(double percentOutput) {
+    private void setIntakeVoltage(double percentOutput) {
         intakeMotor.set(ControlMode.PercentOutput, percentOutput);
+    }
+
+    public void vacuum() {
+        setIntakeVoltage(0.4);
+    }
+    public void spit() {
+        setIntakeVoltage(-0.6);
+    }
+    public void off() {
+        setIntakeVoltage(0.0);
     }
 
     public boolean getLimitSwitchState() {
