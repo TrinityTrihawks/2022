@@ -159,45 +159,6 @@ public class Drivetrain extends SubsystemBase {
         backRightEncoder.setPosition(0);
     }
 
-<<<<<<< HEAD
-=======
-    /**
-     * Gets the front left drive encoder.
-     *
-     * @return the front left drive encoder
-     */
-    public RelativeEncoder getFrontLeftEncoder() {
-        return frontLeftEncoder;
-    }
-
-    /**
-     * Gets the rear left drive encoder.
-     *
-     * @return the rear left drive encoder
-     */
-    public RelativeEncoder getRearLeftEncoder() {
-        return backLeftEncoder;
-    }
-
-    /**
-     * Gets the front right drive encoder.
-     *
-     * @return the front right drive encoder
-     */
-    public RelativeEncoder getFrontRightEncoder() {
-        return frontRightEncoder;
-    }
-
-    /**
-     * Gets the rear right drive encoder.
-     *
-     * @return the rear right encoder
-     */
-    public RelativeEncoder getRearRightEncoder() {
-        return backRightEncoder;
-    }
-
->>>>>>> 9b15de093ac994b13d8176236da3d9a20548ae8c
     /**
      * Gets the current wheel speeds.
      *
