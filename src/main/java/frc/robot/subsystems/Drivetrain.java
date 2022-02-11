@@ -157,11 +157,6 @@ public class Drivetrain extends SubsystemBase {
         backRightEncoder.setPosition(0);
     }
 
-    /**
-     * Gets the current wheel speeds.
-     *
-     * @return the current wheel speeds in a MecanumDriveWheelSpeeds object.
-     */
     public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
         return new MecanumDriveWheelSpeeds(
                 frontLeftEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60, //rotations per minute * meters per rotation * minute per seconds

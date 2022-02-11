@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivetrain;
 
 /** a command that (ideally) drives the robot 2m forward. */
@@ -37,7 +38,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
         } else {
             drivetrain.drive(0, 0.1, 0, false);
         }
-        if (drivetrain.getPose().getY() >= 1) { // meters
+        if (drivetrain.getPose().getY() * DriveConstants.kPoseScalar >= 1) { // meters
             finished = true;
         }
         System.out.println(drivetrain.getPose().getY());
