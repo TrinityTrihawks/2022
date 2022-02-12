@@ -136,7 +136,6 @@ public class Drivetrain extends SubsystemBase {
         backRightEncoder.setPosition(0);
     }
 
-    // todo: do we need to expose the encoders like this?
     /**
      * Gets the front left drive encoder.
      *
