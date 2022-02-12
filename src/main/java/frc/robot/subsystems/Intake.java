@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -13,6 +14,8 @@ public class Intake extends SubsystemBase {
 
     private final TalonSRX intakeMotor = new TalonSRX(IntakeConstants.kIntakeMotorPort);
     private final DigitalInput limitSwitch = new DigitalInput(IntakeConstants.kLimitSwitchPort);
+
+    private double speed = 0.4;
 
     /** Creates a new Intake. */
     /**
@@ -38,9 +41,15 @@ public class Intake extends SubsystemBase {
     }
 
     public void vacuum() {
-        setIntakeVoltage(0.4);
+        setIntakeVoltage(speed);
+    }
+    public void vacuumBoost(){
+        setIntakeVoltage(0.6);
     }
     public void spit() {
+        setIntakeVoltage(-speed);
+    }
+    public void spitBoost() {
         setIntakeVoltage(-0.6);
     }
     public void off() {
@@ -54,6 +63,7 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        speed = SmartDashboard.getNumber("IntakeSpeed", 0.4);
     }
 
     @Override
