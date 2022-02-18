@@ -137,12 +137,7 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-		Command resetGyro = new ResetGyro(drivetrain).andThen(new WaitCommand(4));
-		return new InstantCommand(() -> {
-				while (!resetGyro.isFinished()) {
-					drivetrain.drive(0, 0, 0, false);
-				}
-			}
-		).alongWith(resetGyro).andThen(auto5ft);
+		Command resetGyro = new ResetGyro(drivetrain, 4);
+		return resetGyro.andThen(auto5ft);
 	}
 }
