@@ -19,121 +19,130 @@ import frc.robot.commands.TestSlewLimiter;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // Subsystems
-  private final Drivetrain drivetrain = Drivetrain.getInstance();
+	// Subsystems
+	private final Drivetrain drivetrain = Drivetrain.getInstance();
 
+	// Joysticks
+	private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
+	private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort,
+			"Loki (balthazar)"); // balthazar
+	private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
+	private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
+			JoystickConstants.kSwitchDriveModeButtonId);
 
-  // Joysticks
-  private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
-  private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort, "Loki (balthazar)"); // balthazar
-  private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
-  private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, JoystickConstants.kSwitchDriveModeButtonId);
+	// Commands
+	DriveSingleJoystick singleDefault = new DriveSingleJoystick(
+			drivetrain,
+			() -> mainJoystick.getZeroedX(),
+			() -> mainJoystick.getZeroedY(),
+			() -> mainJoystick.getZeroedTwist(),
+			() -> mainJoystick.getThrottle());
 
-  // Commands
-  DriveSingleJoystick singleDefault = new DriveSingleJoystick(
-    drivetrain,
-    () -> mainJoystick.getZeroedX(),
-    () -> mainJoystick.getZeroedY(),
-    () -> mainJoystick.getZeroedTwist(),
-    () -> mainJoystick.getThrottle()
-  );
+	DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
+			drivetrain,
+			() -> auxJoystick.getZeroedX(),
+			() -> mainJoystick.getZeroedX(),
+			() -> auxJoystick.getZeroedY(),
+			() -> mainJoystick.getZeroedY(),
+			() -> mainJoystick.getThrottle());
 
-  DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
-    drivetrain,
-    () -> auxJoystick.getZeroedX(),
-    () -> mainJoystick.getZeroedX(), 
-    () -> auxJoystick.getZeroedY(), 
-    () -> mainJoystick.getZeroedY(), 
-    () -> mainJoystick.getThrottle()
-  );
+	Drive5ftInAutoOdo auto5ft = new Drive5ftInAutoOdo(drivetrain);
 
-  Drive5ftInAutoOdo auto5ft = new Drive5ftInAutoOdo(drivetrain);
+	TestSlewLimiter limitTest = new TestSlewLimiter();
 
-  TestSlewLimiter limitTest = new TestSlewLimiter();
+	final NetworkTable subtable;
 
-  final NetworkTable subtable;
+	/**
+	 * The container for the robot. Contains subsystems, OI devices, and commands.
+	 */
+	public RobotContainer() {
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
+		subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
 
-    subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
-    
-    
-    // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
-    CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
-        "Command initialized", command.getName(), EventImportance.kNormal));
-    CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker(
-        "Command interrupted", command.getName(), EventImportance.kHigh));
-    CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker(
-        "Command finished", command.getName(), EventImportance.kNormal));
+		// Set the scheduler to log Shuffleboard events for command initialize,
+		// interrupt, finish
+		CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
+				"Command initialized", command.getName(), EventImportance.kNormal));
+		CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker(
+				"Command interrupted", command.getName(), EventImportance.kHigh));
+		CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker(
+				"Command finished", command.getName(), EventImportance.kNormal));
 
-    configureDefaultCommands();
-    
-    // Configure the button bindings
-    configureButtonBindings();
-  }
+		configureDefaultCommands();
 
-  private void configureDefaultCommands() {
-      // Drivetrain default
-      drivetrain.setDefaultCommand(doubleDefault);
-  }
+		// Configure the button bindings
+		configureButtonBindings();
+	}
 
-  /**
-   * This method defines the button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    bindZeroButton();
-    bindSwitchDriveModeButton();
-  }
+	private void configureDefaultCommands() {
+		// Drivetrain default
+		drivetrain.setDefaultCommand(doubleDefault);
+	}
 
-  /**
-   * Isaac helped more than Luca
-   */
-  private void bindZeroButton() {
-    Runnable zero = () -> {
-      mainJoystick.zero();
-      auxJoystick.zero();
-    };
-    zeroButton.debounce(0.5).whenActive(zero, drivetrain);
-  }
+	/**
+	 * This method defines the button->command mappings. Buttons can be created by
+	 * instantiating a {@link GenericHID} or one of its subclasses ({@link
+	 * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+	 * it to a {@link
+	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+	 */
+	private void configureButtonBindings() {
+		bindZeroButton();
+		bindSwitchDriveModeButton();
+	}
 
-  private void bindSwitchDriveModeButton() {
-    Runnable switchDriveMode = () -> {
-      if (drivetrain.getDefaultCommand() == singleDefault) {
-        drivetrain.setDefaultCommand(doubleDefault);
-        System.out.print("===== SWITCHED MODE TO DOUBLE JOYSTICK =====");
-      } else {
-        drivetrain.setDefaultCommand(singleDefault);
-        System.out.print("===== SWITCHED MODE TO SINGLE JOYSTICK =====");
-      }
-    };
-    switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
-  }
+	/**
+	 * Isaac helped more than Luca
+	 */
+	private void bindZeroButton() {
+		Runnable zero = () -> {
+			mainJoystick.zero();
+			auxJoystick.zero();
+		};
+		zeroButton.debounce(0.5).whenActive(zero, drivetrain);
+	}
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    return new SequentialCommandGroup(
-		new ResetGyro(Drivetrain.getInstance()),
-		new WaitCommand(4),
-		auto5ft
-    );
-  }
+	private void bindSwitchDriveModeButton() {
+		Runnable switchDriveMode = () -> {
+			if (drivetrain.getDefaultCommand() == singleDefault) {
+				drivetrain.setDefaultCommand(doubleDefault);
+				System.out.print("===== SWITCHED MODE TO DOUBLE JOYSTICK =====");
+			} else {
+				drivetrain.setDefaultCommand(singleDefault);
+				System.out.print("===== SWITCHED MODE TO SINGLE JOYSTICK =====");
+			}
+		};
+		switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
+	}
+
+	/**
+	 * Use this to pass the autonomous command to the main {@link Robot} class.
+	 *
+	 * @return the command to run in autonomous
+	 */
+	public Command getAutonomousCommand() {
+		Command resetGyro = new ResetGyro(drivetrain).andThen(new WaitCommand(4));
+		return new InstantCommand(() -> {
+				while (!resetGyro.isFinished()) {
+					drivetrain.drive(0, 0, 0, false);
+				}
+			}
+		).alongWith(resetGyro).andThen(auto5ft);
+	}
 }
