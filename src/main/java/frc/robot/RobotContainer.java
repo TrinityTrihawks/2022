@@ -62,8 +62,7 @@ public class RobotContainer {
 
 	Drive5ftInAutoOdo auto5ft = new Drive5ftInAutoOdo(drivetrain);
 
-	TestSlewLimiter limitTest = new TestSlewLimiter();
-
+	
 	final NetworkTable subtable;
 
 	/**
