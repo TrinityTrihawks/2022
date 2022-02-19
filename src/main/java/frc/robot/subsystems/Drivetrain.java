@@ -135,9 +135,9 @@ public class Drivetrain extends SubsystemBase {
         double rotSlew = zlimiter.calculate(rot);
 
         if (fieldRelative) {
-            mecanumDrive.driveCartesian(ySlewSpeed, xSlewSpeed, rotSlew, -pigeon.getAngle());
+            mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew, -pigeon.getAngle());
         } else {
-            mecanumDrive.driveCartesian(ySlewSpeed, xSlewSpeed, rotSlew);
+            mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew);
         }
     }
 

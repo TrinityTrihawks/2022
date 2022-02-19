@@ -3,14 +3,15 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivetrain;
 
 /** a command that (ideally) drives the robot 2m forward. */
 public class Drive5ftInAutoOdo extends CommandBase {
     private final Drivetrain drivetrain;
     private boolean finished = false;
+    private Timer timer = new Timer();
     /*
      * Creates a new Drive5ftInAutoOdo.
      *
@@ -28,6 +29,7 @@ public class Drive5ftInAutoOdo extends CommandBase {
         drivetrain.resetEncoders();
         drivetrain.resetOdometry(new Pose2d(0, 0, new Rotation2d(0)));
         finished = false;
+        timer.start();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -36,12 +38,16 @@ public class Drive5ftInAutoOdo extends CommandBase {
         if (finished) {
             drivetrain.drive(0, 0, 0, false);
         } else {
-            drivetrain.drive(0, 0.1, 0, false);
+            drivetrain.drive(0.1, 0, 0, true);
         }
-        if (drivetrain.getPose().getY() * DriveConstants.kPoseScalar >= 1) { // meters
+        if (drivetrain.getPose().getX() >= 1.524) { // meters
             finished = true;
         }
-        System.out.println(drivetrain.getPose().getY());
+        if ((timer.get() * 2) % 1 == 0) {
+            System.out.println(drivetrain.getPose().getX() + "," +
+                               drivetrain.getPose().getY() + "," +
+                               drivetrain.getPose().getRotation().getDegrees());
+        }
     }
 
     // Called once the command ends or is interrupted.
