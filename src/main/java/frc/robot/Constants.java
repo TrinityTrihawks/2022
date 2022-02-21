@@ -61,8 +61,11 @@ public final class Constants {
         public static final double kGearRatio = 10.1; // 10.1:1
         public static final int kEncoderCPR = 42; // counts per revolution
         public static final double kWheelDiameterMeters = 0.15; // 6in
-        public static final double kEncoderDistancePerPulse = ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR)
-                / kGearRatio;
+        public static final double kMetersPerMotorRotation = (kWheelDiameterMeters * Math.PI) / kGearRatio;
+
+        public static final double kSlewValue = 0.5;
+        
+        public static final double kGyroResetWaitTime = 4;
     }
 
     /**
@@ -79,6 +82,8 @@ public final class Constants {
 
         public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
 
+        public static final int kZeroButtonId = 7;
+        public static final int kSwitchDriveModeButtonId = 9;
     }
 
     public static final class IntakeConstants {
