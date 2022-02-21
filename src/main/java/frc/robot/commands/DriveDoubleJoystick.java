@@ -65,7 +65,7 @@ public class DriveDoubleJoystick extends CommandBase {
         // scale x, y, and twist by throttle and sanity limit
         x = x * throttle * JoystickConstants.kStaticThrottleScalar;
         y = y * throttle * JoystickConstants.kStaticThrottleScalar * -1; //correct the y-axis (backwards is now backwards!)
-        twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
+        twist = -twist * throttle * JoystickConstants.kStaticThrottleScalar;
 
         
         SmartDashboard.putNumber("X", x);
@@ -73,7 +73,7 @@ public class DriveDoubleJoystick extends CommandBase {
         SmartDashboard.putNumber("Twistation", twist);
         SmartDashboard.putNumber("Throttle", throttle);
 
-        drivetrain.drive(x, y, twist, false);
+        drivetrain.drive(x, y, twist, true);
     }
 
     // Called once the command ends or is interrupted.

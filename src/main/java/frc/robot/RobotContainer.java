@@ -17,7 +17,6 @@ import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.TestSlewLimiter;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -60,10 +59,8 @@ public class RobotContainer {
 			() -> mainJoystick.getZeroedX(),
 			() -> mainJoystick.getThrottle());
 
-	Drive5ftInAutoOdo auto5ft = new Drive5ftInAutoOdo(drivetrain);
 
-	
-	final NetworkTable subtable;
+	private final NetworkTable subtable;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -130,8 +127,6 @@ public class RobotContainer {
 
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
-	 *
-	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
 		Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
