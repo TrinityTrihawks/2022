@@ -46,17 +46,17 @@ public class RobotContainer {
 	// Commands
 	DriveSingleJoystick singleDefault = new DriveSingleJoystick(
 			drivetrain,
-			() -> mainJoystick.getZeroedY(),
-			() -> mainJoystick.getZeroedX(),
+			() -> -mainJoystick.getZeroedY(),
+			() -> -mainJoystick.getZeroedX(),
 			() -> mainJoystick.getZeroedTwist(),
 			() -> mainJoystick.getThrottle());
 
 	DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
 			drivetrain,
-			() -> auxJoystick.getZeroedY(),
-			() -> mainJoystick.getZeroedY(),
-			() -> auxJoystick.getZeroedX(),
-			() -> mainJoystick.getZeroedX(),
+			() -> -auxJoystick.getZeroedY(),
+			() -> -mainJoystick.getZeroedY(),
+			() -> -auxJoystick.getZeroedX(),
+			() -> -mainJoystick.getZeroedX(),
 			() -> mainJoystick.getThrottle());
 
 
