@@ -58,7 +58,7 @@ public final class Constants {
                 new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
                 new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
-        public static final double kGearRatio = 10.1; // 10.1:1
+        public static final double kGearRatio = 10.71; // 10.1:1
         public static final int kEncoderCPR = 42; // counts per revolution
         public static final double kWheelDiameterMeters = 0.15; // 6in
         public static final double kMetersPerMotorRotation = (kWheelDiameterMeters * Math.PI) / kGearRatio;
