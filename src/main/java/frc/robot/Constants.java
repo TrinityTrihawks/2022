@@ -33,7 +33,6 @@ public final class Constants {
 
         public static final int kPigeonId = 15;
 
-        // vvv From
         // https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/mecanumcontrollercommand/Constants.java
 
         // Encoder IDs
@@ -54,19 +53,16 @@ public final class Constants {
         public static final double kWheelBase = 0.5; // 20in
 
         public static final MecanumDriveKinematics kDriveKinematics = new MecanumDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
-        
-        public static final double kGearRatio = 10.71; // 10.71:1
+                new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+
+        public static final double kGearRatio = 10.1; // 10.1:1
         public static final int kEncoderCPR = 42; // counts per revolution
-        public static final double kWheelDiameterMeters = 0.1524; // 6in
-        public static final double kMetersPerMotorRotation = (kWheelDiameterMeters * Math.PI) / kGearRatio;
-
-        public static final double kSlewValue = 0.5;
-
-        public static final double kGyroResetWaitTime = 4;
+        public static final double kWheelDiameterMeters = 0.15; // 6in
+        public static final double kEncoderDistancePerPulse = ((kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR)
+                / kGearRatio;
     }
 
     /**
@@ -81,11 +77,13 @@ public final class Constants {
         public static final double kYDeadZone = 0.1; // Front-Back
         public static final double kTwistDeadZone = 0.1; // Twist
 
-        public static final double kStaticThrottleScalar = 0.3; // multiply inputs' values by this
+        public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
 
-        public static final int kZeroButtonId = 7;
-        public static final int kSwitchDriveModeButtonId = 9;
+    }
 
+    public static final class IntakeConstants {
+        public static final int kIntakeMotorPort = 16;
+        public static final int kLimitSwitchPort = 0;
     }
 
     /**
