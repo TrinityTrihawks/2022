@@ -57,7 +57,7 @@ public class DriveSingleJoystick extends CommandBase {
         SmartDashboard.putNumber("Twistation", twist);
         SmartDashboard.putNumber("Throttle", throttle);
 
-        drivetrain.drive(x, y, twist, true);
+        drivetrain.drive(x, y, twist, SmartDashboard.getBoolean("FieldRelative", false));
     }
 
     // Called once the command ends or is interrupted.
