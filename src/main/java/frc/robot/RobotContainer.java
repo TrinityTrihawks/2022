@@ -50,19 +50,19 @@ public class RobotContainer {
 
     // Commands
     DriveSingleJoystick singleDefault = new DriveSingleJoystick(
-            drivetrain,
-            () -> mainJoystick.getZeroedX(),
-            () -> mainJoystick.getZeroedY(),
-            () -> mainJoystick.getZeroedTwist(),
-            () -> mainJoystick.getThrottle());
+			drivetrain,
+			() -> -mainJoystick.getZeroedY(),
+			() -> -mainJoystick.getZeroedX(),
+			() -> mainJoystick.getZeroedTwist(),
+			() -> mainJoystick.getThrottle());
 
-    DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
-            drivetrain,
-            () -> auxJoystick.getZeroedX(),
-            () -> auxJoystick.getZeroedX(),
-            () -> auxJoystick.getZeroedY(),
-            () -> mainJoystick.getZeroedY(),
-            () -> mainJoystick.getThrottle());
+	DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
+			drivetrain,
+			() -> -auxJoystick.getZeroedY(),
+			() -> -mainJoystick.getZeroedY(),
+			() -> -auxJoystick.getZeroedX(),
+			() -> -mainJoystick.getZeroedX(),
+			() -> mainJoystick.getThrottle());
 
     RunIntakeUntilLimitSwitch runIntake = new RunIntakeUntilLimitSwitch(intake);
 
@@ -145,7 +145,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return null;
+        Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
+		return resetGyro.andThen(new Drive5ftInAutoOdo(drivetrain)).andThen(new DriveZero(drivetrain));
     }
 }
