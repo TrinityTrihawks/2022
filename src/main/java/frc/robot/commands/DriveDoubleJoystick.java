@@ -10,20 +10,18 @@ import frc.robot.Constants.JoystickConstants;
 
 public class DriveDoubleJoystick extends CommandBase {
     private final Drivetrain drivetrain;
-    private final DoubleSupplier xLeftSupplier;
-    private final DoubleSupplier xRightSupplier;
-    private final DoubleSupplier yLeftSupplier;
-    private final DoubleSupplier yRightSupplier;
+    private final DoubleSupplier x1Supplier;
+    private final DoubleSupplier x2Supplier;
+    private final DoubleSupplier y1Supplier;
+    private final DoubleSupplier y2Supplier;
     private final DoubleSupplier throttleSupplier;
 
-    
-    public DriveDoubleJoystick(Drivetrain drivetrain, DoubleSupplier xLeft, DoubleSupplier xRight,
-     DoubleSupplier yLeft, DoubleSupplier yRight, DoubleSupplier throttle) {
+    public DriveDoubleJoystick(Drivetrain drivetrain, DoubleSupplier x1, DoubleSupplier x2, DoubleSupplier y1, DoubleSupplier y2, DoubleSupplier throttle) {
         this.drivetrain = drivetrain;
-        xLeftSupplier = xLeft;
-        xRightSupplier = xRight;
-        yLeftSupplier = yLeft;
-        yRightSupplier = yRight;
+        x1Supplier = x1;
+        x2Supplier = x2;
+        y1Supplier = y1;
+        y2Supplier = y2;
         throttleSupplier = throttle; 
         addRequirements(drivetrain);
 
@@ -36,27 +34,27 @@ public class DriveDoubleJoystick extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double xLeft = xLeftSupplier.getAsDouble();
-        double xRight = xRightSupplier.getAsDouble();
-        double yLeft = yLeftSupplier.getAsDouble();
-        double yRight = yRightSupplier.getAsDouble();
+        double x1 = x1Supplier.getAsDouble();
+        double x2 = x2Supplier.getAsDouble();
+        double y1 = y1Supplier.getAsDouble();
+        double y2 = y2Supplier.getAsDouble();
         double throttle = throttleSupplier.getAsDouble();
         
         // Deadzone Logic
-        xLeft = Math.abs(xLeft) < JoystickConstants.kXDeadZone ? 0.0 : xLeft;
-        xRight = Math.abs(xRight) < JoystickConstants.kXDeadZone ? 0.0 : xRight;
-        yLeft = Math.abs(yLeft) < JoystickConstants.kYDeadZone ? 0.0 : yLeft;
-        yRight = Math.abs(yRight) < JoystickConstants.kYDeadZone ? 0.0 : yRight;
+        x1 = Math.abs(x1) < JoystickConstants.kXDeadZone ? 0.0 : x1;
+        x2 = Math.abs(x2) < JoystickConstants.kXDeadZone ? 0.0 : x2;
+        y1 = Math.abs(y1) < JoystickConstants.kYDeadZone ? 0.0 : y1;
+        y2 = Math.abs(y2) < JoystickConstants.kYDeadZone ? 0.0 : y2;
 
         // Double joystick math (courtesy of Peter, Veronica, Luke & Michael)
-        double y = (yLeft + yRight) / 2;
-        double twist = (yLeft - yRight) / 2;
+        double y = (y1 + y2) / 2;
+        double twist = (y2 - y1) / 2;
 
         double x;
-        if (xLeft * xRight < 0) {
+        if (x1 * x2 < 0) {
             x = 0;
         } else {
-            x = Math.abs(xRight) < Math.abs(xLeft) ? xRight : xLeft;
+            x = Math.abs (x2) < Math.abs (x1) ? x2 : x1;
         }
 
         
@@ -65,15 +63,21 @@ public class DriveDoubleJoystick extends CommandBase {
         // scale x, y, and twist by throttle and sanity limit
         x = x * throttle * JoystickConstants.kStaticThrottleScalar;
         y = y * throttle * JoystickConstants.kStaticThrottleScalar * -1; //correct the y-axis (backwards is now backwards!)
-        twist = -twist * throttle * JoystickConstants.kStaticThrottleScalar;
+        twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
 
+        // System.out.print("X: "+x+"; ");
+        // System.out.print("Y: "+y+"; ");
+        // System.out.print("Twistation: "+twist+"; ");
+        // System.out.print("Throttle:"+throttle+"; ");
         
+        // System.out.println();
+
         SmartDashboard.putNumber("X", x);
         SmartDashboard.putNumber("Y", y);
         SmartDashboard.putNumber("Twistation", twist);
         SmartDashboard.putNumber("Throttle", throttle);
 
-        drivetrain.drive(x, y, twist, SmartDashboard.getBoolean("FieldRelative", false));
+        drivetrain.drive(x, y, twist, false);
     }
 
     // Called once the command ends or is interrupted.

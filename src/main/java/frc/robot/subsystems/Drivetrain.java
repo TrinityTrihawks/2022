@@ -14,41 +14,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
-    
-    private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
-    private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
-    
-    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,rearRightSparkMax);
-    
-    private final RelativeEncoder frontLeftEncoder = frontLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-    private final RelativeEncoder frontRightEncoder = frontRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-    private final RelativeEncoder backLeftEncoder = rearLeftSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-    private final RelativeEncoder backRightEncoder = rearRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
-
-    // The gyro sensor
-    private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
-    
-    // Odometry class for tracking robot pose
-    private MecanumDriveOdometry mecanumOdometry = 
-        new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
-
-    private SlewRateLimiter ylimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
-    private SlewRateLimiter xlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
-    private SlewRateLimiter zlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
-    
+    // todo: remove hungarian pollution
     /**
-     * Use this method to create a drivetrain instance. This method, in conjunction with a private constructor,
-     * ensures that the
+     * Use this method to create a drivetrain instance. This method ensures that the
      * drivetrain class is a singleton, aka, that only one drivetrain object ever
      * gets created
      * 
@@ -62,42 +35,52 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
+    private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
+
+    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,rearRightSparkMax);
+
+    private final RelativeEncoder frontLeftEncoder = frontLeftSparkMax.getEncoder();
+    private final RelativeEncoder frontRightEncoder = frontRightSparkMax.getEncoder();
+    private final RelativeEncoder backLeftEncoder = rearLeftSparkMax.getEncoder();
+    private final RelativeEncoder backRightEncoder = rearRightSparkMax.getEncoder();
+    // The gyro sensor
+    private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
+
+    // Odometry class for tracking robot pose
+    MecanumDriveOdometry mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
+
     /** Creates a new Drivetrain. */
     private Drivetrain() {
+
+        // Sets the distance per pulse for the encoders
+        // frontLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        // backLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        // frontRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        // backRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         // We need to invert one side of the drivetrain so that positive voltages
         // result in both sides moving forward. Depending on how your robot's
         // gearbox is constructed, you might have to invert the left side instead.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
-        //zeroHeading();  // Axed, as per docs (automatically calibrates on boot up)
-        frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
-        frontRightSparkMax.setIdleMode(IdleMode.kBrake);
-        rearLeftSparkMax.setIdleMode(IdleMode.kBrake);
-        rearRightSparkMax.setIdleMode(IdleMode.kBrake);
     }
 
     @Override
     public void periodic() {
-        updateOdometry();  
-        putMotorRPMToSmartDashboard();
-        putGyroAngleToSmartDashboard();
-    }
-
-    private void updateOdometry() {
+        // Update the odometry in the periodic block
         mecanumOdometry.update(
                 pigeon.getRotation2d(),
-                getCurrentWheelSpeeds());
-    }
-
-    private void putMotorRPMToSmartDashboard() {
-        SmartDashboard.putNumber("FLEnc (RPM)", frontLeftEncoder.getVelocity());
-        SmartDashboard.putNumber("FREnc (RPM)", frontRightEncoder.getVelocity());
-        SmartDashboard.putNumber("BLEnc (RPM)", backLeftEncoder.getVelocity());
-        SmartDashboard.putNumber("BREnc (RPM)", backRightEncoder.getVelocity());
-    }
-
-    private void putGyroAngleToSmartDashboard() {
-        SmartDashboard.putNumber("Gyro angle", getHeading());
+                new MecanumDriveWheelSpeeds(
+                        frontLeftEncoder.getVelocity(),
+                        backLeftEncoder.getVelocity(),
+                        frontRightEncoder.getVelocity(),
+                        backRightEncoder.getVelocity()));
+        SmartDashboard.putNumber("FLEnc", frontLeftEncoder.getVelocity());
+        SmartDashboard.putNumber("FREnc", frontRightEncoder.getVelocity());
+        SmartDashboard.putNumber("BLEnc", backLeftEncoder.getVelocity());
+        SmartDashboard.putNumber("BREnc", backRightEncoder.getVelocity());
     }
 
     /**
@@ -123,25 +106,21 @@ public class Drivetrain extends SubsystemBase {
      * speeds have no effect on the angular speed.
      *
      * @param xSpeed        Speed of the robot in the x direction
-     *                      (sideways).
-     * @param ySpeed        Speed of the robot in the y direction (forward/backwards).
+     *                      (forward/backwards).
+     * @param ySpeed        Speed of the robot in the y direction (sideways).
      * @param rot           Angular rate of the robot.
      * @param fieldRelative Whether the provided x and y speeds are relative to the
      *                      field.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-        double ySlewSpeed = ylimiter.calculate(ySpeed);
-        double xSlewSpeed = xlimiter.calculate(xSpeed);
-        double rotSlew = zlimiter.calculate(rot);
-
         if (fieldRelative) {
-            mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew, pigeon.getAngle());
+            mecanumDrive.driveCartesian(ySpeed, xSpeed, rot, -pigeon.getAngle());
         } else {
-            mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew);
+            mecanumDrive.driveCartesian(ySpeed, xSpeed, rot);
         }
     }
 
-    /** Sets the MotorControllers to a voltage. */
+    /** Sets the front left drive MotorController to a voltage. */
     public void setDriveMotorControllersVolts(MecanumDriveMotorVoltages volts) {
         frontLeftSparkMax.setVoltage(volts.frontLeftVoltage);
         rearLeftSparkMax.setVoltage(volts.rearLeftVoltage);
@@ -157,14 +136,55 @@ public class Drivetrain extends SubsystemBase {
         backRightEncoder.setPosition(0);
     }
 
+    // todo: do we need to expose the encoders like this?
+    /**
+     * Gets the front left drive encoder.
+     *
+     * @return the front left drive encoder
+     */
+    public RelativeEncoder getFrontLeftEncoder() {
+        return frontLeftEncoder;
+    }
+
+    /**
+     * Gets the rear left drive encoder.
+     *
+     * @return the rear left drive encoder
+     */
+    public RelativeEncoder getRearLeftEncoder() {
+        return backLeftEncoder;
+    }
+
+    /**
+     * Gets the front right drive encoder.
+     *
+     * @return the front right drive encoder
+     */
+    public RelativeEncoder getFrontRightEncoder() {
+        return frontRightEncoder;
+    }
+
+    /**
+     * Gets the rear right drive encoder.
+     *
+     * @return the rear right encoder
+     */
+    public RelativeEncoder getRearRightEncoder() {
+        return backRightEncoder;
+    }
+
+    /**
+     * Gets the current wheel speeds.
+     *
+     * @return the current wheel speeds in a MecanumDriveWheelSpeeds object.
+     */
     public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
         return new MecanumDriveWheelSpeeds(
-                frontLeftEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60, //rotations per minute * meters per rotation * minute per seconds
-                frontRightEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60,
-                backLeftEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60,
-                backRightEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60);
+                frontLeftEncoder.getVelocity(),
+                backLeftEncoder.getVelocity(),
+                frontRightEncoder.getVelocity(),
+                backRightEncoder.getVelocity());
     }
-    
 
     /**
      * Sets the max output of the drive. Useful for scaling the drive to drive more
