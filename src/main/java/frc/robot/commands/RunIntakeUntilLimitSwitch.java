@@ -30,7 +30,6 @@ public class RunIntakeUntilLimitSwitch extends CommandBase {
             intake.setIntakeVoltage(0.0);
             finished = true;
         }
-        // System.out.println(intake.getLimitSwitchState());
     }
 
     @Override
