@@ -45,24 +45,26 @@ public class RobotContainer {
     private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort,
             "Loki (balthazar)"); // balthazar
     private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
-    private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, JoystickConstants.kSwitchDriveModeButtonId);
-    private final JoystickButton startIntakeMotorButton = new JoystickButton(mainJoystick, 12); //TODO: should NOT be on mainJoystick
+    private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
+            JoystickConstants.kSwitchDriveModeButtonId);
+    private final JoystickButton startIntakeMotorButton = new JoystickButton(mainJoystick, 12); // TODO: should NOT be
+                                                                                                // on mainJoystick
 
     // Commands
     DriveSingleJoystick singleDefault = new DriveSingleJoystick(
-			drivetrain,
-			() -> -mainJoystick.getZeroedY(),
-			() -> -mainJoystick.getZeroedX(),
-			() -> mainJoystick.getZeroedTwist(),
-			() -> mainJoystick.getThrottle());
+            drivetrain,
+            () -> -mainJoystick.getZeroedY(),
+            () -> -mainJoystick.getZeroedX(),
+            () -> mainJoystick.getZeroedTwist(),
+            () -> mainJoystick.getThrottle());
 
-	DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
-			drivetrain,
-			() -> auxJoystick.getZeroedX(),
-			() -> mainJoystick.getZeroedX(),
-			() -> auxJoystick.getZeroedY(),
-			() -> mainJoystick.getZeroedY(),
-			() -> mainJoystick.getThrottle());
+    DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
+            drivetrain,
+            () -> auxJoystick.getZeroedX(),
+            () -> mainJoystick.getZeroedX(),
+            () -> auxJoystick.getZeroedY(),
+            () -> mainJoystick.getZeroedY(),
+            () -> mainJoystick.getThrottle());
 
     RunIntakeUntilLimitSwitch runIntake = new RunIntakeUntilLimitSwitch(intake);
 
@@ -130,12 +132,12 @@ public class RobotContainer {
         switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
     }
 
-  private void bindStartIntakeMotorButton() {
-    Runnable startIntakeMotor = () -> {
-      intake.setDefaultCommand(runIntake);
-    };
-    startIntakeMotorButton.debounce(0.5).whenActive(startIntakeMotor, intake);
-  }
+    private void bindStartIntakeMotorButton() {
+        Runnable startIntakeMotor = () -> {
+            intake.setDefaultCommand(runIntake);
+        };
+        startIntakeMotorButton.debounce(0.5).whenActive(startIntakeMotor, intake);
+    }
 
     //
 
@@ -146,6 +148,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-		return resetGyro.andThen(new Drive5ftInAutoOdo(drivetrain)).andThen(new DriveZero(drivetrain));
+        return resetGyro.andThen(new Drive5ftInAutoOdo(drivetrain)).andThen(new DriveZero(drivetrain));
     }
 }
