@@ -58,10 +58,10 @@ public class RobotContainer {
 
 	DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
 			drivetrain,
-			() -> -auxJoystick.getZeroedX(),
-			() -> -mainJoystick.getZeroedX(),
-			() -> -auxJoystick.getZeroedY(),
-			() -> -mainJoystick.getZeroedY(),
+			() -> auxJoystick.getZeroedX(),
+			() -> mainJoystick.getZeroedX(),
+			() -> auxJoystick.getZeroedY(),
+			() -> mainJoystick.getZeroedY(),
 			() -> mainJoystick.getThrottle());
 
     RunIntakeUntilLimitSwitch runIntake = new RunIntakeUntilLimitSwitch(intake);
