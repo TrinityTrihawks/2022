@@ -70,7 +70,7 @@ public class DriveDoubleJoystick extends CommandBase {
         SmartDashboard.putNumber("Twistation", twist);
         SmartDashboard.putNumber("Throttle", throttle);
 
-        drivetrain.drive(x, y, twist, false);
+        drivetrain.drive(y, x, twist, false);
     }
 
     // Called once the command ends or is interrupted.

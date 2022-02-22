@@ -44,9 +44,9 @@ public class RobotContainer {
     private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
     private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort,
             "Loki (balthazar)"); // balthazar
-    private final JoystickButton zeroButton = new JoystickButton(mainJoystick, 7);
-    private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, 11);
-    private final JoystickButton startIntakeMotorButton = new JoystickButton(mainJoystick, 12);
+    private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
+    private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick, JoystickConstants.kSwitchDriveModeButtonId);
+    private final JoystickButton startIntakeMotorButton = new JoystickButton(mainJoystick, 12); //TODO: should NOT be on mainJoystick
 
     // Commands
     DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -58,10 +58,10 @@ public class RobotContainer {
 
 	DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
 			drivetrain,
-			() -> -auxJoystick.getZeroedY(),
-			() -> -mainJoystick.getZeroedY(),
 			() -> -auxJoystick.getZeroedX(),
 			() -> -mainJoystick.getZeroedX(),
+			() -> -auxJoystick.getZeroedY(),
+			() -> -mainJoystick.getZeroedY(),
 			() -> mainJoystick.getThrottle());
 
     RunIntakeUntilLimitSwitch runIntake = new RunIntakeUntilLimitSwitch(intake);
@@ -92,7 +92,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         // Drivetrain default
-        drivetrain.setDefaultCommand(doubleDefault);
+        drivetrain.setDefaultCommand(singleDefault);
     }
 
     /**

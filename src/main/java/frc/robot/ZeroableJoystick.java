@@ -23,16 +23,19 @@ public class ZeroableJoystick extends Joystick {
     }
 
     public double getZeroedX() {
+        System.out.println(getX() + " - " + offsetX);
         double retval = getX() - offsetX;
         return retval > 1? 1 : (retval < -1? -1 : retval);
     }
 
     public double getZeroedY() {
+        System.out.println(getY() + " - " + offsetY);
         double retval = getY() - offsetY;
         return retval > 1? 1 : (retval < -1? -1 : retval);
     }
 
     public double getZeroedTwist() {
+        System.out.println(getTwist() + " - " + offsetTwist);
         double retval = getTwist() - offsetTwist;
         return retval > 1? 1 : (retval < -1? -1 : retval);
     }
