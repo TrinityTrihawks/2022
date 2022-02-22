@@ -140,7 +140,6 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
-    /** Sets the MotorControllers to a voltage. */
     public void setDriveMotorControllersVolts(MecanumDriveMotorVoltages volts) {
         frontLeftSparkMax.setVoltage(volts.frontLeftVoltage);
         rearLeftSparkMax.setVoltage(volts.rearLeftVoltage);
@@ -175,27 +174,16 @@ public class Drivetrain extends SubsystemBase {
         mecanumDrive.setMaxOutput(maxOutput);
     }
 
-    /** Zeroes the heading of the robot. */
     public void zeroHeading() {
         pigeon.reset();
     }
 
-    /**
-     * Returns the heading of the robot.
-     *
-     * @return the robot's heading in degrees, from -180 to 180
-     */
     public double getHeading() {
         return pigeon.getRotation2d().getDegrees();
     }
 
-    /**
-     * Returns the turn rate of the robot.
-     *
-     * @return The turn rate of the robot, in degrees per second
-     */
     public double getTurnRate() {
-        return -pigeon.getRate();
+        return pigeon.getRate();
     }
 
     public void brake() {
