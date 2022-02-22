@@ -56,10 +56,9 @@ public class Drivetrain extends SubsystemBase {
      */
     public static Drivetrain getInstance() {
         if (subsystemInst == null) {
-            return new Drivetrain();
-        } else {
-            return subsystemInst;
-        }
+            subsystemInst = new Drivetrain();
+        } 
+        return subsystemInst;
     }
 
     /** Creates a new Drivetrain. */
@@ -69,7 +68,7 @@ public class Drivetrain extends SubsystemBase {
         // gearbox is constructed, you might have to invert the left side instead.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
-        //zeroHeading();  // Axed, as per docs (automatically calibrates on boot up)
+        
         frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
         frontRightSparkMax.setIdleMode(IdleMode.kBrake);
         rearLeftSparkMax.setIdleMode(IdleMode.kBrake);
@@ -197,5 +196,19 @@ public class Drivetrain extends SubsystemBase {
      */
     public double getTurnRate() {
         return -pigeon.getRate();
+    }
+
+    public void brake() {
+        frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
+        frontRightSparkMax.setIdleMode(IdleMode.kBrake);
+        rearLeftSparkMax.setIdleMode(IdleMode.kBrake);
+        rearRightSparkMax.setIdleMode(IdleMode.kBrake);
+    }
+
+    public void releaseBrake() {
+        frontLeftSparkMax.setIdleMode(IdleMode.kCoast);
+        frontRightSparkMax.setIdleMode(IdleMode.kCoast);
+        rearLeftSparkMax.setIdleMode(IdleMode.kCoast);
+        rearRightSparkMax.setIdleMode(IdleMode.kCoast);
     }
 }

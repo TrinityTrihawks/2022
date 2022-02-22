@@ -22,10 +22,9 @@ public class Intake extends SubsystemBase {
      */
     public static Intake getInstance() {
         if (subsystemInst == null) {
-            return new Intake();
-        } else {
-            return subsystemInst;
-        }
+            subsystemInst = new Intake();
+        } 
+        return subsystemInst;
     }
 
     private Intake() {
