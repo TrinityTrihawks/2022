@@ -104,7 +104,8 @@ public class Drivetrain extends SubsystemBase {
      * 
      */
     public Pose2d getPose() {
-        return mecanumOdometry.getPoseMeters();
+        Pose2d mecPose = mecanumOdometry.getPoseMeters();
+        return new Pose2d(mecPose.getX(), -mecPose.getY(), mecPose.getRotation());
     }
 
     /**
