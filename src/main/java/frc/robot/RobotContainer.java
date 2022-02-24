@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import static frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.JoystickConstants;
 import frc.robot.commands.Drive5ftInAutoOdo;
+import frc.robot.commands.Drive5ftSideways;
 import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveZero;
@@ -146,6 +147,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-		return resetGyro.andThen(new Drive5ftInAutoOdo(drivetrain)).andThen(new DriveZero(drivetrain));
+		return resetGyro.andThen(new Drive5ftSideways(drivetrain)).andThen(new DriveZero(drivetrain));
     }
 }
