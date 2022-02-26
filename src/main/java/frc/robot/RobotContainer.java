@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import static frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.JoystickConstants;
+
+import frc.robot.commands.Drive1MeterPerSecondPID;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.Drive5ftSideways;
 import frc.robot.commands.DriveDoubleJoystick;
@@ -147,6 +149,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-        return resetGyro.andThen(new Drive5ftInAutoOdo(drivetrain)).andThen(new DriveZero(drivetrain));
+        return resetGyro.andThen(new Drive1MeterPerSecondPID(drivetrain)).andThen(new DriveZero(drivetrain));
     }
 }
