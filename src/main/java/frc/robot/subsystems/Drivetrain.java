@@ -18,6 +18,8 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class Drivetrain extends SubsystemBase {
@@ -45,6 +47,11 @@ public class Drivetrain extends SubsystemBase {
     private SlewRateLimiter ylimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
     private SlewRateLimiter xlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
     private SlewRateLimiter zlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
+    
+    private PIDController frController = new PIDController(0, 0, 0);	
+	private PIDController flController = new PIDController(0, 0, 0);
+	private PIDController brController = new PIDController(0, 0, 0);
+	private PIDController blController = new PIDController(0, 0, 0);	
     
     /**
      * Use this method to create a drivetrain instance. This method, in conjunction with a private constructor,
@@ -118,15 +125,15 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * Drives the robot at given x, y and theta speeds. Speeds range from [-1, 1]
+     * Drives the robot at given x, y and theta intendedSpeeds. Speeds range from [-1, 1]
      * and the linear
-     * speeds have no effect on the angular speed.
+     * intendedSpeeds have no effect on the angular speed.
      *
      * @param xSpeed        Speed of the robot in the x direction
      *                      (sideways).
      * @param ySpeed        Speed of the robot in the y direction (forward/backwards).
      * @param rot           Angular rate of the robot.
-     * @param fieldRelative Whether the provided x and y speeds are relative to the
+     * @param fieldRelative Whether the provided x and y intendedSpeeds are relative to the
      *                      field.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
@@ -200,4 +207,30 @@ public class Drivetrain extends SubsystemBase {
         rearLeftSparkMax.setIdleMode(IdleMode.kCoast);
         rearRightSparkMax.setIdleMode(IdleMode.kCoast);
     }
+
+    public void setSpeeds(MecanumDriveWheelSpeeds intendedSpeeds) {
+        //final double frontLeftFeedforward = m_feedforward.calculate(intendedSpeeds.frontLeftMetersPerSecond);
+        //final double frontRightFeedforward = m_feedforward.calculate(intendedSpeeds.frontRightMetersPerSecond);
+        //final double backLeftFeedforward = m_feedforward.calculate(intendedSpeeds.rearLeftMetersPerSecond);
+        //final double backRightFeedforward = m_feedforward.calculate(intendedSpeeds.rearRightMetersPerSecond);
+    
+        MecanumDriveWheelSpeeds actualSpeeds = getCurrentWheelSpeeds();
+
+        final double frontLeftOutput = flController.calculate(actualSpeeds.frontLeftMetersPerSecond, 
+                                                              intendedSpeeds.frontLeftMetersPerSecond);
+        
+        final double frontRightOutput = frController.calculate(actualSpeeds.frontRightMetersPerSecond, 
+                                                               intendedSpeeds.frontRightMetersPerSecond);
+        
+        final double backLeftOutput = blController.calculate(actualSpeeds.rearLeftMetersPerSecond, 
+                                                             intendedSpeeds.rearLeftMetersPerSecond);
+        
+        final double backRightOutput = brController.calculate(actualSpeeds.rearRightMetersPerSecond, 
+                                                              intendedSpeeds.rearRightMetersPerSecond);
+    
+        setDriveMotorControllersVolts(new MecanumDriveMotorVoltages(frontLeftOutput, 
+                                                                    frontRightOutput, 
+                                                                    backLeftOutput, 
+                                                                    backRightOutput));
+      }
 }
