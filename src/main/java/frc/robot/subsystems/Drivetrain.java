@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
     private PIDController frController = new PIDController(0, 0, 0);	
 	private PIDController flController = new PIDController(0, 0, 0);
 	private PIDController brController = new PIDController(0, 0, 0);
-	private PIDController blController = new PIDController(0, 0, 0);	
+	private PIDController blController = new PIDController(0, 0, 0);
     
     /**
      * Use this method to create a drivetrain instance. This method, in conjunction with a private constructor,
@@ -147,6 +147,33 @@ public class Drivetrain extends SubsystemBase {
             mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew);
         }
     }
+    
+    public void drive(MecanumDriveWheelSpeeds intendedSpeeds) {
+        // TODO: add feedforward
+        //final double frontLeftFeedforward = m_feedforward.calculate(intendedSpeeds.frontLeftMetersPerSecond);
+        //final double frontRightFeedforward = m_feedforward.calculate(intendedSpeeds.frontRightMetersPerSecond);
+        //final double backLeftFeedforward = m_feedforward.calculate(intendedSpeeds.rearLeftMetersPerSecond);
+        //final double backRightFeedforward = m_feedforward.calculate(intendedSpeeds.rearRightMetersPerSecond);
+    
+        MecanumDriveWheelSpeeds actualSpeeds = getCurrentWheelSpeeds();
+
+        final double frontLeftOutput = flController.calculate(actualSpeeds.frontLeftMetersPerSecond, 
+                                                              intendedSpeeds.frontLeftMetersPerSecond);
+        
+        final double frontRightOutput = frController.calculate(actualSpeeds.frontRightMetersPerSecond, 
+                                                               intendedSpeeds.frontRightMetersPerSecond);
+        
+        final double backLeftOutput = blController.calculate(actualSpeeds.rearLeftMetersPerSecond, 
+                                                             intendedSpeeds.rearLeftMetersPerSecond);
+        
+        final double backRightOutput = brController.calculate(actualSpeeds.rearRightMetersPerSecond, 
+                                                              intendedSpeeds.rearRightMetersPerSecond);
+    
+        setDriveMotorControllersVolts(new MecanumDriveMotorVoltages(frontLeftOutput, 
+                                                                    frontRightOutput, 
+                                                                    backLeftOutput, 
+                                                                    backRightOutput));
+      }
 
     public void setDriveMotorControllersVolts(MecanumDriveMotorVoltages volts) {
         frontLeftSparkMax.setVoltage(volts.frontLeftVoltage);
@@ -208,29 +235,4 @@ public class Drivetrain extends SubsystemBase {
         rearRightSparkMax.setIdleMode(IdleMode.kCoast);
     }
 
-    public void setSpeeds(MecanumDriveWheelSpeeds intendedSpeeds) {
-        //final double frontLeftFeedforward = m_feedforward.calculate(intendedSpeeds.frontLeftMetersPerSecond);
-        //final double frontRightFeedforward = m_feedforward.calculate(intendedSpeeds.frontRightMetersPerSecond);
-        //final double backLeftFeedforward = m_feedforward.calculate(intendedSpeeds.rearLeftMetersPerSecond);
-        //final double backRightFeedforward = m_feedforward.calculate(intendedSpeeds.rearRightMetersPerSecond);
-    
-        MecanumDriveWheelSpeeds actualSpeeds = getCurrentWheelSpeeds();
-
-        final double frontLeftOutput = flController.calculate(actualSpeeds.frontLeftMetersPerSecond, 
-                                                              intendedSpeeds.frontLeftMetersPerSecond);
-        
-        final double frontRightOutput = frController.calculate(actualSpeeds.frontRightMetersPerSecond, 
-                                                               intendedSpeeds.frontRightMetersPerSecond);
-        
-        final double backLeftOutput = blController.calculate(actualSpeeds.rearLeftMetersPerSecond, 
-                                                             intendedSpeeds.rearLeftMetersPerSecond);
-        
-        final double backRightOutput = brController.calculate(actualSpeeds.rearRightMetersPerSecond, 
-                                                              intendedSpeeds.rearRightMetersPerSecond);
-    
-        setDriveMotorControllersVolts(new MecanumDriveMotorVoltages(frontLeftOutput, 
-                                                                    frontRightOutput, 
-                                                                    backLeftOutput, 
-                                                                    backRightOutput));
-      }
 }

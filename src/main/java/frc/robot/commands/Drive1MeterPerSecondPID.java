@@ -31,8 +31,8 @@ public class Drive1MeterPerSecondPID extends CommandBase {
 			DriveConstants.kDriveKinematics.toWheelSpeeds(new ChassisSpeeds(1, 0, 0));
 
 		speeds.desaturate(1 /*TODO: figure out what to put here*/);
-		
-		drive.setSpeeds(speeds);
+
+		drive.drive(speeds);
 	}
 
 	// Called once the command ends or is interrupted.
