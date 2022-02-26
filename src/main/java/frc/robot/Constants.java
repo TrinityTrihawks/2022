@@ -66,6 +66,15 @@ public final class Constants {
         public static final double kSlewValue = 0.5;
         
         public static final double kGyroResetWaitTime = 4;
+
+        public static final double kfrP = 0;
+        public static final double kflP = 0;
+        public static final double kbrP = 0;
+        public static final double kblP = 0;
+        public static final double kfrI = 0;
+        public static final double kflI = 0;
+        public static final double kbrI = 0;
+        public static final double kblI = 0;
     }
 
     /**

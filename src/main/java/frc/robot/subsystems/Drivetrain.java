@@ -48,10 +48,10 @@ public class Drivetrain extends SubsystemBase {
     private SlewRateLimiter xlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
     private SlewRateLimiter zlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
     
-    private PIDController frController = new PIDController(0, 0, 0);	
-	private PIDController flController = new PIDController(0, 0, 0);
-	private PIDController brController = new PIDController(0, 0, 0);
-	private PIDController blController = new PIDController(0, 0, 0);
+	private PIDController flController = new PIDController(DriveConstants.kfrP, DriveConstants.kfrI, 0);
+    private PIDController frController = new PIDController(DriveConstants.kflP, DriveConstants.kflI, 0);	
+	private PIDController brController = new PIDController(DriveConstants.kbrP, DriveConstants.kbrI, 0);
+	private PIDController blController = new PIDController(DriveConstants.kblP, DriveConstants.kblI, 0);
     
     /**
      * Use this method to create a drivetrain instance. This method, in conjunction with a private constructor,
@@ -113,16 +113,16 @@ public class Drivetrain extends SubsystemBase {
                                 SmartDashboard.getNumber("frI", 0), 
                                 0);
             
-            frController.setPID(SmartDashboard.getNumber("frP", 0), 
-                                SmartDashboard.getNumber("frI", 0), 
+            flController.setPID(SmartDashboard.getNumber("flP", 0), 
+                                SmartDashboard.getNumber("flI", 0), 
                                 0);
             
-            frController.setPID(SmartDashboard.getNumber("frP", 0), 
-                                SmartDashboard.getNumber("frI", 0), 
+            brController.setPID(SmartDashboard.getNumber("brP", 0), 
+                                SmartDashboard.getNumber("brI", 0), 
                                 0);
             
-            frController.setPID(SmartDashboard.getNumber("frP", 0), 
-                                SmartDashboard.getNumber("frI", 0), 
+            blController.setPID(SmartDashboard.getNumber("blP", 0), 
+                                SmartDashboard.getNumber("blI", 0), 
                                 0);
             
         }
