@@ -87,24 +87,45 @@ public class Drivetrain extends SubsystemBase {
         updateOdometry();  
         putMotorRPMToSmartDashboard();
         putGyroAngleToSmartDashboard();
+        getPIDConstantsFromSmartDashboard();
     }
-
+    
     private void updateOdometry() {
         mecanumOdometry.update(
-                pigeon.getRotation2d(),
-                getCurrentWheelSpeeds());
-    }
-
-    private void putMotorRPMToSmartDashboard() {
-        SmartDashboard.putNumber("FLEnc (RPM)", frontLeftEncoder.getVelocity());
-        SmartDashboard.putNumber("FREnc (RPM)", frontRightEncoder.getVelocity());
-        SmartDashboard.putNumber("BLEnc (RPM)", backLeftEncoder.getVelocity());
-        SmartDashboard.putNumber("BREnc (RPM)", backRightEncoder.getVelocity());
-    }
-
-    private void putGyroAngleToSmartDashboard() {
-        SmartDashboard.putNumber("Gyro angle", getHeading());
-    }
+            pigeon.getRotation2d(),
+            getCurrentWheelSpeeds());
+        }
+        
+        private void putMotorRPMToSmartDashboard() {
+            SmartDashboard.putNumber("FLEnc (RPM)", frontLeftEncoder.getVelocity());
+            SmartDashboard.putNumber("FREnc (RPM)", frontRightEncoder.getVelocity());
+            SmartDashboard.putNumber("BLEnc (RPM)", backLeftEncoder.getVelocity());
+            SmartDashboard.putNumber("BREnc (RPM)", backRightEncoder.getVelocity());
+        }
+        
+        private void putGyroAngleToSmartDashboard() {
+            SmartDashboard.putNumber("Gyro angle", getHeading());
+        }
+        
+        private void getPIDConstantsFromSmartDashboard() { 
+                       
+            frController.setPID(SmartDashboard.getNumber("frP", 0), 
+                                SmartDashboard.getNumber("frI", 0), 
+                                0);
+            
+            frController.setPID(SmartDashboard.getNumber("frP", 0), 
+                                SmartDashboard.getNumber("frI", 0), 
+                                0);
+            
+            frController.setPID(SmartDashboard.getNumber("frP", 0), 
+                                SmartDashboard.getNumber("frI", 0), 
+                                0);
+            
+            frController.setPID(SmartDashboard.getNumber("frP", 0), 
+                                SmartDashboard.getNumber("frI", 0), 
+                                0);
+            
+        }
 
     /**
      * Returns the currently-estimated pose of the robot.
