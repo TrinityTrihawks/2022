@@ -96,24 +96,34 @@ public class Drivetrain extends SubsystemBase {
         updateOdometry();
         putMotorRPMToSmartDashboard();
         putGyroAngleToSmartDashboard();
+        putWheelSpeedsToSmartDashboard();
         getPIDConstantsFromSmartDashboard();
     }
 
+    
     private void updateOdometry() {
         mecanumOdometry.update(
-                pigeon.getRotation2d(),
-                getCurrentWheelSpeeds());
-    }
-
+            pigeon.getRotation2d(),
+            getCurrentWheelSpeeds());
+        }
+        
     private void putMotorRPMToSmartDashboard() {
         SmartDashboard.putNumber("FLEnc (RPM)", frontLeftEncoder.getVelocity());
         SmartDashboard.putNumber("FREnc (RPM)", frontRightEncoder.getVelocity());
         SmartDashboard.putNumber("BLEnc (RPM)", backLeftEncoder.getVelocity());
         SmartDashboard.putNumber("BREnc (RPM)", backRightEncoder.getVelocity());
     }
-
+    
     private void putGyroAngleToSmartDashboard() {
         SmartDashboard.putNumber("Gyro angle", getHeading());
+    }
+    
+    private void putWheelSpeedsToSmartDashboard() {
+        MecanumDriveWheelSpeeds spds = getCurrentWheelSpeeds();
+        SmartDashboard.putNumber("FRWheel m/s", spds.frontRightMetersPerSecond);
+        SmartDashboard.putNumber("FLWheel m/s", spds.frontLeftMetersPerSecond);
+        SmartDashboard.putNumber("BRWheel m/s", spds.rearRightMetersPerSecond);
+        SmartDashboard.putNumber("BLWheel m/s", spds.rearLeftMetersPerSecond);
     }
 
     private void getPIDConstantsFromSmartDashboard() {
