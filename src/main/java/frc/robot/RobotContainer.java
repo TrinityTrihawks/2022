@@ -48,8 +48,8 @@ public class RobotContainer {
     private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
     private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
             JoystickConstants.kSwitchDriveModeButtonId);
-    private final JoystickButton startIntakeMotorButton = new JoystickButton(mainJoystick, 12); // TODO: should NOT be
-                                                                                                // on mainJoystick
+    private final JoystickButton startIntakeMotorButton = new JoystickButton(mainJoystick, 12); // TODO: should NOT be on mainJoystick
+                                                                                                
 
     // Commands
     DriveSingleJoystick singleDefault = new DriveSingleJoystick(
