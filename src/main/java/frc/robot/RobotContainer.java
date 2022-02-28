@@ -18,11 +18,9 @@ import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.DriveSingleJoystick;
-import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.RunIntakeUntilLimitSwitch;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.ShootyBits;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -39,7 +37,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
     // Subsystems
     private final Drivetrain drivetrain = Drivetrain.getInstance();
-    private final Intake intake = Intake.getInstance();
+    private final ShootyBits shootyBits = ShootyBits.getInstance();
 
     // Joysticks
     private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
@@ -66,8 +64,6 @@ public class RobotContainer {
             () -> auxJoystick.getZeroedY(),
             () -> mainJoystick.getZeroedY(),
             () -> mainJoystick.getThrottle());
-
-    RunIntakeUntilLimitSwitch runIntake = new RunIntakeUntilLimitSwitch(intake);
 
     final NetworkTable subtable;
 
@@ -134,10 +130,6 @@ public class RobotContainer {
     }
 
     private void bindStartIntakeMotorButton() {
-        Runnable startIntakeMotor = () -> {
-            intake.setDefaultCommand(runIntake);
-        };
-        startIntakeMotorButton.debounce(0.5).whenActive(startIntakeMotor, intake);
     }
 
     //
