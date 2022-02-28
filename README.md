@@ -3,7 +3,8 @@
 
 # 2022 Code
 *Trinity School at River Ridge, FRC Team 4215*
-[https://trinity4215.org/]
+
+[https://trinity4215.org/](https://trinity4215.org/)
 
 ## Features
  * Mecanum Drivetrain ~~(Probably)~~ Definitely
