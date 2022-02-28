@@ -103,7 +103,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         bindZeroButton();
         bindSwitchDriveModeButton();
-        bindStartIntakeMotorButton();
     }
 
     /**
@@ -127,11 +126,6 @@ public class RobotContainer {
         };
         switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
     }
-
-    private void bindStartIntakeMotorButton() {
-    }
-
-    //
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
