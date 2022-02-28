@@ -8,26 +8,26 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
-public class Intake extends SubsystemBase {
-    private static Intake subsystemInst = null;
+public class ShootyBits extends SubsystemBase {
+    private static ShootyBits subsystemInst = null;
 
     private final TalonSRX intakeMotor = new TalonSRX(IntakeConstants.kIntakeMotorPort);
     private final DigitalInput limitSwitch = new DigitalInput(IntakeConstants.kLimitSwitchPort);
 
-    /** Creates a new Intake. */
+    /** Creates a new ShootyBits. */
     /**
-     * Use this method to create a Intake instance. This method ensures that the
-     * Intake class is a singleton, aka, that only one Intake object ever
+     * Use this method to create a ShootyBits instance. This method ensures that the
+     * ShootyBits class is a singleton, aka, that only one ShootyBits object ever
      * gets created
      */
-    public static Intake getInstance() {
+    public static ShootyBits getInstance() {
         if (subsystemInst == null) {
-            subsystemInst = new Intake();
+            subsystemInst = new ShootyBits();
         } 
         return subsystemInst;
     }
 
-    private Intake() {
+    private ShootyBits() {
         intakeMotor.configFactoryDefault();
         intakeMotor.setNeutralMode(NeutralMode.Brake);
     }
