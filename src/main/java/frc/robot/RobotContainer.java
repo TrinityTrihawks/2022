@@ -36,7 +36,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
     // Subsystems
     private final Drivetrain drivetrain = Drivetrain.getInstance();
-    private final ShootyBits intake = ShootyBits.getInstance();
+    private final ShootyBits shootyBits = ShootyBits.getInstance();
 
     // Joysticks
     private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
@@ -63,7 +63,6 @@ public class RobotContainer {
             () -> auxJoystick.getZeroedY(),
             () -> mainJoystick.getZeroedY(),
             () -> mainJoystick.getThrottle());
-
 
     final NetworkTable subtable;
 
@@ -104,7 +103,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         bindZeroButton();
         bindSwitchDriveModeButton();
-        bindStartIntakeMotorButton();
     }
 
     /**
@@ -128,12 +126,6 @@ public class RobotContainer {
         };
         switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
     }
-
-    private void bindStartIntakeMotorButton() {
-        
-    }
-
-    //
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
