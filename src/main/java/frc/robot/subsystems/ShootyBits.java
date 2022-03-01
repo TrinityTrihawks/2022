@@ -12,7 +12,7 @@ public class ShootyBits extends SubsystemBase {
     private static ShootyBits subsystemInst = null;
 
     private final TalonSRX intakeMotor = new TalonSRX(ShootyBitsConstants.kIntakeMotorPort);
-    private final TalonSRX midMotor = new TalonSRX(ShootyBitsConstants.kMiddleMotorPort);
+    private final TalonSRX middleMotor = new TalonSRX(ShootyBitsConstants.kMiddleMotorPort);
     private final TalonSRX shooterMotor = new TalonSRX(ShootyBitsConstants.kShooterMotorPort);
 
     private final DigitalInput lowBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
@@ -36,8 +36,8 @@ public class ShootyBits extends SubsystemBase {
         intakeMotor.configFactoryDefault();
         intakeMotor.setNeutralMode(NeutralMode.Brake);
 
-        midMotor.configFactoryDefault();
-        midMotor.setNeutralMode(NeutralMode.Brake);
+        middleMotor.configFactoryDefault();
+        middleMotor.setNeutralMode(NeutralMode.Brake);
 
         shooterMotor.configFactoryDefault();
         shooterMotor.setNeutralMode(NeutralMode.Brake);
@@ -48,7 +48,7 @@ public class ShootyBits extends SubsystemBase {
     }
 
     public void setMidVoltage(double percentOutput) {
-        midMotor.set(ControlMode.PercentOutput, percentOutput);
+        middleMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
     public void setHighVoltage(double percentOutput) {
