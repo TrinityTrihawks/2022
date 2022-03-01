@@ -15,9 +15,9 @@ public class ShootyBits extends SubsystemBase {
     private final TalonSRX midMotor = new TalonSRX(ShootyBitsConstants.kMiddleMotorPort);
     private final TalonSRX shooterMotor = new TalonSRX(ShootyBitsConstants.kShooterMotorPort);
 
-    private final DigitalInput lowBeamSensor = new DigitalInput(IntakeConstants.kLowBeamPort);
-    private final DigitalInput midBeamSensor = new DigitalInput(IntakeConstants.kMidBeamPort);
-    private final DigitalInput highBeamSensor = new DigitalInput(IntakeConstants.kHighBeamPort);
+    private final DigitalInput lowBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
+    private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kMidBeamPort);
+    private final DigitalInput highBeamSensor = new DigitalInput(ShootyBitsConstants.kHighBeamPort);
 
     /** Creates a new ShootyBits. */
     /**
