@@ -89,6 +89,10 @@ public class Intake1Ball extends CommandBase {
 		
 		private IntakeBits intakeBits;
 
+		private boolean isPastIntakeWheel = false;
+		private boolean isPastMiddleWheel = false;
+		private boolean isInPlace = false;
+
 		public Intake1Upper(IntakeBits intakeBits) {
 
 			this.intakeBits = intakeBits;
@@ -115,7 +119,7 @@ public class Intake1Ball extends CommandBase {
 		// Returns true when the command should end.
 		@Override
 		public boolean isFinished() {
-			return false;
+			return isInPlace;
 		}
 	}
 
