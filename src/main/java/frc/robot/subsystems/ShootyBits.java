@@ -18,6 +18,7 @@ public class ShootyBits extends SubsystemBase {
     private final DigitalInput lowBeamSensor = new DigitalInput(0);
     private final DigitalInput midBeamSensor = new DigitalInput(0);
     private final DigitalInput highBeamSensor = new DigitalInput(0);
+    private final DigitalInput shotBeamSensor = new DigitalInput(0);
 
     /** Creates a new ShootyBits. */
     /**
@@ -65,6 +66,10 @@ public class ShootyBits extends SubsystemBase {
 
     public boolean getHighBeamState() {
         return highBeamSensor.get();
+    }
+
+    public boolean getShotBeamState() {
+        return shotBeamSensor.get();
     }
 
     @Override
