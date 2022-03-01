@@ -6,14 +6,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShootyBitsConstants;
 
 public class ShootyBits extends SubsystemBase {
     private static ShootyBits subsystemInst = null;
 
-    private final TalonSRX lowMotor = new TalonSRX(IntakeConstants.kLowMotorPort);
-    private final TalonSRX midMotor = new TalonSRX(IntakeConstants.kMiddleMotorPort);
-    private final TalonSRX highMotor = new TalonSRX(IntakeConstants.kHighMotorPort);
+    private final TalonSRX intakeMotor = new TalonSRX(ShootyBitsConstants.kIntakeMotorPort);
+    private final TalonSRX midMotor = new TalonSRX(ShootyBitsConstants.kMiddleMotorPort);
+    private final TalonSRX shooterMotor = new TalonSRX(ShootyBitsConstants.kShooterMotorPort);
 
     private final DigitalInput lowBeamSensor = new DigitalInput(0);
     private final DigitalInput midBeamSensor = new DigitalInput(0);
@@ -33,18 +33,18 @@ public class ShootyBits extends SubsystemBase {
     }
 
     private ShootyBits() {
-        lowMotor.configFactoryDefault();
-        lowMotor.setNeutralMode(NeutralMode.Brake);
+        intakeMotor.configFactoryDefault();
+        intakeMotor.setNeutralMode(NeutralMode.Brake);
 
         midMotor.configFactoryDefault();
         midMotor.setNeutralMode(NeutralMode.Brake);
 
-        highMotor.configFactoryDefault();
-        highMotor.setNeutralMode(NeutralMode.Brake);
+        shooterMotor.configFactoryDefault();
+        shooterMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public void setLowVoltage(double percentOutput) {
-        lowMotor.set(ControlMode.PercentOutput, percentOutput);
+        intakeMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
     public void setMidVoltage(double percentOutput) {
@@ -52,7 +52,7 @@ public class ShootyBits extends SubsystemBase {
     }
 
     public void setHighVoltage(double percentOutput) {
-        highMotor.set(ControlMode.PercentOutput, percentOutput);
+        shooterMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
     public boolean getLowBeamState() {

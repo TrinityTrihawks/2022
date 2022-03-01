@@ -86,10 +86,10 @@ public final class Constants {
         public static final int kSwitchDriveModeButtonId = 9;
     }
 
-    public static final class IntakeConstants {
-        public static final int kLowMotorPort = 16;
+    public static final class ShootyBitsConstants {
+        public static final int kIntakeMotorPort = 16;
         public static final int kMiddleMotorPort = 0;
-        public static final int kHighMotorPort = 0;
+        public static final int kShooterMotorPort = 0;
 
 
         public static final int kLimitSwitchPort = 0;
