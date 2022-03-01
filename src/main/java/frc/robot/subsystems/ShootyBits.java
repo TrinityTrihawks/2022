@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShootyBitsConstants;
 
-public class ShootyBits extends SubsystemBase {
+public class ShootyBits extends SubsystemBase implements IntakeBits {
     private static ShootyBits subsystemInst = null;
 
     private final TalonSRX intakeMotor = new TalonSRX(ShootyBitsConstants.kIntakeMotorPort);
@@ -44,7 +44,7 @@ public class ShootyBits extends SubsystemBase {
         shooterMotor.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setLowVoltage(double percentOutput) {
+    public void setIntakeVoltage(double percentOutput) {
         intakeMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
@@ -52,7 +52,7 @@ public class ShootyBits extends SubsystemBase {
         midMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
-    public void setHighVoltage(double percentOutput) {
+    public void setShooterVoltage(double percentOutput) {
         shooterMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
