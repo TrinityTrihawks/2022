@@ -11,8 +11,13 @@ import frc.robot.Constants.IntakeConstants;
 public class ShootyBits extends SubsystemBase {
     private static ShootyBits subsystemInst = null;
 
-    private final TalonSRX intakeMotor = new TalonSRX(IntakeConstants.kIntakeMotorPort);
-    private final DigitalInput limitSwitch = new DigitalInput(IntakeConstants.kLimitSwitchPort);
+    private final TalonSRX lowMotor = new TalonSRX(IntakeConstants.kLowMotorPort);
+    private final TalonSRX midMotor = new TalonSRX(IntakeConstants.kMiddleMotorPort);
+    private final TalonSRX highMotor = new TalonSRX(IntakeConstants.kHighMotorPort);
+
+    private final DigitalInput lowBeamSensor = new DigitalInput(0);
+    private final DigitalInput midBeamSensor = new DigitalInput(0);
+    private final DigitalInput highBeamSensor = new DigitalInput(0);
 
     /** Creates a new ShootyBits. */
     /**
@@ -23,21 +28,43 @@ public class ShootyBits extends SubsystemBase {
     public static ShootyBits getInstance() {
         if (subsystemInst == null) {
             subsystemInst = new ShootyBits();
-        } 
+        }
         return subsystemInst;
     }
 
     private ShootyBits() {
-        intakeMotor.configFactoryDefault();
-        intakeMotor.setNeutralMode(NeutralMode.Brake);
+        lowMotor.configFactoryDefault();
+        lowMotor.setNeutralMode(NeutralMode.Brake);
+
+        midMotor.configFactoryDefault();
+        midMotor.setNeutralMode(NeutralMode.Brake);
+
+        highMotor.configFactoryDefault();
+        highMotor.setNeutralMode(NeutralMode.Brake);
     }
 
-    public void setIntakeVoltage(double percentOutput) {
-        intakeMotor.set(ControlMode.PercentOutput, percentOutput);
+    public void setLowVoltage(double percentOutput) {
+        lowMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
-    public boolean getLimitSwitchState() {
-        return limitSwitch.get();
+    public void setMidVoltage(double percentOutput) {
+        midMotor.set(ControlMode.PercentOutput, percentOutput);
+    }
+
+    public void setHighVoltage(double percentOutput) {
+        highMotor.set(ControlMode.PercentOutput, percentOutput);
+    }
+
+    public boolean getLowBeamState() {
+        return lowBeamSensor.get();
+    }
+
+    public boolean getMidBeamState() {
+        return midBeamSensor.get();
+    }
+
+    public boolean getHighBeamState() {
+        return highBeamSensor.get();
     }
 
     @Override
