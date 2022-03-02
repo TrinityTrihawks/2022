@@ -11,10 +11,15 @@ import frc.robot.subsystems.IntakeBits;
 
 public class Intake1Ball extends CommandBase {
 
+	private final double kRunning = 1;
+	private final double kStopped = 0;
+	private final double kRunningSlow = 0.1;
+
 	private class Intake1Lower extends CommandBase {
 
 		private IntakeBits intakeBits;
 
+		private boolean hasNotTriggeredLowSensor = true;
 		private boolean isPastIntakeWheel = false;
 		private boolean isInPlace = false;
 
@@ -35,7 +40,7 @@ public class Intake1Ball extends CommandBase {
 		@Override
 		public void execute() {
 
-			updateBooleans();
+			updateState();
 
 			if (shouldBeIntaking()) {
 				runIntakeWheel();
@@ -47,9 +52,16 @@ public class Intake1Ball extends CommandBase {
 
 		}
 
-		private void updateBooleans() {
-			isPastIntakeWheel = !intakeBits.getLowBeamState();
+		private void updateState() {
+			if (ballIsBlockingLowerSensor() && hasNotTriggeredLowSensor) {
+				hasNotTriggeredLowSensor = false;
+			}
+			isPastIntakeWheel = !intakeBits.getLowBeamState() && hasNotTriggeredLowSensor;
 			isInPlace = intakeBits.getMidBeamState();
+		}
+
+		private boolean ballIsBlockingLowerSensor() {
+			return intakeBits.getLowBeamState();
 		}
 
 		private boolean shouldBeIntaking() {
@@ -57,15 +69,15 @@ public class Intake1Ball extends CommandBase {
 		}
 
 		private void runIntakeWheel() {
-			intakeBits.setIntakeVoltage(1);
+			intakeBits.setIntakeVoltage(kRunning);
 		}
 
 		private void stopIntakeWheel() {
-			intakeBits.setIntakeVoltage(0);
+			intakeBits.setIntakeVoltage(kStopped);
 		}
 
 		private void runMiddleWheel() {
-			intakeBits.setMidVoltage(1);
+			intakeBits.setMidVoltage(kRunning);
 		}
 
 		// Called once the command ends or is interrupted.
@@ -75,7 +87,7 @@ public class Intake1Ball extends CommandBase {
 		}
 
 		private void stopMiddleWheel() {
-			intakeBits.setMidVoltage(0);
+			intakeBits.setMidVoltage(kStopped);
 		}
 
 		// Returns true when the command should end.
@@ -89,8 +101,12 @@ public class Intake1Ball extends CommandBase {
 		
 		private IntakeBits intakeBits;
 
+		private boolean hasNotTriggeredLowSensor = true;
 		private boolean isPastIntakeWheel = false;
+
+		private boolean hasNotTriggeredMidSensor = true;
 		private boolean isPastMiddleWheel = false;
+		
 		private boolean isInPlace = false;
 
 		public Intake1Upper(IntakeBits intakeBits) {
@@ -109,6 +125,74 @@ public class Intake1Ball extends CommandBase {
 		// Called every time the scheduler runs while the command is scheduled.
 		@Override
 		public void execute() {
+			
+			updateState();
+
+			if (shouldBeIntaking()) {
+				runIntakeWheel();
+			} else {
+				stopIntakeWheel();
+			}
+
+			if (shouldBeMovingBallUp()) {
+				runMiddleWheel();
+			} else {
+				stopMiddleWheel();
+			}
+
+			runShooterWheelSlow();
+			
+		}
+
+		private void updateState() {
+
+			if (ballIsBlockingLowerSensor() && hasNotTriggeredLowSensor) {
+				hasNotTriggeredLowSensor = false;
+			}
+			isPastIntakeWheel = !intakeBits.getLowBeamState() && hasNotTriggeredLowSensor;
+
+			if (ballIsBlockingMidSensor() && hasNotTriggeredMidSensor) {
+				hasNotTriggeredMidSensor = false;
+			}
+			isPastMiddleWheel = !intakeBits.getMidBeamState() && hasNotTriggeredMidSensor;
+
+			isInPlace = intakeBits.getHighBeamState();
+		}
+
+		private boolean ballIsBlockingLowerSensor() {
+			return intakeBits.getLowBeamState();
+		}
+
+		private boolean ballIsBlockingMidSensor() {
+			return intakeBits.getMidBeamState();
+		}
+
+		private boolean shouldBeIntaking() {
+			return isPastIntakeWheel;
+		}
+
+		private void runIntakeWheel() {
+			intakeBits.setIntakeVoltage(kRunning);
+		}
+
+		private void stopIntakeWheel() {
+			intakeBits.setIntakeVoltage(kStopped);
+		}
+
+		private boolean shouldBeMovingBallUp() {
+			return isPastMiddleWheel;
+		}
+
+		private void runMiddleWheel() {
+			intakeBits.setMidVoltage(kRunning);
+		}
+
+		private void stopMiddleWheel() {
+			intakeBits.setMidVoltage(kStopped);
+		}
+
+		private void runShooterWheelSlow() {
+			intakeBits.setShooterVoltage(kRunningSlow);
 		}
 
 		// Called once the command ends or is interrupted.
