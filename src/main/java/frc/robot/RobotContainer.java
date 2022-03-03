@@ -45,8 +45,7 @@ public class RobotContainer {
     private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
     private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
             JoystickConstants.kSwitchDriveModeButtonId);
-            
-            
+
     // Commands
     DriveSingleJoystick singleDefault = new DriveSingleJoystick(
             drivetrain,

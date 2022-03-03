@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.ShooterBits;
@@ -25,7 +24,7 @@ public class ShootLowGoal extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (shooterBits.getHighBeamState() == OPEN && shooterBits.getMidBeamState() == CLOSED) { 
+    if (shooterBits.getHighBeamState() == OPEN && shooterBits.getMidBeamState() == CLOSED) {
       // ball on shooter wheel, nothing on mid
       shooterBits.setShooterVoltage(0.8);
 

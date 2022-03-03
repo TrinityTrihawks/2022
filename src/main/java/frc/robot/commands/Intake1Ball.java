@@ -97,7 +97,7 @@ public class Intake1Ball extends CommandBase {
 	}
 
 	private class Intake1Upper extends CommandBase {
-		
+
 		private IntakeBits intakeBits;
 
 		private boolean hasNotTriggeredLowSensor = true;
@@ -105,7 +105,7 @@ public class Intake1Ball extends CommandBase {
 
 		private boolean hasNotTriggeredMidSensor = true;
 		private boolean isPastMiddleWheel = false;
-		
+
 		private boolean isInPlace = false;
 
 		public Intake1Upper(IntakeBits intakeBits) {
@@ -124,7 +124,7 @@ public class Intake1Ball extends CommandBase {
 		// Called every time the scheduler runs while the command is scheduled.
 		@Override
 		public void execute() {
-			
+
 			updateState();
 
 			if (shouldBeIntaking()) {
@@ -140,7 +140,7 @@ public class Intake1Ball extends CommandBase {
 			}
 
 			runShooterWheelSlow();
-			
+
 		}
 
 		private void updateState() {
@@ -206,9 +206,9 @@ public class Intake1Ball extends CommandBase {
 		}
 	}
 
-//#region abstraction
-	
-private IntakeBits intakeBits;
+	// #region abstraction
+
+	private IntakeBits intakeBits;
 
 	public Intake1Ball(IntakeBits intakeBits) {
 
@@ -246,5 +246,5 @@ private IntakeBits intakeBits;
 	public boolean isFinished() {
 		return true;
 	}
-//#endregion
+	// #endregion
 }
