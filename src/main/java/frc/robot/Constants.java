@@ -94,6 +94,7 @@ public final class Constants {
         public static final int kLowBeamPort = 0;
         public static final int kMidBeamPort = 0;
         public static final int kHighBeamPort = 0;
+        public static final int kShotBeamPort = 0;
     }
 
     /**
