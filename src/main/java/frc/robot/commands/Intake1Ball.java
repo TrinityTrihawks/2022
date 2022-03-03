@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.IntakeBits;
 
 public class Intake1Ball extends CommandBase {
@@ -215,7 +214,7 @@ private IntakeBits intakeBits;
 
 		this.intakeBits = intakeBits;
 
-		addRequirements(this.intakeBits.getAsSubsytem());
+		addRequirements(this.intakeBits.getAsSubsystem());
 	}
 
 	// Called when the command is initially scheduled.
