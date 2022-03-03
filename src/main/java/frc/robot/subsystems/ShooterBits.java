@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Subsystem;
+
 /** Shooter Interface. */
 public interface ShooterBits {
     public void setShooterVoltage(double percentOutput);
@@ -12,4 +14,6 @@ public interface ShooterBits {
     public boolean getMidBeamState();
     public boolean getHighBeamState();
     public boolean getShotBeamState();
+
+    public Subsystem getAsSubsystem();
 }

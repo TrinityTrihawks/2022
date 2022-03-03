@@ -27,7 +27,7 @@ public class Intake1Ball extends CommandBase {
 
 			this.intakeBits = intakeBits;
 
-			addRequirements((Subsystem) this.intakeBits);
+			addRequirements(this.intakeBits.getAsSubsystem());
 		}
 
 		// Called when the command is initially scheduled.
@@ -113,7 +113,7 @@ public class Intake1Ball extends CommandBase {
 
 			this.intakeBits = intakeBits;
 
-			addRequirements((Subsystem) this.intakeBits);
+			addRequirements(this.intakeBits.getAsSubsystem());
 		}
 
 		// Called when the command is initially scheduled.
@@ -215,7 +215,7 @@ private IntakeBits intakeBits;
 
 		this.intakeBits = intakeBits;
 
-		addRequirements((Subsystem) this.intakeBits);
+		addRequirements(this.intakeBits.getAsSubsytem());
 	}
 
 	// Called when the command is initially scheduled.
