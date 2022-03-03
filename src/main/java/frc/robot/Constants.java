@@ -102,4 +102,8 @@ public final class Constants {
     public static final class NetworkConstants {
         public static final String kFrontCameraIP = "10.42.15.00";
     }
+    enum BeamState {
+        OPEN,
+        CLOSED
+    }
 }

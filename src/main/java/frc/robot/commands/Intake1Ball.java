@@ -77,7 +77,7 @@ public class Intake1Ball extends CommandBase {
 		}
 
 		private void runMiddleWheel() {
-			intakeBits.setMidVoltage(kRunning);
+			intakeBits.setMiddleVoltage(kRunning);
 		}
 
 		// Called once the command ends or is interrupted.
@@ -87,7 +87,7 @@ public class Intake1Ball extends CommandBase {
 		}
 
 		private void stopMiddleWheel() {
-			intakeBits.setMidVoltage(kStopped);
+			intakeBits.setMiddleVoltage(kStopped);
 		}
 
 		// Returns true when the command should end.
@@ -184,11 +184,11 @@ public class Intake1Ball extends CommandBase {
 		}
 
 		private void runMiddleWheel() {
-			intakeBits.setMidVoltage(kRunning);
+			intakeBits.setMiddleVoltage(kRunning);
 		}
 
 		private void stopMiddleWheel() {
-			intakeBits.setMidVoltage(kStopped);
+			intakeBits.setMiddleVoltage(kStopped);
 		}
 
 		private void runShooterWheelSlow() {
