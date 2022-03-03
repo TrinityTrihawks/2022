@@ -91,10 +91,10 @@ public final class Constants {
         public static final int kMiddleMotorPort = 0;
         public static final int kShooterMotorPort = 0;
 
-        public static final int kLowBeamPort = 0;
-        public static final int kMidBeamPort = 0;
-        public static final int kHighBeamPort = 0;
-        public static final int kShotBeamPort = 0;
+        public static final int kLowBeamPort = 3;
+        public static final int kMidBeamPort = 4;
+        public static final int kHighBeamPort = 5;
+        public static final int kShotBeamPort = 9;
     }
 
     /**
