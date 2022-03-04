@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -13,8 +14,8 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     private static ShootyBits subsystemInst = null;
 
     private final TalonSRX intakeMotor = new TalonSRX(ShootyBitsConstants.kIntakeMotorPort);
-    private final TalonSRX middleMotor = new TalonSRX(ShootyBitsConstants.kMiddleMotorPort);
-    private final TalonSRX shooterMotor = new TalonSRX(ShootyBitsConstants.kShooterMotorPort);
+    private final VictorSPX middleMotor = new VictorSPX(ShootyBitsConstants.kMiddleMotorPort);
+    private final VictorSPX shooterMotor = new VictorSPX(ShootyBitsConstants.kShooterMotorPort);
 
     private final DigitalInput lowBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
     private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kMidBeamPort);
