@@ -95,6 +95,9 @@ public final class Constants {
         public static final int kMidBeamPort = 0;
         public static final int kHighBeamPort = 0;
         public static final int kShotBeamPort = 0;
+
+        public static final double kShooterWheelSpeed = 0.8;
+        public static final double kMidWheelSpeed = 0.5;
     }
 
     /**
@@ -103,8 +106,17 @@ public final class Constants {
     public static final class NetworkConstants {
         public static final String kFrontCameraIP = "10.42.15.00";
     }
-    enum BeamState {
-        OPEN,
-        CLOSED
+    public enum BeamState {
+        OPEN (true),
+        CLOSED (false);
+
+        private final boolean state;
+
+        BeamState(boolean state) {
+            this.state = state;
+        }
+        public BeamState negate() {
+            return state == true ? CLOSED : OPEN;
+        }
     }
 }
