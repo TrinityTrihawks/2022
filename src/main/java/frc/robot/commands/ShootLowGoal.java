@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.ShootyBitsConstants;
 import frc.robot.subsystems.ShooterBits;
 
@@ -18,11 +17,10 @@ public class ShootLowGoal extends CommandBase {
   private boolean shouldBeRunningMiddleWheel = false;
   private boolean shouldBeRunningShooterWheel = false;
 
-  /** Creates a new ShootLowGoal. */
   public ShootLowGoal(ShooterBits shooterBits) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooterBits = shooterBits;
-    addRequirements((Subsystem) shooterBits);
+    addRequirements(shooterBits.getAsSubsystem());
   }
 
   // Called when the command is initially scheduled.
@@ -54,7 +52,7 @@ public class ShootLowGoal extends CommandBase {
       // run shooter until shot
       shouldBeRunningShooterWheel = true;
 
-    } else if (shooterBits.getMidBeamState() == OPEN && shooterBits.getHighBeamState() == OPEN) {
+    } else if (shooterBits.getMidBeamState() == CLOSED && shooterBits.getHighBeamState() == CLOSED) {
       // ball on both
       // run higher until shot, then lower until high beam triggered
       shouldBeRunningMiddleWheel = true;
