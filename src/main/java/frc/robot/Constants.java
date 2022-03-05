@@ -87,8 +87,8 @@ public final class Constants {
     }
 
     public static final class ShootyBitsConstants {
-        public static final int kIntakeMotorPort = 16;
-        public static final int kMiddleMotorPort = 17;
+        public static final int kIntakeMotorPort = 17;
+        public static final int kMiddleMotorPort = 16;
         public static final int kShooterMotorPort = 18;
 
         public static final double kShooterWheelSpeed = 0.8;
