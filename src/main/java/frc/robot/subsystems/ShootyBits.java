@@ -13,8 +13,8 @@ import frc.robot.Constants.ShootyBitsConstants;
 public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits {
     private static ShootyBits subsystemInst = null;
 
-    private final TalonSRX intakeMotor = new TalonSRX(ShootyBitsConstants.kIntakeMotorPort);
-    private final VictorSPX middleMotor = new VictorSPX(ShootyBitsConstants.kMiddleMotorPort);
+    private final TalonSRX middleMotor = new TalonSRX(ShootyBitsConstants.kMiddleMotorPort);
+    private final VictorSPX intakeMotor = new VictorSPX(ShootyBitsConstants.kIntakeMotorPort);
     private final VictorSPX shooterMotor = new VictorSPX(ShootyBitsConstants.kShooterMotorPort);
 
     private final DigitalInput lowBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
@@ -22,7 +22,6 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     private final DigitalInput highBeamSensor = new DigitalInput(ShootyBitsConstants.kHighBeamPort);
     private final DigitalInput shotBeamSensor = new DigitalInput(ShootyBitsConstants.kShotBeamPort);
 
-    /** Creates a new ShootyBits. */
     /**
      * Use this method to create a ShootyBits instance. This method ensures that the
      * ShootyBits class is a singleton, aka, that only one ShootyBits object ever

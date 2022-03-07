@@ -66,7 +66,7 @@ public class RobotContainer {
 
     private SimpleIntakeShoot shoot = new SimpleIntakeShoot(
         shootyBits,
-        () -> shootButton.debounce(0.5).getAsBoolean()
+        () -> shootButton.get()
     );
     
     private final NetworkTable subtable;
