@@ -33,10 +33,10 @@ public class SimpleIntakeShoot extends CommandBase {
     if (shouldRun.getAsBoolean()) {
       shooter.setIntakeVoltage(-0.25);
       shooter.setShooterVoltage(1);
-      //System.out.println("running intake shooter");
+      System.out.println("running intake shooter");
     }
     shooter.setMiddleVoltage(1);
-    //System.out.println("simple intake shoot exec");
+    System.out.println("simple intake shoot exec");
   }
 
   // Called once the command ends or is interrupted.
