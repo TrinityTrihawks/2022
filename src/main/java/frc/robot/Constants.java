@@ -117,7 +117,7 @@ public final class Constants {
         }
 
         public BeamState negate() {
-            return state == true ? CLOSED : OPEN;
+            return state == OPEN.state ? CLOSED : OPEN;
         }
     }
 }
