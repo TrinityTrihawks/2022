@@ -76,7 +76,14 @@ public class RobotContainer {
         },
         () -> { shootyBits.setIntakeVoltage(0);
                 shootyBits.setMiddleVoltage(0);
-        }
+        },
+        shootyBits
+    );
+
+    private StartEndCommand runShooter = new StartEndCommand(
+        () -> shootyBits.setShooterVoltage(0.25), // new gearbox is 4x faster
+        () -> shootyBits.setShooterVoltage(0),
+        shootyBits
     );
     
     private final NetworkTable subtable;
