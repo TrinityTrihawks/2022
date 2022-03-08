@@ -23,6 +23,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -66,7 +67,16 @@ public class RobotContainer {
 
     private SimpleIntakeShoot shoot = new SimpleIntakeShoot(
         shootyBits,
-        () -> shootButton.get()
+        () -> false //shootButton.get()
+    );
+
+    private StartEndCommand runIntake = new StartEndCommand(
+        () -> { shootyBits.setIntakeVoltage(-0.25);
+                shootyBits.setMiddleVoltage(0.1);
+        },
+        () -> { shootyBits.setIntakeVoltage(0);
+                shootyBits.setMiddleVoltage(0);
+        }
     );
     
     private final NetworkTable subtable;
