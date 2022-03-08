@@ -18,6 +18,7 @@ import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.ResetGyro;
+import frc.robot.commands.SimpleIntakeShoot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,16 +46,17 @@ public class RobotContainer {
     private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
     private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
             JoystickConstants.kSwitchDriveModeButtonId);
+    private final JoystickButton shootButton = new JoystickButton(mainJoystick, 1);
 
     // Commands
-    DriveSingleJoystick singleDefault = new DriveSingleJoystick(
+    private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
             drivetrain,
             () -> -mainJoystick.getZeroedY(),
             () -> -mainJoystick.getZeroedX(),
             () -> mainJoystick.getZeroedTwist(),
             () -> mainJoystick.getThrottle());
 
-    DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
+    private DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
             drivetrain,
             () -> auxJoystick.getZeroedX(),
             () -> mainJoystick.getZeroedX(),
@@ -62,7 +64,12 @@ public class RobotContainer {
             () -> mainJoystick.getZeroedY(),
             () -> mainJoystick.getThrottle());
 
-    final NetworkTable subtable;
+    private SimpleIntakeShoot shoot = new SimpleIntakeShoot(
+        shootyBits,
+        () -> shootButton.get()
+    );
+    
+    private final NetworkTable subtable;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -89,6 +96,7 @@ public class RobotContainer {
     private void configureDefaultCommands() {
         // Drivetrain default
         drivetrain.setDefaultCommand(singleDefault);
+        shootyBits.setDefaultCommand(shoot);
     }
 
     /**
