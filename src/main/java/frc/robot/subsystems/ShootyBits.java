@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShootyBitsConstants;
@@ -17,10 +18,8 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     private final VictorSPX intakeMotor = new VictorSPX(ShootyBitsConstants.kIntakeMotorPort);
     private final VictorSPX shooterMotor = new VictorSPX(ShootyBitsConstants.kShooterMotorPort);
 
-    private final DigitalInput lowBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
     private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kMidBeamPort);
     private final DigitalInput highBeamSensor = new DigitalInput(ShootyBitsConstants.kHighBeamPort);
-    private final DigitalInput shotBeamSensor = new DigitalInput(ShootyBitsConstants.kShotBeamPort);
 
     /**
      * Use this method to create a ShootyBits instance. This method ensures that the
@@ -57,10 +56,6 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
         shooterMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
-    public boolean getLowBeamState() {
-        return lowBeamSensor.get();
-    }
-
     public boolean getMidBeamState() {
         return midBeamSensor.get();
     }
@@ -69,17 +64,15 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
         return highBeamSensor.get();
     }
 
-    public boolean getShotBeamState() {
-        return shotBeamSensor.get();
-    }
-
     public Subsystem getAsSubsystem() {
         return this;
     }
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+        SmartDashboard.putBooleanArray(
+            "Beam Break Sensor States", 
+            new boolean[] {getMidBeamState(), getHighBeamState()});
     }
 
     @Override

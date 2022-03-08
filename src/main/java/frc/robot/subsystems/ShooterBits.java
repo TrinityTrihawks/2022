@@ -16,7 +16,5 @@ public interface ShooterBits {
 
     public boolean getHighBeamState();
 
-    public boolean getShotBeamState();
-
     public Subsystem getAsSubsystem();
 }
