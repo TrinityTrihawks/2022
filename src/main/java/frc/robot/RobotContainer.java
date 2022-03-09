@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import static frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.JoystickConstants;
 import static frc.robot.Constants.ShootyBitsConstants;
+
+import frc.robot.Constants.XboxInterface;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.Drive5ftSideways;
 import frc.robot.commands.DriveDoubleJoystick;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -40,14 +43,23 @@ public class RobotContainer {
   // Subsystems
   private final Drivetrain drivetrain = Drivetrain.getInstance();
   private final ShootyBits shootyBits = ShootyBits.getInstance();
+  private final XboxInterface xboxInterface = new XboxInterface();
 
   private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor"); // Thor
   private final ZeroableJoystick leftJoystick = new ZeroableJoystick(JoystickConstants.kLeftJoystickPort, "Loki"); // Loki
   private final XboxController xboxController = new XboxController(JoystickConstants.kXboxControllerPort); // Odin
 
+
+  // Thor and Loki
   private final JoystickButton zeroButton = new JoystickButton(rightJoystick, JoystickConstants.kZeroButtonId);
-  private final JoystickButton switchDriveModeButton = new JoystickButton(rightJoystick,
-      JoystickConstants.kSwitchDriveModeButtonId);
+  private final JoystickButton switchDriveModeButton = new JoystickButton(rightJoystick, JoystickConstants.kSwitchDriveModeButtonId);
+
+  // Odin
+  private final JoystickButton intakeVacuumButton = new JoystickButton(xboxController, xboxInterface.a());
+  private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxInterface.x());
+  private final Trigger boostTrigger = new Trigger(() -> xboxController.getRawAxis(xboxInterface.lt()) > 0.9);
+
+  
 
   // Commands
   private DriveSingleJoystick singleDefault = new DriveSingleJoystick(

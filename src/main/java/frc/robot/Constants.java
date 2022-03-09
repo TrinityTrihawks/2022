@@ -123,4 +123,30 @@ public final class Constants {
             return state == OPEN.state ? CLOSED : OPEN;
         }
     }
+    public interface GamepadInterface {
+        public int a();
+        public int b();
+        public int x();
+        public int y();
+        public int lb();
+        public int rb();
+        public int lt();
+        public int rt();
+        public int select();
+        public int start();
+    }
+    public static class XboxInterface implements GamepadInterface {
+        public int a()      { return 0; }
+        public int b()      { return 1; }
+        public int x()      { return 2; }
+        public int y()      { return 3; }
+        public int lb()     { return 4; }
+        public int rb()     { return 5; }
+        public int lt()     { return 2; }
+        public int rt()     { return 3; }
+        public int select() { return 7; }
+        public int start()  { return 8; }
+    }
+}
+
 }
