@@ -19,11 +19,11 @@ import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.ResetGyro;
-import frc.robot.commands.SimpleIntakeShoot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -48,7 +48,6 @@ public class RobotContainer {
     private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
     private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
             JoystickConstants.kSwitchDriveModeButtonId);
-    private final JoystickButton shootButton = new JoystickButton(mainJoystick, 1);
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -66,11 +65,6 @@ public class RobotContainer {
             () -> mainJoystick.getZeroedY(),
             () -> mainJoystick.getThrottle());
 
-    private SimpleIntakeShoot shoot = new SimpleIntakeShoot(
-        shootyBits,
-        () -> false //shootButton.get()
-    );
-
     private StartEndCommand runIntake = new StartEndCommand(
         () -> { shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
                 shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
@@ -85,6 +79,11 @@ public class RobotContainer {
         () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
         () -> shootyBits.setShooterVoltage(0),
         shootyBits
+    );
+
+    private ParallelCommandGroup runAllWheels = new ParallelCommandGroup(
+        runIntake,
+        runShooter
     );
     
     private final NetworkTable subtable;
@@ -112,9 +111,8 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-        // Drivetrain default
+
         drivetrain.setDefaultCommand(singleDefault);
-        shootyBits.setDefaultCommand(shoot);
     }
 
     /**
