@@ -37,127 +37,126 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // Subsystems
-    private final Drivetrain drivetrain = Drivetrain.getInstance();
-    private final ShootyBits shootyBits = ShootyBits.getInstance();
+  // Subsystems
+  private final Drivetrain drivetrain = Drivetrain.getInstance();
+  private final ShootyBits shootyBits = ShootyBits.getInstance();
 
-    // Joysticks
-    private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
-    private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort,
-            "Loki (balthazar)"); // balthazar
-    private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
-    private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
-            JoystickConstants.kSwitchDriveModeButtonId);
-    private final JoystickButton shootButton = new JoystickButton(mainJoystick, 1);
+  private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor"); // Thor
+  private final ZeroableJoystick leftJoystick = new ZeroableJoystick(JoystickConstants.kLeftJoystickPort, "Loki"); // Loki
+  private final XboxController xboxController = new XboxController(JoystickConstants.kXboxControllerPort); // Odin
 
-    // Commands
-    private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
-            drivetrain,
-            () -> -mainJoystick.getZeroedY(),
-            () -> -mainJoystick.getZeroedX(),
-            () -> mainJoystick.getZeroedTwist(),
-            () -> mainJoystick.getThrottle());
+  private final JoystickButton zeroButton = new JoystickButton(rightJoystick, JoystickConstants.kZeroButtonId);
+  private final JoystickButton switchDriveModeButton = new JoystickButton(rightJoystick,
+      JoystickConstants.kSwitchDriveModeButtonId);
 
-    private DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
-            drivetrain,
-            () -> auxJoystick.getZeroedX(),
-            () -> mainJoystick.getZeroedX(),
-            () -> auxJoystick.getZeroedY(),
-            () -> mainJoystick.getZeroedY(),
-            () -> mainJoystick.getThrottle());
+  // Commands
+  private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
+      drivetrain,
+      () -> -rightJoystick.getZeroedY(),
+      () -> -rightJoystick.getZeroedX(),
+      () -> rightJoystick.getZeroedTwist(),
+      () -> rightJoystick.getThrottle());
 
-    private SimpleIntakeShoot shoot = new SimpleIntakeShoot(
-        shootyBits,
-        () -> false //shootButton.get()
-    );
+  private DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
+      drivetrain,
+      () -> leftJoystick.getZeroedX(),
+      () -> rightJoystick.getZeroedX(),
+      () -> leftJoystick.getZeroedY(),
+      () -> rightJoystick.getZeroedY(),
+      () -> rightJoystick.getThrottle());
 
-    private StartEndCommand runIntake = new StartEndCommand(
-        () -> { shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
-                shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
-        },
-        () -> { shootyBits.setIntakeVoltage(0);
-                shootyBits.setMiddleVoltage(0);
-        },
-        shootyBits
-    );
+  private SimpleIntakeShoot shoot = new SimpleIntakeShoot(
+      shootyBits,
+      () -> false // shootButton.get()
+  );
 
-    private StartEndCommand runShooter = new StartEndCommand(
-        () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
-        () -> shootyBits.setShooterVoltage(0),
-        shootyBits
-    );
-    
-    private final NetworkTable subtable;
+  private StartEndCommand runIntake = new StartEndCommand(
+      () -> {
+        shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+        shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
+      },
+      () -> {
+        shootyBits.setIntakeVoltage(0);
+        shootyBits.setMiddleVoltage(0);
+      },
+      shootyBits);
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
+  private StartEndCommand runShooter = new StartEndCommand(
+      () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
+      () -> shootyBits.setShooterVoltage(0),
+      shootyBits);
 
-        subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
+  private final NetworkTable subtable;
 
-        // Set the scheduler to log Shuffleboard events for command initialize,
-        // interrupt, finish
-        CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
-                "Command initialized", command.getName(), EventImportance.kNormal));
-        CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker(
-                "Command interrupted", command.getName(), EventImportance.kHigh));
-        CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker(
-                "Command finished", command.getName(), EventImportance.kNormal));
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer() {
 
-        configureDefaultCommands();
+    subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
 
-        // Configure the button bindings
-        configureButtonBindings();
-    }
+    // Set the scheduler to log Shuffleboard events for command initialize,
+    // interrupt, finish
+    CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
+        "Command initialized", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker(
+        "Command interrupted", command.getName(), EventImportance.kHigh));
+    CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker(
+        "Command finished", command.getName(), EventImportance.kNormal));
 
-    private void configureDefaultCommands() {
-        // Drivetrain default
+    configureDefaultCommands();
+
+    // Configure the button bindings
+    configureButtonBindings();
+  }
+
+  private void configureDefaultCommands() {
+    // Drivetrain default
+    drivetrain.setDefaultCommand(singleDefault);
+    shootyBits.setDefaultCommand(shoot);
+  }
+
+  /**
+   * This method defines the button->command mappings. Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
+  private void configureButtonBindings() {
+    bindZeroButton();
+    bindSwitchDriveModeButton();
+  }
+
+  /**
+   * Isaac helped more than Luca
+   */
+  private void bindZeroButton() {
+    Runnable zero = () -> {
+      rightJoystick.zero();
+      leftJoystick.zero();
+    };
+    zeroButton.debounce(0.5).whenActive(zero, drivetrain);
+  }
+
+  private void bindSwitchDriveModeButton() {
+    Runnable switchDriveMode = () -> {
+      if (drivetrain.getDefaultCommand() == singleDefault) {
+        drivetrain.setDefaultCommand(doubleDefault);
+      } else {
         drivetrain.setDefaultCommand(singleDefault);
-        shootyBits.setDefaultCommand(shoot);
-    }
+      }
+    };
+    switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
+  }
 
-    /**
-     * This method defines the button->command mappings. Buttons can be created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-     * it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        bindZeroButton();
-        bindSwitchDriveModeButton();
-    }
-
-    /**
-     * Isaac helped more than Luca
-     */
-    private void bindZeroButton() {
-        Runnable zero = () -> {
-            mainJoystick.zero();
-            auxJoystick.zero();
-        };
-        zeroButton.debounce(0.5).whenActive(zero, drivetrain);
-    }
-
-    private void bindSwitchDriveModeButton() {
-        Runnable switchDriveMode = () -> {
-            if (drivetrain.getDefaultCommand() == singleDefault) {
-                drivetrain.setDefaultCommand(doubleDefault);
-            } else {
-                drivetrain.setDefaultCommand(singleDefault);
-            }
-        };
-        switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
-    }
-
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-        return resetGyro.andThen(new Drive5ftInAutoOdo(drivetrain)).andThen(new DriveZero(drivetrain));
-    }
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
+    return resetGyro.andThen(new Drive5ftInAutoOdo(drivetrain)).andThen(new DriveZero(drivetrain));
+  }
 }
