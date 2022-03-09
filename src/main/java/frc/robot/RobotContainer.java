@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import static frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.JoystickConstants;
+import static frc.robot.Constants.ShootyBitsConstants;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.Drive5ftSideways;
 import frc.robot.commands.DriveDoubleJoystick;
@@ -71,8 +72,8 @@ public class RobotContainer {
     );
 
     private StartEndCommand runIntake = new StartEndCommand(
-        () -> { shootyBits.setIntakeVoltage(-0.25);
-                shootyBits.setMiddleVoltage(0.1);
+        () -> { shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+                shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
         },
         () -> { shootyBits.setIntakeVoltage(0);
                 shootyBits.setMiddleVoltage(0);
@@ -81,7 +82,7 @@ public class RobotContainer {
     );
 
     private StartEndCommand runShooter = new StartEndCommand(
-        () -> shootyBits.setShooterVoltage(0.25), // new gearbox is 4x faster
+        () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
         () -> shootyBits.setShooterVoltage(0),
         shootyBits
     );
