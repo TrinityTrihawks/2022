@@ -80,14 +80,14 @@ public final class Constants {
         public static final double kYDeadZone = 0.1; // Front-Back
         public static final double kTwistDeadZone = 0.1; // Twist
 
-        public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
+        public static final double kStaticThrottleScalar = 0.2; // multiple inputs values by this
 
         public static final int kZeroButtonId = 7;
         public static final int kSwitchDriveModeButtonId = 9;
     }
 
     public static final class IntakeConstants {
-        public static final int kIntakeMotorPort = 16;
+        public static final int kIntakeMotorPort = -1;
         public static final int kLimitSwitchPort = 0;
     }
 
