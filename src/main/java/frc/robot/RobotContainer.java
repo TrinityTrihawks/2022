@@ -76,21 +76,32 @@ public class RobotContainer {
             () -> rightJoystick.getThrottle());
 
     private StartEndCommand runIntake = new StartEndCommand(
-            () -> {
-                shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
-                shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
-            },
-            () -> {
-                shootyBits.setIntakeVoltage(0);
-                shootyBits.setMiddleVoltage(0);
-            },
+            () -> { shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+                    shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed); },
+
+            () -> { shootyBits.setIntakeVoltage(0);
+                    shootyBits.setMiddleVoltage(0); },
+
             shootyBits);
 
     private StartEndCommand runShooter = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
+    
+    private StartEndCommand runShooterSlow = new StartEndCommand(
+        () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterSlowSpeed),
+        () -> shootyBits.setShooterVoltage(0),
+        shootyBits);
 
+    private ParallelCommandGroup runAll = new ParallelCommandGroup( runIntake
+                                                                  , runShooter 
+                                                                  );
+    
+    private ParallelCommandGroup runAllWithSlowShooter = new ParallelCommandGroup( runIntake
+                                                                  , runShooterSlow
+                                                                  );
+    
     private final NetworkTable subtable;
 
     /**
