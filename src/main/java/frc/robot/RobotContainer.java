@@ -99,8 +99,8 @@ public class RobotContainer {
                                                                   );
     
     private ParallelCommandGroup runAllWithSlowShooter = new ParallelCommandGroup( runIntake
-                                                                  , runShooterSlow
-                                                                  );
+                                                                                 , runShooterSlow
+                                                                                 );
     
     private final NetworkTable subtable;
 
