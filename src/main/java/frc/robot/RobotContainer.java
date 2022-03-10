@@ -120,7 +120,7 @@ public class RobotContainer {
     public RobotContainer() {
 
         subtable = NetworkTableInstance.getDefault().getTable("RobotContainer");
-
+        subtable.getInstance();
         // Set the scheduler to log Shuffleboard events for command initialize,
         // interrupt, finish
         CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
