@@ -100,6 +100,7 @@ public final class Constants {
         public static final double kShooterRunSpeed = 1;
         public static final double kMiddleRunSpeed = 0.1;
         public static final double kIntakeRunSpeed = -0.25;
+        public static final double kShooterSlowSpeed = 0.1;
     }
 
     /**
