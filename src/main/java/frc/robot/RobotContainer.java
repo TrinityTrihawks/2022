@@ -75,6 +75,7 @@ public class RobotContainer {
             () -> rightJoystick.getZeroedY(),
             () -> rightJoystick.getThrottle());
 
+
     private StartEndCommand runIntake = new StartEndCommand(
             () -> {
                 shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
@@ -84,9 +85,10 @@ public class RobotContainer {
             () -> {
                 shootyBits.setIntakeVoltage(0);
                 shootyBits.setMiddleVoltage(0);
-            },
+        },
 
-            shootyBits);
+        shootyBits);
+
     private StartEndCommand runIntakeReverse = new StartEndCommand(
             () -> {
                 shootyBits.setIntakeVoltage(-ShootyBitsConstants.kIntakeRunSpeed);
@@ -99,10 +101,12 @@ public class RobotContainer {
             },
 
             shootyBits);
+
     private StartEndCommand runShooter = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
+
     private StartEndCommand runShooterSlow = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterSlowSpeed),
             () -> shootyBits.setShooterVoltage(0),
