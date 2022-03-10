@@ -57,6 +57,7 @@ public class RobotContainer {
     private final JoystickButton intakeVacuumButton = new JoystickButton(xboxController, xboxPorts.a());
     private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.x());
     private final JoystickButton runShooterButton = new JoystickButton(xboxController, xboxPorts.b());
+    private final JoystickButton runAllButton = new JoystickButton(xboxController, xboxPorts.y());
     private final Trigger boostTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.9);
 
     // Commands
@@ -146,7 +147,9 @@ public class RobotContainer {
         intakeVacuumButton.whileActiveOnce(runIntake);
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
         runShooterButton.whileActiveOnce(runShooter);
-
+        runShooterButton.and(boostTrigger.negate()).whileActiveOnce(runShooterSlow);
+        runAllButton.whileActiveOnce(runAll);
+        runAllButton.and(boostTrigger.negate()).whileActiveOnce(runAllWithSlowShooter);
     }
 
     private void configureDefaultCommands() {
