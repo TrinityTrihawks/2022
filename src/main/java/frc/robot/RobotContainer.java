@@ -16,7 +16,6 @@ import static frc.robot.Constants.ShootyBitsConstants;
 
 import frc.robot.Constants.XboxInterface;
 import frc.robot.commands.Drive5ftInAutoOdo;
-import frc.robot.commands.Drive5ftSideways;
 import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveZero;
@@ -25,7 +24,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -77,11 +75,27 @@ public class RobotContainer {
             () -> rightJoystick.getThrottle());
 
     private StartEndCommand runIntake = new StartEndCommand(
-            () -> { shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
-                    shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed); },
+            () -> {
+                shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+                shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
+            },
 
-            () -> { shootyBits.setIntakeVoltage(0);
-                    shootyBits.setMiddleVoltage(0); },
+            () -> {
+                shootyBits.setIntakeVoltage(0);
+                shootyBits.setMiddleVoltage(0);
+            },
+
+            shootyBits);
+    private StartEndCommand runIntakeReverse = new StartEndCommand(
+            () -> {
+                shootyBits.setIntakeVoltage(-ShootyBitsConstants.kIntakeRunSpeed);
+                shootyBits.setMiddleVoltage(-ShootyBitsConstants.kMiddleRunSpeed);
+            },
+
+            () -> {
+                shootyBits.setIntakeVoltage(0);
+                shootyBits.setMiddleVoltage(0);
+            },
 
             shootyBits);
 
@@ -117,7 +131,9 @@ public class RobotContainer {
 
     private void configureXboxButtons() {
         intakeVacuumButton.whileActiveOnce(runIntake);
+        intakeSpitButton.whileActiveOnce(runIntakeReverse);
         runShooterButton.whileActiveOnce(runShooter);
+
     }
 
     private void configureDefaultCommands() {
