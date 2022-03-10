@@ -14,7 +14,7 @@ import static frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.JoystickConstants;
 import static frc.robot.Constants.ShootyBitsConstants;
 
-import frc.robot.Constants.XboxInterface;
+import frc.robot.Constants.XboxPortProvider;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
@@ -42,7 +42,7 @@ public class RobotContainer {
     // Subsystems
     private final Drivetrain drivetrain = Drivetrain.getInstance();
     private final ShootyBits shootyBits = ShootyBits.getInstance();
-    private final XboxInterface xboxInterface = new XboxInterface();
+    private final XboxPortProvider xboxPorts = new XboxPortProvider();
 
     private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor"); // Thor
     private final ZeroableJoystick leftJoystick = new ZeroableJoystick(JoystickConstants.kLeftJoystickPort, "Loki"); // Loki
@@ -54,10 +54,10 @@ public class RobotContainer {
             JoystickConstants.kSwitchDriveModeButtonId);
 
     // Odin
-    private final JoystickButton intakeVacuumButton = new JoystickButton(xboxController, xboxInterface.a());
-    private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxInterface.x());
-    private final JoystickButton runShooterButton = new JoystickButton(xboxController, xboxInterface.b());
-    private final Trigger boostTrigger = new Trigger(() -> xboxController.getRawAxis(xboxInterface.lt()) > 0.9);
+    private final JoystickButton intakeVacuumButton = new JoystickButton(xboxController, xboxPorts.a());
+    private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.x());
+    private final JoystickButton runShooterButton = new JoystickButton(xboxController, xboxPorts.b());
+    private final Trigger boostTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.9);
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(

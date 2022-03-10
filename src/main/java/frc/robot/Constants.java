@@ -136,7 +136,7 @@ public final class Constants {
         public int select();
         public int start();
     }
-    public static class XboxInterface implements GamepadInterface {
+    public static class XboxPortProvider implements GamepadInterface {
         public int a()      { return 0; }
         public int b()      { return 1; }
         public int x()      { return 2; }
