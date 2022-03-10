@@ -73,8 +73,9 @@ public final class Constants {
      */
     public static final class JoystickConstants {
 
-        public static final int kMainJoystickPort = 0;
-        public static final int kAuxJoystickPort = 4;
+        public static final int kRightJoystickPort = 0;
+        public static final int kLeftJoystickPort = 4;
+        public static final int kXboxControllerPort = 5;
 
         public static final double kXDeadZone = 0.1; // Left-Right
         public static final double kYDeadZone = 0.1; // Front-Back
@@ -122,4 +123,30 @@ public final class Constants {
             return state == OPEN.state ? CLOSED : OPEN;
         }
     }
+    public interface GamepadInterface {
+        public int a();
+        public int b();
+        public int x();
+        public int y();
+        public int lb();
+        public int rb();
+        public int lt();
+        public int rt();
+        public int select();
+        public int start();
+    }
+    public static class XboxInterface implements GamepadInterface {
+        public int a()      { return 0; }
+        public int b()      { return 1; }
+        public int x()      { return 2; }
+        public int y()      { return 3; }
+        public int lb()     { return 4; }
+        public int rb()     { return 5; }
+        public int lt()     { return 2; }
+        public int rt()     { return 3; }
+        public int select() { return 7; }
+        public int start()  { return 8; }
+    }
 }
+
+

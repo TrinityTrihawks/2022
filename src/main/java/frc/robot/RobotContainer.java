@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import static frc.robot.Constants.DriveConstants;
 import static frc.robot.Constants.JoystickConstants;
 import static frc.robot.Constants.ShootyBitsConstants;
+
+import frc.robot.Constants.XboxInterface;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.Drive5ftSideways;
 import frc.robot.commands.DriveDoubleJoystick;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -40,52 +43,54 @@ public class RobotContainer {
     // Subsystems
     private final Drivetrain drivetrain = Drivetrain.getInstance();
     private final ShootyBits shootyBits = ShootyBits.getInstance();
+    private final XboxInterface xboxInterface = new XboxInterface();
 
-    // Joysticks
-    private final ZeroableJoystick mainJoystick = new ZeroableJoystick(JoystickConstants.kMainJoystickPort, "Thor");
-    private final ZeroableJoystick auxJoystick = new ZeroableJoystick(JoystickConstants.kAuxJoystickPort,
-            "Loki (balthazar)"); // balthazar
-    private final JoystickButton zeroButton = new JoystickButton(mainJoystick, JoystickConstants.kZeroButtonId);
-    private final JoystickButton switchDriveModeButton = new JoystickButton(mainJoystick,
+    private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor"); // Thor
+    private final ZeroableJoystick leftJoystick = new ZeroableJoystick(JoystickConstants.kLeftJoystickPort, "Loki"); // Loki
+    private final XboxController xboxController = new XboxController(JoystickConstants.kXboxControllerPort); // Odin
+
+    // Thor and Loki
+    private final JoystickButton zeroButton = new JoystickButton(rightJoystick, JoystickConstants.kZeroButtonId);
+    private final JoystickButton switchDriveModeButton = new JoystickButton(rightJoystick,
             JoystickConstants.kSwitchDriveModeButtonId);
+
+    // Odin
+    private final JoystickButton intakeVacuumButton = new JoystickButton(xboxController, xboxInterface.a());
+    private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxInterface.x());
+    private final Trigger boostTrigger = new Trigger(() -> xboxController.getRawAxis(xboxInterface.lt()) > 0.9);
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
             drivetrain,
-            () -> -mainJoystick.getZeroedY(),
-            () -> -mainJoystick.getZeroedX(),
-            () -> mainJoystick.getZeroedTwist(),
-            () -> mainJoystick.getThrottle());
+            () -> -rightJoystick.getZeroedY(),
+            () -> -rightJoystick.getZeroedX(),
+            () -> rightJoystick.getZeroedTwist(),
+            () -> rightJoystick.getThrottle());
 
     private DriveDoubleJoystick doubleDefault = new DriveDoubleJoystick(
             drivetrain,
-            () -> auxJoystick.getZeroedX(),
-            () -> mainJoystick.getZeroedX(),
-            () -> auxJoystick.getZeroedY(),
-            () -> mainJoystick.getZeroedY(),
-            () -> mainJoystick.getThrottle());
+            () -> leftJoystick.getZeroedX(),
+            () -> rightJoystick.getZeroedX(),
+            () -> leftJoystick.getZeroedY(),
+            () -> rightJoystick.getZeroedY(),
+            () -> rightJoystick.getThrottle());
 
     private StartEndCommand runIntake = new StartEndCommand(
-        () -> { shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+            () -> {
+                shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
                 shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
-        },
-        () -> { shootyBits.setIntakeVoltage(0);
+            },
+            () -> {
+                shootyBits.setIntakeVoltage(0);
                 shootyBits.setMiddleVoltage(0);
-        },
-        shootyBits
-    );
+            },
+            shootyBits);
 
     private StartEndCommand runShooter = new StartEndCommand(
-        () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
-        () -> shootyBits.setShooterVoltage(0),
-        shootyBits
-    );
+            () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
+            () -> shootyBits.setShooterVoltage(0),
+            shootyBits);
 
-    private ParallelCommandGroup runAllWheels = new ParallelCommandGroup(
-        runIntake,
-        runShooter
-    );
-    
     private final NetworkTable subtable;
 
     /**
@@ -111,7 +116,7 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-
+        // Drivetrain default
         drivetrain.setDefaultCommand(singleDefault);
     }
 
@@ -132,8 +137,8 @@ public class RobotContainer {
      */
     private void bindZeroButton() {
         Runnable zero = () -> {
-            mainJoystick.zero();
-            auxJoystick.zero();
+            rightJoystick.zero();
+            leftJoystick.zero();
         };
         zeroButton.debounce(0.5).whenActive(zero, drivetrain);
     }
