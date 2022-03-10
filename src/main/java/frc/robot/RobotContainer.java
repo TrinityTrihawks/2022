@@ -24,6 +24,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -98,11 +99,19 @@ public class RobotContainer {
             },
 
             shootyBits);
-
     private StartEndCommand runShooter = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
+    private StartEndCommand runShooterSlow = new StartEndCommand(
+            () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterSlowSpeed),
+            () -> shootyBits.setShooterVoltage(0),
+            shootyBits);
+
+    private ParallelCommandGroup runAll = new ParallelCommandGroup(runIntake, runShooter);
+
+    private ParallelCommandGroup runAllWithSlowShooter = new ParallelCommandGroup(runIntake, runShooterSlow);
+
     private final NetworkTable subtable;
 
     /**
