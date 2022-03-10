@@ -99,10 +99,12 @@ public class RobotContainer {
             },
 
             shootyBits);
+
     private StartEndCommand runShooter = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
+
     private StartEndCommand runShooterSlow = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterSlowSpeed),
             () -> shootyBits.setShooterVoltage(0),
