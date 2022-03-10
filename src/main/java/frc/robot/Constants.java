@@ -148,5 +148,3 @@ public final class Constants {
         public int start()  { return 8; }
     }
 }
-
-}
