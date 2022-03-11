@@ -59,9 +59,9 @@ public class Robot extends TimedRobot {
 		 || Math.abs(speeds.rearRightMetersPerSecond) < 0.1) {
 
 			Drivetrain.getInstance().releaseBrake();
-			
+
 		} else {
-			Drivetrain.getInstance().brake();
+			Drivetrain.getInstance().brakeIdle();
 		}
 
 		// Runs the Scheduler. This is responsible for polling buttons, adding
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 
-		Drivetrain.getInstance().brake();
+		Drivetrain.getInstance().brakeIdle();
 	}
 
 	/** This function is called periodically during operator control. */

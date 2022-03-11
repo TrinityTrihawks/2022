@@ -188,13 +188,19 @@ public class Drivetrain extends SubsystemBase {
         return pigeon.getRate();
     }
 
-    public void brake() {
+    /**
+     * Configures the wheels to brake on idle
+     */
+    public void brakeIdle() {
         frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
         frontRightSparkMax.setIdleMode(IdleMode.kBrake);
         rearLeftSparkMax.setIdleMode(IdleMode.kBrake);
         rearRightSparkMax.setIdleMode(IdleMode.kBrake);
     }
 
+    /**
+     * Configures the wheels to coast on idle
+     */
     public void releaseBrake() {
         frontLeftSparkMax.setIdleMode(IdleMode.kCoast);
         frontRightSparkMax.setIdleMode(IdleMode.kCoast);
