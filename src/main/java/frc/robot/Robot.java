@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -49,6 +50,20 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		// Safety braking system:
+		// set the drive motorcontrollers to idle brake when moving, and coast at < 1.0
+		MecanumDriveWheelSpeeds speeds = Drivetrain.getInstance().getCurrentWheelSpeeds();
+		if (Math.abs(speeds.frontLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.frontRightMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearRightMetersPerSecond) < 0.1) {
+
+			Drivetrain.getInstance().releaseBrake();
+			
+		} else {
+			Drivetrain.getInstance().brake();
+		}
+
 		// Runs the Scheduler. This is responsible for polling buttons, adding
 		// newly-scheduled
 		// commands, running already-scheduled commands, removing finished or
@@ -62,7 +77,6 @@ public class Robot extends TimedRobot {
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
 	public void disabledInit() {
-		Drivetrain.getInstance().releaseBrake();
 	}
 
 	@Override
