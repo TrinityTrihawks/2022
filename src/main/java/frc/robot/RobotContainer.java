@@ -10,10 +10,15 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import static frc.robot.Constants.DriveConstants;
-import static frc.robot.Constants.JoystickConstants;
-import static frc.robot.Constants.ShootyBitsConstants;
-
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.ShootyBitsConstants;
 import frc.robot.Constants.XboxPortProvider;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.DriveDoubleJoystick;
@@ -22,12 +27,6 @@ import frc.robot.commands.DriveZero;
 import frc.robot.commands.ResetGyro;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -139,7 +138,6 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-
         configureXboxButtons();
     }
 
