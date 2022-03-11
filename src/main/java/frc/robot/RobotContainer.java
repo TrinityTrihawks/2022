@@ -126,9 +126,6 @@ public class RobotContainer {
         },
     
         shootyBits);
-    // private ParallelCommandGroup runAll = new ParallelCommandGroup(runIntake, runShooter);
-
-    // private ParallelCommandGroup runAllWithSlowShooter = new ParallelCommandGroup(runIntake, runShooterSlow);
 
     private final NetworkTable subtable;
 
@@ -161,8 +158,6 @@ public class RobotContainer {
         runShooterButton.and(boostTrigger.negate()).whileActiveOnce(runShooter);
         runShooterButton.and(boostTrigger).whileActiveOnce(runShooterSlow);
         runAllButton.whileActiveOnce(runAll);
-        // runAllButton.whileActiveOnce(runAll);
-        // runAllButton.and(boostTrigger.negate()).whileActiveOnce(runAllWithSlowShooter);
     }
 
     private void configureDefaultCommands() {
