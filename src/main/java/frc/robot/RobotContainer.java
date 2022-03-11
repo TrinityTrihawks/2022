@@ -112,9 +112,9 @@ public class RobotContainer {
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
 
-    private ParallelCommandGroup runAll = new ParallelCommandGroup(runIntake, runShooter);
+    // private ParallelCommandGroup runAll = new ParallelCommandGroup(runIntake, runShooter);
 
-    private ParallelCommandGroup runAllWithSlowShooter = new ParallelCommandGroup(runIntake, runShooterSlow);
+    // private ParallelCommandGroup runAllWithSlowShooter = new ParallelCommandGroup(runIntake, runShooterSlow);
 
     private final NetworkTable subtable;
 
@@ -144,10 +144,10 @@ public class RobotContainer {
     private void configureXboxButtons() {
         intakeVacuumButton.whileActiveOnce(runIntake);
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
-        runShooterButton.whileActiveOnce(runShooter);
-        runShooterButton.and(boostTrigger.negate()).whileActiveOnce(runShooterSlow);
-        runAllButton.whileActiveOnce(runAll);
-        runAllButton.and(boostTrigger.negate()).whileActiveOnce(runAllWithSlowShooter);
+        runShooterButton.and(boostTrigger.negate()).whileActiveOnce(runShooter);
+        runShooterButton.and(boostTrigger).whileActiveOnce(runShooterSlow);
+        // runAllButton.whileActiveOnce(runAll);
+        // runAllButton.and(boostTrigger.negate()).whileActiveOnce(runAllWithSlowShooter);
     }
 
     private void configureDefaultCommands() {

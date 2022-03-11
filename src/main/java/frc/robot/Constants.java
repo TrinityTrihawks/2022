@@ -74,8 +74,8 @@ public final class Constants {
     public static final class JoystickConstants {
 
         public static final int kRightJoystickPort = 0;
-        public static final int kLeftJoystickPort = 4;
-        public static final int kXboxControllerPort = 5;
+        public static final int kLeftJoystickPort = 1;
+        public static final int kXboxControllerPort = 2;
 
         public static final double kXDeadZone = 0.1; // Left-Right
         public static final double kYDeadZone = 0.1; // Front-Back
@@ -98,8 +98,8 @@ public final class Constants {
         public static final int kHighBeamPort = 5;
 
         public static final double kShooterRunSpeed = 1;
-        public static final double kMiddleRunSpeed = 0.1;
-        public static final double kIntakeRunSpeed = -0.25;
+        public static final double kMiddleRunSpeed = -0.3;
+        public static final double kIntakeRunSpeed = 0.5;
         public static final double kShooterSlowSpeed = 0.1;
     }
 
@@ -137,15 +137,15 @@ public final class Constants {
         public int start();
     }
     public static class XboxPortProvider implements GamepadInterface {
-        public int a()      { return 0; }
-        public int b()      { return 1; }
-        public int x()      { return 2; }
-        public int y()      { return 3; }
-        public int lb()     { return 4; }
-        public int rb()     { return 5; }
-        public int lt()     { return 2; }
-        public int rt()     { return 3; }
-        public int select() { return 7; }
-        public int start()  { return 8; }
+        public int a()      { return 1; }
+        public int b()      { return 2; }
+        public int x()      { return 3; }
+        public int y()      { return 4; }
+        public int lb()     { return 5; }
+        public int rb()     { return 6; }
+        public int lt()     { return 7; }
+        public int rt()     { return 8; }
+        public int select() { return 9; }
+        public int start()  { return 10; }
     }
 }
