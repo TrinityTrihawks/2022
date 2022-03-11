@@ -112,6 +112,20 @@ public class RobotContainer {
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
 
+
+    private StartEndCommand runAll = new StartEndCommand(
+        () -> {
+            shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+            shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
+            shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed);
+        },
+        () -> {
+            shootyBits.setIntakeVoltage(0);
+            shootyBits.setMiddleVoltage(0);
+            shootyBits.setShooterVoltage(0);
+        },
+    
+        shootyBits);
     // private ParallelCommandGroup runAll = new ParallelCommandGroup(runIntake, runShooter);
 
     // private ParallelCommandGroup runAllWithSlowShooter = new ParallelCommandGroup(runIntake, runShooterSlow);
@@ -146,6 +160,7 @@ public class RobotContainer {
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
         runShooterButton.and(boostTrigger.negate()).whileActiveOnce(runShooter);
         runShooterButton.and(boostTrigger).whileActiveOnce(runShooterSlow);
+        runAllButton.whileActiveOnce(runAll);
         // runAllButton.whileActiveOnce(runAll);
         // runAllButton.and(boostTrigger.negate()).whileActiveOnce(runAllWithSlowShooter);
     }
