@@ -143,8 +143,8 @@ public final class Constants {
         public int y()      { return 4; }
         public int lb()     { return 5; }
         public int rb()     { return 6; }
-        public int lt()     { return 7; }
-        public int rt()     { return 8; }
+        public int lt()     { return 2; }
+        public int rt()     { return 3; }
         public int select() { return 9; }
         public int start()  { return 10; }
     }

@@ -62,11 +62,9 @@ public class Drivetrain extends SubsystemBase {
         return subsystemInst;
     }
 
-    /** Creates a new Drivetrain. */
     private Drivetrain() {
         // We need to invert one side of the drivetrain so that positive voltages
-        // result in both sides moving forward. Depending on how your robot's
-        // gearbox is constructed, you might have to invert the left side instead.
+        // result in both sides moving forward.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
         

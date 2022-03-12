@@ -24,6 +24,8 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer robotContainer;
 
+	private boolean shouldBrake = false;
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any
@@ -60,8 +62,10 @@ public class Robot extends TimedRobot {
 
 			Drivetrain.getInstance().releaseBrake();
 
-		} else {
+		} else if (shouldBrake) {
 			Drivetrain.getInstance().brakeIdle();
+		} else {
+			Drivetrain.getInstance().releaseBrake();
 		}
 
 		// Runs the Scheduler. This is responsible for polling buttons, adding
@@ -77,10 +81,22 @@ public class Robot extends TimedRobot {
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
 	public void disabledInit() {
+		
 	}
 
 	@Override
 	public void disabledPeriodic() {
+		// only allow disabled constant release (so we can push it)
+		// once we've stopped once
+		MecanumDriveWheelSpeeds speeds = Drivetrain.getInstance().getCurrentWheelSpeeds();
+		if (Math.abs(speeds.frontLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.frontRightMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearRightMetersPerSecond) < 0.1) {
+
+			shouldBrake = false;
+
+		}
 	}
 
 	/**
@@ -89,6 +105,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		shouldBrake = true;
 		autonomousCommand = robotContainer.getAutonomousCommand();
 
 		// schedule the autonomous command (example)
@@ -104,6 +121,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		shouldBrake = true;
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -111,8 +129,6 @@ public class Robot extends TimedRobot {
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
-
-		Drivetrain.getInstance().brakeIdle();
 	}
 
 	/** This function is called periodically during operator control. */

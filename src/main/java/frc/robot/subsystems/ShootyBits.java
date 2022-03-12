@@ -70,9 +70,8 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
 
     @Override
     public void periodic() {
-        SmartDashboard.putBooleanArray(
-            "Beam Break Sensor States", 
-            new boolean[] {getMidBeamState(), getHighBeamState()});
+        SmartDashboard.putBoolean("Lower ball \"slot\"", getMidBeamState());
+        SmartDashboard.putBoolean("Upper ball \"slot\"", getHighBeamState());
     }
 
     @Override
