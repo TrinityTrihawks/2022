@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -22,6 +23,8 @@ public class Robot extends TimedRobot {
 	private Command autonomousCommand;
 
 	private RobotContainer robotContainer;
+
+	private boolean shouldBrake = false;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -49,6 +52,22 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		// Safety braking system:
+		// set the drive motorcontrollers to idle brake when moving, and coast at < 1.0
+		MecanumDriveWheelSpeeds speeds = Drivetrain.getInstance().getCurrentWheelSpeeds();
+		if (Math.abs(speeds.frontLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.frontRightMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearRightMetersPerSecond) < 0.1) {
+
+			Drivetrain.getInstance().releaseBrake();
+
+		} else if (shouldBrake) {
+			Drivetrain.getInstance().brakeIdle();
+		} else {
+			Drivetrain.getInstance().releaseBrake();
+		}
+
 		// Runs the Scheduler. This is responsible for polling buttons, adding
 		// newly-scheduled
 		// commands, running already-scheduled commands, removing finished or
@@ -62,11 +81,22 @@ public class Robot extends TimedRobot {
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
 	public void disabledInit() {
-		Drivetrain.getInstance().releaseBrake();
+		
 	}
 
 	@Override
 	public void disabledPeriodic() {
+		// only allow disabled constant release (so we can push it)
+		// once we've stopped once
+		MecanumDriveWheelSpeeds speeds = Drivetrain.getInstance().getCurrentWheelSpeeds();
+		if (Math.abs(speeds.frontLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.frontRightMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearLeftMetersPerSecond) < 0.1
+		 || Math.abs(speeds.rearRightMetersPerSecond) < 0.1) {
+
+			shouldBrake = false;
+
+		}
 	}
 
 	/**
@@ -75,6 +105,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		shouldBrake = true;
 		autonomousCommand = robotContainer.getAutonomousCommand();
 
 		// schedule the autonomous command (example)
@@ -90,6 +121,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		shouldBrake = true;
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -97,8 +129,6 @@ public class Robot extends TimedRobot {
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
-
-		Drivetrain.getInstance().brake();
 	}
 
 	/** This function is called periodically during operator control. */

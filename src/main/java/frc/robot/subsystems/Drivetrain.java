@@ -62,11 +62,9 @@ public class Drivetrain extends SubsystemBase {
         return subsystemInst;
     }
 
-    /** Creates a new Drivetrain. */
     private Drivetrain() {
         // We need to invert one side of the drivetrain so that positive voltages
-        // result in both sides moving forward. Depending on how your robot's
-        // gearbox is constructed, you might have to invert the left side instead.
+        // result in both sides moving forward.
         frontRightSparkMax.setInverted(true);
         rearRightSparkMax.setInverted(true);
         
@@ -188,13 +186,19 @@ public class Drivetrain extends SubsystemBase {
         return pigeon.getRate();
     }
 
-    public void brake() {
+    /**
+     * Configures the wheels to brake on idle
+     */
+    public void brakeIdle() {
         frontLeftSparkMax.setIdleMode(IdleMode.kBrake);
         frontRightSparkMax.setIdleMode(IdleMode.kBrake);
         rearLeftSparkMax.setIdleMode(IdleMode.kBrake);
         rearRightSparkMax.setIdleMode(IdleMode.kBrake);
     }
 
+    /**
+     * Configures the wheels to coast on idle
+     */
     public void releaseBrake() {
         frontLeftSparkMax.setIdleMode(IdleMode.kCoast);
         frontRightSparkMax.setIdleMode(IdleMode.kCoast);

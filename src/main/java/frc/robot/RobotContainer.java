@@ -55,7 +55,7 @@ public class RobotContainer {
     // Odin
     private final JoystickButton intakeVacuumButton = new JoystickButton(xboxController, xboxPorts.a());
     private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.x());
-    private final JoystickButton runShooterButton = new JoystickButton(xboxController, xboxPorts.b());
+    private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.b());
     private final JoystickButton runAllButton = new JoystickButton(xboxController, xboxPorts.y());
     private final Trigger boostTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.9);
 
@@ -101,6 +101,11 @@ public class RobotContainer {
             },
 
             shootyBits);
+
+    private StartEndCommand runMiddleReverse = new StartEndCommand(
+        () -> shootyBits.setMiddleVoltage(-ShootyBitsConstants.kMiddleRunSpeed),
+        () -> shootyBits.setMiddleVoltage(0),
+        shootyBits);
 
     private StartEndCommand runShooter = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
@@ -155,8 +160,7 @@ public class RobotContainer {
     private void configureXboxButtons() {
         intakeVacuumButton.whileActiveOnce(runIntake);
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
-        runShooterButton.and(boostTrigger.negate()).whileActiveOnce(runShooter);
-        runShooterButton.and(boostTrigger).whileActiveOnce(runShooterSlow);
+        middleSpitButton.whileActiveOnce(runMiddleReverse);
         runAllButton.whileActiveOnce(runAll);
     }
 
