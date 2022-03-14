@@ -166,7 +166,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         // Drivetrain default
-        drivetrain.setDefaultCommand(singleDefault);
+        drivetrain.setDefaultCommand(doubleDefault);
     }
 
     /**

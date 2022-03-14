@@ -63,9 +63,10 @@ public final class Constants {
         public static final double kWheelDiameterMeters = 0.15; // 6in
         public static final double kMetersPerMotorRotation = (kWheelDiameterMeters * Math.PI) / kGearRatio;
 
-        public static final double kSlewValue = 0.5;
+        public static final double kSlewValue = 1.5;
 
         public static final double kGyroResetWaitTime = 4;
+        public static final double kZStaticSlewScalar = 0.8;
     }
 
     /**
@@ -81,7 +82,7 @@ public final class Constants {
         public static final double kYDeadZone = 0.1; // Front-Back
         public static final double kTwistDeadZone = 0.1; // Twist
 
-        public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
+        public static final double kStaticThrottleScalar = 0.5; // multiple inputs values by this
 
         public static final int kZeroButtonId = 7;
         public static final int kSwitchDriveModeButtonId = 9;
