@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import static frc.robot.Constants.BeamState;
 
 /** Shooter Interface. */
 public interface ShooterBits {
@@ -12,9 +13,9 @@ public interface ShooterBits {
 
     public void setMiddleVoltage(double percentOutput);
 
-    public boolean getMidBeamState();
+    public BeamState getLowBeamState();
 
-    public boolean getHighBeamState();
+    public BeamState getHighBeamState();
 
     public Subsystem getAsSubsystem();
 }

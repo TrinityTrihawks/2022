@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.BeamState;
 import frc.robot.Constants.ShootyBitsConstants;
 
 public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits {
@@ -18,7 +19,7 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     private final VictorSPX intakeMotor = new VictorSPX(ShootyBitsConstants.kIntakeMotorPort);
     private final VictorSPX shooterMotor = new VictorSPX(ShootyBitsConstants.kShooterMotorPort);
 
-    private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kMidBeamPort);
+    private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
     private final DigitalInput highBeamSensor = new DigitalInput(ShootyBitsConstants.kHighBeamPort);
 
     /**
@@ -56,12 +57,12 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
         shooterMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
-    public boolean getMidBeamState() {
-        return midBeamSensor.get();
+    public BeamState getLowBeamState() {
+        return BeamState.fromBoolean(midBeamSensor.get());
     }
 
-    public boolean getHighBeamState() {
-        return highBeamSensor.get();
+    public BeamState getHighBeamState() {
+        return BeamState.fromBoolean(highBeamSensor.get());
     }
 
     public Subsystem getAsSubsystem() {
@@ -70,8 +71,8 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Lower ball \"slot\"", getMidBeamState());
-        SmartDashboard.putBoolean("Upper ball \"slot\"", getHighBeamState());
+        SmartDashboard.putBoolean("Lower ball \"slot\"", getLowBeamState().state);
+        SmartDashboard.putBoolean("Upper ball \"slot\"", getHighBeamState().state);
     }
 
     @Override

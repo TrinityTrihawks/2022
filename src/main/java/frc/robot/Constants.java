@@ -95,8 +95,8 @@ public final class Constants {
 
         public static final double kShooterWheelSpeed = 0.8;
         public static final double kMidWheelSpeed = 0.5;
-        public static final int kMidBeamPort = 4;
-        public static final int kHighBeamPort = 5;
+        public static final int kLowBeamPort = 5;
+        public static final int kHighBeamPort = 4;
 
         public static final double kShooterRunSpeed = 1;
         public static final double kMiddleRunSpeed = -0.3;
@@ -112,10 +112,10 @@ public final class Constants {
     }
 
     public enum BeamState {
-        OPEN(true),
-        CLOSED(false);
+        OPEN(false),
+        CLOSED(true);
 
-        private final boolean state;
+        public final boolean state;
 
         BeamState(boolean state) {
             this.state = state;
@@ -123,6 +123,10 @@ public final class Constants {
 
         public BeamState negate() {
             return state == OPEN.state ? CLOSED : OPEN;
+        }
+
+        public static BeamState fromBoolean(boolean bool) {
+            return bool == OPEN.state ? OPEN : CLOSED;
         }
     }
     public interface GamepadInterface {
