@@ -86,8 +86,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		// only allow disabled constant release (so we can push it)
-		// once we've stopped once
+		// after we've stopped, continuously
+		// release brake (so we can push it)
 		MecanumDriveWheelSpeeds speeds = Drivetrain.getInstance().getCurrentWheelSpeeds();
 		if (Math.abs(speeds.frontLeftMetersPerSecond) < 0.1
 		 || Math.abs(speeds.frontRightMetersPerSecond) < 0.1

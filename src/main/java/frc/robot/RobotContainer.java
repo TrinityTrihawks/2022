@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -166,7 +165,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         // Drivetrain default
-        drivetrain.setDefaultCommand(singleDefault);
+        drivetrain.setDefaultCommand(doubleDefault);
     }
 
     /**
