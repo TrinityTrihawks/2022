@@ -98,7 +98,7 @@ public final class Constants {
         public static final int kMidBeamPort = 4;
         public static final int kHighBeamPort = 5;
 
-        public static final double kShooterRunSpeed = 1;
+        public static final double kShooterRunSpeed = .5;
         public static final double kMiddleRunSpeed = -0.3;
         public static final double kIntakeRunSpeed = 0.5;
         public static final double kShooterSlowSpeed = 0.1;

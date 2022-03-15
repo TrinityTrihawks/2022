@@ -55,7 +55,7 @@ public class RobotContainer {
     private final Trigger intakeVacuumTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.9);
     private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.lb());
 
-    private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.9);
+    private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.1);
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
 
