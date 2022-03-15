@@ -8,8 +8,6 @@ public interface IntakeBits {
 
     public void setMiddleVoltage(double percentOutput);
 
-    public void setShooterVoltage(double percentOutput);
-
     public BeamState getLowBeamState();
 
     public BeamState getHighBeamState();
