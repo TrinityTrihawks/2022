@@ -67,6 +67,8 @@ public final class Constants {
 
         public static final double kGyroResetWaitTime = 4;
         public static final double kZStaticSlewScalar = 0.8;
+
+        public static final double feetToMetersConversionFactor = 0.3048;
     }
 
     /**
