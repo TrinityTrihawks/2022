@@ -40,8 +40,11 @@ public class ShootSmart extends CommandBase {
     public ShootSmart(ShooterBits shooter, IntakeBits intake) {
         this.intake = intake;
         this.shooter = shooter;
-
-        addRequirements(shooter.getAsSubsystem(), intake.getAsSubsystem());
+        if (shooter == intake) {
+            addRequirements(shooter.getAsSubsystem());
+        } else {
+            addRequirements(shooter.getAsSubsystem(), intake.getAsSubsystem());
+        }
     }
 
     // Called when the command is initially scheduled.
