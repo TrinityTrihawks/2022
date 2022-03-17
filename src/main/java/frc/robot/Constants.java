@@ -67,6 +67,8 @@ public final class Constants {
 
         public static final double kGyroResetWaitTime = 4;
         public static final double kZStaticSlewScalar = 0.8;
+
+        public static final double feetToMetersConversionFactor = 0.3048;
     }
 
     /**
@@ -98,7 +100,7 @@ public final class Constants {
         public static final int kLowBeamPort = 5;
         public static final int kHighBeamPort = 4;
 
-        public static final double kShooterRunSpeed = 1;
+        public static final double kShooterRunSpeed = .5;
         public static final double kMiddleRunSpeed = -0.3;
         public static final double kIntakeRunSpeed = 0.5;
         public static final double kShooterSlowSpeed = 0.1;

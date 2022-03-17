@@ -54,11 +54,12 @@ public class RobotContainer {
             JoystickConstants.kSwitchDriveModeButtonId);
 
     // Odin
-    private final JoystickButton intakeVacuumButton = new JoystickButton(xboxController, xboxPorts.a());
-    private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.x());
-    private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.b());
-    private final JoystickButton runAllButton = new JoystickButton(xboxController, xboxPorts.y());
-    private final Trigger boostTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.9);
+    private final Trigger intakeVacuumTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.5);
+    private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.lb());
+
+    private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.5);
+    private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
+
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -159,10 +160,10 @@ public class RobotContainer {
     }
 
     private void configureXboxButtons() {
-        intakeVacuumButton.whileActiveOnce(runIntake);
+        intakeVacuumTrigger.whileActiveOnce(runIntake);
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
         middleSpitButton.whileActiveOnce(runMiddleReverse);
-        runAllButton.whileActiveOnce(runAll);
+        shootOutTrigger.whileActiveOnce(runAll);
     }
 
     private void configureDefaultCommands() {
