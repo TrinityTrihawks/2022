@@ -25,6 +25,7 @@ import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.IntakeSmart;
 import frc.robot.commands.ResetGyro;
+import frc.robot.commands.ShootSmart;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 
@@ -210,6 +211,8 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-        return new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain));
+        return new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain))
+            .andThen(new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain)))
+            .andThen(new ShootSmart(ShootyBits.getInstance(), ShootyBits.getInstance()));
     }
 }
