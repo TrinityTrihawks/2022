@@ -7,8 +7,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.BeamState;
-import frc.robot.Constants.ShootyBitsConstants;
+import static frc.robot.Constants.BeamState;
+import static frc.robot.Constants.ShootyBitsConstants;
 import frc.robot.subsystems.IntakeBits;
 
 /**
@@ -144,7 +144,7 @@ public class IntakeSmart extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		if (!intakeBits.getHighBeamState().state) {
+		if (intakeBits.getHighBeamState() == BeamState.OPEN) {
 			CommandScheduler.getInstance().schedule(new IntakeLowerSmart(intakeBits));
 		} else {
 			CommandScheduler.getInstance().schedule(new IntakeUpperSmart(intakeBits));
