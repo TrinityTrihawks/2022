@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import static frc.robot.Constants.BeamState;
@@ -42,6 +43,7 @@ public class IntakeSmart extends CommandBase {
 			if (shouldBeRunning()) {
 				runWheels();
 			}
+			System.out.println(this + ": low trigger " + lowerBeamHasBeenTriggered);
 		}
 
 		private void updateState() {
@@ -134,7 +136,7 @@ public class IntakeSmart extends CommandBase {
 //#region IntakeSmart
 
 	private IntakeBits intakeBits;
-	private boolean hasDelegated = false;
+	private Command delegatedCmd;
 
 	public IntakeSmart(IntakeBits intake) {
 		intakeBits = intake;
@@ -144,12 +146,14 @@ public class IntakeSmart extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+		System.out.print(this + ": delegating ");
 		if (intakeBits.getHighBeamState() == BeamState.OPEN) {
-			CommandScheduler.getInstance().schedule(new IntakeLowerSmart(intakeBits));
+			delegatedCmd = new IntakeLowerSmart(intakeBits);
 		} else {
-			CommandScheduler.getInstance().schedule(new IntakeUpperSmart(intakeBits));
+			delegatedCmd = new IntakeUpperSmart(intakeBits);
 		}
-		hasDelegated = true;
+		System.out.println(delegatedCmd);
+		CommandScheduler.getInstance().schedule(delegatedCmd);
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -165,7 +169,7 @@ public class IntakeSmart extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return hasDelegated;
+		return delegatedCmd.isFinished();
 	}
 //#endregion
 }
