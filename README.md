@@ -5,5 +5,9 @@
 *Trinity School at River Ridge, FRC Team 4215*
 
 ## Features
- * Mecanum Drivetrain ~~(Probably)~~ Definitely
- * Ask me the rest later
+ * Mecanum Drivetrain
+ * Lower Hub shooter
+    * can pick up from ground
+    * can store two balls
+ * an undetermined climber system
+ * an in-progress one ball auton
