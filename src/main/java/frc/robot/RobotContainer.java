@@ -22,10 +22,12 @@ import frc.robot.Constants.XboxPortProvider;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
+import frc.robot.commands.DriveXFeetAuto;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.IntakeSmart;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ShootSmart;
+import frc.robot.commands.TurnXDegrees;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 
@@ -212,8 +214,11 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-        return new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain))
-            .andThen(new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain)))
-            .andThen(new ShootSmart(ShootyBits.getInstance(), ShootyBits.getInstance()));
+        // return new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain))
+        //     .andThen(new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain)))
+        //     .andThen(new ShootSmart(ShootyBits.getInstance(), ShootyBits.getInstance()));
+        return resetGyro//.andThen(new DriveXFeetAuto(drivetrain, 5)
+            //.andThen(new DriveXFeetAuto(drivetrain, -5))
+            .andThen(new TurnXDegrees(drivetrain, 90));
     }
 }
