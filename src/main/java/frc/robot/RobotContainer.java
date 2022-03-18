@@ -157,17 +157,15 @@ public class RobotContainer {
                 "Command finished", command.getName(), EventImportance.kNormal));
 
         configureDefaultCommands();
-
-        // Configure the button bindings
         configureButtonBindings();
         configureXboxButtons();
     }
 
     private void configureXboxButtons() {
-        intakeVacuumTrigger.whileActiveOnce(runIntake);
+        intakeVacuumTrigger.whenActive(new IntakeSmart(ShootyBits.getInstance()));
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
         middleSpitButton.whileActiveOnce(runMiddleReverse);
-        shootOutTrigger.whileActiveOnce(runAll);
+        shootOutTrigger.whenActive(new ShootSmart(ShootyBits.getInstance()));
     }
 
     private void configureDefaultCommands() {
