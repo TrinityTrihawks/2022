@@ -107,8 +107,7 @@ public class ShootSmart extends CommandBase {
      */
     private Command genShoot1() {
         return new StartEndCommand(
-            () -> { shooter.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
-                    System.out.println("Shoot1: beginning...");},
+            () -> shooter.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed),
             () -> shooter.setMiddleVoltage(0),
             shooter.getAsSubsystem()
         ).withTimeout(0.5);
