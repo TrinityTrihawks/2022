@@ -24,10 +24,12 @@ import frc.robot.Constants.XboxPortProvider;
 import frc.robot.commands.Drive5ftInAutoOdo;
 import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
+import frc.robot.commands.DriveXFeetAuto;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.IntakeSmart;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ShootSmart;
+import frc.robot.commands.TurnXDegrees;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
 
