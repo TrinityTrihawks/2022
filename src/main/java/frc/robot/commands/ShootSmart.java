@@ -33,7 +33,7 @@ import frc.robot.subsystems.ShooterBits;
  * all the while running the shooter wheel
  */
 public class ShootSmart extends CommandBase {
-    private static final double kShooterShutdownTime = 1;
+    private final double kShooterShutdownTime = 1;
     private final double kShooterWarmupTime = 1;
     private ShooterBits shooter;
 
