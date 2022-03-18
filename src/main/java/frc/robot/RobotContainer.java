@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
@@ -214,11 +216,21 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-        // return new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain))
-        //     .andThen(new IntakeSmart(ShootyBits.getInstance()).alongWith(new DriveZero(drivetrain)))
-        //     .andThen(new ShootSmart(ShootyBits.getInstance(), ShootyBits.getInstance()));
-        return resetGyro//.andThen(new DriveXFeetAuto(drivetrain, 5)
-            //.andThen(new DriveXFeetAuto(drivetrain, -5))
-            .andThen(new TurnXDegrees(drivetrain, 90));
+        Command intake2shoot2 = new SequentialCommandGroup(
+            new ParallelRaceGroup(
+                new IntakeSmart(ShootyBits.getInstance()),
+                new DriveZero(drivetrain)
+            ),
+            new ParallelRaceGroup(
+                new IntakeSmart(ShootyBits.getInstance()),
+                new DriveZero(drivetrain)
+            ),
+            new ParallelRaceGroup(
+                new ShootSmart(ShootyBits.getInstance()),
+                new DriveZero(drivetrain)
+            ),
+            new DriveZero(drivetrain)
+        );
+        return intake2shoot2;
     }
 }
