@@ -36,6 +36,7 @@ public class ShootSmart extends CommandBase {
     private final double kShooterShutdownTime = 1;
     private final double kShooterWarmupTime = 1;
     private ShooterBits shooter;
+    private Command delegatedCmd;
 
     public ShootSmart(ShooterBits shooter) {
         this.shooter = shooter;
@@ -45,7 +46,8 @@ public class ShootSmart extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        CommandScheduler.getInstance().schedule(getCommand());
+        delegatedCmd = getCommand();
+        CommandScheduler.getInstance().schedule(delegatedCmd);
     }
 
     private Command getCommand() {
@@ -145,6 +147,6 @@ public class ShootSmart extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return delegatedCmd.isFinished();
     }
 }
