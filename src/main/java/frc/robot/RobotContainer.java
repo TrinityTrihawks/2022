@@ -64,7 +64,6 @@ public class RobotContainer {
     private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.5);
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
-
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
             drivetrain,
@@ -81,7 +80,6 @@ public class RobotContainer {
             () -> rightJoystick.getZeroedY(),
             () -> rightJoystick.getThrottle());
 
-
     private StartEndCommand runIntake = new StartEndCommand(
             () -> {
                 shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
@@ -91,9 +89,9 @@ public class RobotContainer {
             () -> {
                 shootyBits.setIntakeVoltage(0);
                 shootyBits.setMiddleVoltage(0);
-        },
+            },
 
-        shootyBits);
+            shootyBits);
 
     private StartEndCommand runIntakeReverse = new StartEndCommand(
             () -> {
@@ -109,9 +107,9 @@ public class RobotContainer {
             shootyBits);
 
     private StartEndCommand runMiddleReverse = new StartEndCommand(
-        () -> shootyBits.setMiddleVoltage(-ShootyBitsConstants.kMiddleRunSpeed),
-        () -> shootyBits.setMiddleVoltage(0),
-        shootyBits);
+            () -> shootyBits.setMiddleVoltage(-ShootyBitsConstants.kMiddleRunSpeed),
+            () -> shootyBits.setMiddleVoltage(0),
+            shootyBits);
 
     private StartEndCommand runShooter = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
@@ -123,20 +121,19 @@ public class RobotContainer {
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
 
-
     private StartEndCommand runAll = new StartEndCommand(
-        () -> {
-            shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
-            shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
-            shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed);
-        },
-        () -> {
-            shootyBits.setIntakeVoltage(0);
-            shootyBits.setMiddleVoltage(0);
-            shootyBits.setShooterVoltage(0);
-        },
-    
-        shootyBits);
+            () -> {
+                shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+                shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed);
+                shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed);
+            },
+            () -> {
+                shootyBits.setIntakeVoltage(0);
+                shootyBits.setMiddleVoltage(0);
+                shootyBits.setShooterVoltage(0);
+            },
+
+            shootyBits);
 
     private final NetworkTable subtable;
 
@@ -209,6 +206,20 @@ public class RobotContainer {
         switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
     }
 
+    private Command newIntakeCommand() {
+
+        return new ParallelRaceGroup(
+                new IntakeSmart(ShootyBits.getInstance()),
+                new DriveZero(drivetrain));
+    }
+
+    private Command newShootCommand() {
+        return new ParallelRaceGroup(
+                new ShootSmart(ShootyBits.getInstance()),
+                new DriveZero(drivetrain));
+
+    }
+
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
@@ -216,21 +227,19 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
+        
         Command intake2shoot2 = new SequentialCommandGroup(
-            new ParallelRaceGroup(
-                new IntakeSmart(ShootyBits.getInstance()),
-                new DriveZero(drivetrain)
-            ),
-            new ParallelRaceGroup(
-                new IntakeSmart(ShootyBits.getInstance()),
-                new DriveZero(drivetrain)
-            ),
-            new ParallelRaceGroup(
-                new ShootSmart(ShootyBits.getInstance()),
-                new DriveZero(drivetrain)
-            ),
-            new DriveZero(drivetrain)
+                newIntakeCommand(),
+                newIntakeCommand(),
+                newShootCommand()
+        );
+
+        Command drive5feet_turn90degreees = new SequentialCommandGroup(
+                new DriveXFeetAuto(drivetrain, 5),
+                new TurnXDegrees(drivetrain, 90)
         );
         return intake2shoot2;
+        //return resetGyro.andThen(drive5feet_turn90degreees);
     }
+    
 }
