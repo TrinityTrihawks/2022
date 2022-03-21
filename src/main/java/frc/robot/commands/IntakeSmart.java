@@ -43,7 +43,6 @@ public class IntakeSmart extends CommandBase {
 			if (shouldBeRunning()) {
 				runWheels();
 			}
-			System.out.println(this + ": low trigger " + lowerBeamHasBeenTriggered);
 		}
 
 		private void updateState() {
@@ -146,7 +145,6 @@ public class IntakeSmart extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		System.out.print(this + ": delegating ");
 		if (intakeBits.getHighBeamState() == BeamState.OPEN) {
 			delegatedCmd = new IntakeLowerSmart(intakeBits);
 		} else {

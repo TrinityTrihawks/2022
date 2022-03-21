@@ -147,7 +147,7 @@ public class Drivetrain extends SubsystemBase {
         rearRightSparkMax.setVoltage(volts.rearRightVoltage);
     }
 
-    /** Resets the drive encoders to currently read a position of 0. */
+    // Resets the drive encoders to currently read a position of 0. 
     public void resetEncoders() {
         frontLeftEncoder.setPosition(0);
         backLeftEncoder.setPosition(0);
