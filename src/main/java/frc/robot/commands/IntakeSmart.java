@@ -24,6 +24,8 @@ public class IntakeSmart extends CommandBase {
 	private class IntakeUpperSmart extends CommandBase {
 		private IntakeBits intakeBits;
 
+		private Timer delay = new Timer();
+
 		private boolean lowerBeamHasBeenTriggered = false;
 
 		public IntakeUpperSmart(IntakeBits intake) {
@@ -48,6 +50,9 @@ public class IntakeSmart extends CommandBase {
 		private void updateState() {
 			if (intakeBits.getLowBeamState() == BeamState.OPEN) {
 				lowerBeamHasBeenTriggered = true;
+			}
+			if (intakeBits.getHighBeamState() == BeamState.OPEN) {
+				delay.start();
 			}
 		}
 
@@ -128,7 +133,7 @@ public class IntakeSmart extends CommandBase {
 		// Returns true when the command should end.
 		@Override
 		public boolean isFinished() {
-			return (!shouldRunIntake()) && timer.hasElapsed(0.5);
+			return (!shouldRunIntake()) && timer.hasElapsed(0.1);
 		}
 	}
 

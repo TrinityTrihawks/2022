@@ -4,13 +4,19 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorMatchResult;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.BeamState;
-import frc.robot.Constants.ShootyBitsConstants;
+import static frc.robot.Constants.BeamState;
+import static frc.robot.Constants.ShootyBitsConstants;
+import frc.robot.Constants;
 
 public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits {
     private static ShootyBits subsystemInst = null;
@@ -21,6 +27,9 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
 
     private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
     private final DigitalInput highBeamSensor = new DigitalInput(ShootyBitsConstants.kHighBeamPort);
+
+    private final ColorSensorV3 detector = new ColorSensorV3(I2C.Port.kOnboard);
+    private final ColorMatch matchProcessor = new ColorMatch();
 
     /**
      * Use this method to create a ShootyBits instance. This method ensures that the
@@ -43,6 +52,10 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
 
         shooterMotor.configFactoryDefault();
         shooterMotor.setNeutralMode(NeutralMode.Brake);
+
+
+        matchProcessor.addColorMatch(Constants.Color.toWpiColor(Constants.Color.RED));
+        matchProcessor.addColorMatch(Constants.Color.toWpiColor(Constants.Color.BLUE));
     }
 
     public void setIntakeVoltage(double percentOutput) {
@@ -73,6 +86,35 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     public void periodic() {
         SmartDashboard.putBoolean("Lower ball \"slot\"", getLowBeamState().state);
         SmartDashboard.putBoolean("Upper ball \"slot\"", getHighBeamState().state);
+
+        Color colorDetected = detector.getColor();
+        SmartDashboard.putNumber("detected red", colorDetected.red);
+        SmartDashboard.putNumber("detected green", colorDetected.green);
+        SmartDashboard.putNumber("detected blue", colorDetected.blue);
+
+        /*
+        ColorMatchResult matchedColor = matchProcessor.matchClosestColor(colorDetected);
+        if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.RED)) {
+            SmartDashboard.putString("detected color", "RED");
+        } else if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.BLUE)){
+            SmartDashboard.putString("detected color", "BLUE");
+        } else {
+            SmartDashBoard.putString("detected color", "NONE");
+        }
+        //*/
+    }
+
+    public Constants.Color getDetectedColor() {
+        Color colorDetected = detector.getColor();
+        ColorMatchResult matchedColor = matchProcessor.matchClosestColor(colorDetected);
+
+        if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.RED)) {
+            return Constants.Color.RED;
+        } else if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.BLUE)){
+            return Constants.Color.BLUE;
+        } else {
+            return Constants.Color.NONE;
+        }
     }
 
     @Override
