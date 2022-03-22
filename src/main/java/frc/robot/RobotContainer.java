@@ -59,12 +59,10 @@ public class RobotContainer {
             JoystickConstants.kSwitchDriveModeButtonId);
 
     // Odin
-    //private final Trigger intakeVacuumTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.5);
-    private final JoystickButton intakeVacuumTrigger = new JoystickButton(xboxController, 7);
+    private final Trigger intakeVacuumTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.lt()) > 0.5);
     private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.lb());
 
-    //private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.5);
-    private final JoystickButton shootOutTrigger = new JoystickButton(xboxController, 8);
+    private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.5);
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
     private final JoystickButton cancelButton = new JoystickButton(xboxController, 1);
