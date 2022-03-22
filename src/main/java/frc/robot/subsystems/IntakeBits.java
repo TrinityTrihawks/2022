@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.Color;
+
 import static frc.robot.Constants.BeamState;
 
 public interface IntakeBits {
@@ -12,5 +14,8 @@ public interface IntakeBits {
 
     public BeamState getHighBeamState();
 
+    public Color getDetectedColor();
+
     public Subsystem getAsSubsystem();
+    
 }

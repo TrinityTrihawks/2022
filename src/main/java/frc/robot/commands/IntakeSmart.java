@@ -8,8 +8,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+
 import static frc.robot.Constants.BeamState;
 import static frc.robot.Constants.ShootyBitsConstants;
+
+import frc.robot.Constants.Color;
 import frc.robot.subsystems.IntakeBits;
 
 /**
@@ -137,10 +141,14 @@ public class IntakeSmart extends CommandBase {
 		}
 	}
 
+	
 //#region IntakeSmart
+	private final double kSpitTime = 1.5;
 
 	private IntakeBits intakeBits;
 	private Command delegatedCmd;
+
+	private final boolean shouldColorDetect = false;
 
 	public IntakeSmart(IntakeBits intake) {
 		intakeBits = intake;
@@ -161,7 +169,22 @@ public class IntakeSmart extends CommandBase {
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
+	@SuppressWarnings("Dead code")
 	public void execute() {
+		Color detectedColor = intakeBits.getDetectedColor();
+		if (shouldColorDetect && detectedColor == ShootyBitsConstants.kRejectColor) {
+			delegatedCmd.cancel();
+			Command spit = new StartEndCommand(
+				() -> {
+					intakeBits.setMiddleVoltage(-ShootyBitsConstants.kMiddleRunSpeed);
+					intakeBits.setIntakeVoltage(-ShootyBitsConstants.kIntakeRunSpeed);
+				}, 
+				() -> {
+					intakeBits.setMiddleVoltage(0);
+					intakeBits.setIntakeVoltage(0);
+				}, intakeBits.getAsSubsystem()).withTimeout(kSpitTime);
+			cancel();
+		}
 	}
 
 	// Called once the command ends or is interrupted.
