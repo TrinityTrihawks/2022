@@ -105,6 +105,8 @@ public final class Constants {
         public static final double kShooterSlowSpeed = 0.1;
         public static final Color kTargetColor = null;
         public static final Color kRejectColor = null;
+        public static final int kArmMotorPort = 0;
+        public static final int kLimitPort = 0;
     }
 
     /**

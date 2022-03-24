@@ -25,6 +25,9 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     private final VictorSPX intakeMotor = new VictorSPX(ShootyBitsConstants.kIntakeMotorPort);
     private final VictorSPX shooterMotor = new VictorSPX(ShootyBitsConstants.kShooterMotorPort);
 
+    private final TalonSRX armMotor = new TalonSRX(ShootyBitsConstants.kArmMotorPort);
+    private final DigitalInput limitSwitch = new DigitalInput(ShootyBitsConstants.kLimitPort);
+
     private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
     private final DigitalInput highBeamSensor = new DigitalInput(ShootyBitsConstants.kHighBeamPort);
 
@@ -58,28 +61,57 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
         matchProcessor.addColorMatch(Constants.Color.toWpiColor(Constants.Color.BLUE));
     }
 
+    @Override
     public void setIntakeVoltage(double percentOutput) {
         intakeMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
+    @Override
     public void setMiddleVoltage(double percentOutput) {
         middleMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
+    @Override
     public void setShooterVoltage(double percentOutput) {
         shooterMotor.set(ControlMode.PercentOutput, percentOutput);
     }
-
+    
+    @Override
+    public void setArmVoltage(double percentOutput) {
+        if (!limitSwitch.get()) {// TODO add other limit
+            armMotor.set(ControlMode.PercentOutput, percentOutput);
+        } else {
+            armMotor.set(ControlMode.PercentOutput, 0);
+        }
+    }
+    
+    @Override
     public BeamState getLowBeamState() {
         return BeamState.fromBoolean(midBeamSensor.get());
     }
-
+    
+    @Override
     public BeamState getHighBeamState() {
         return BeamState.fromBoolean(highBeamSensor.get());
     }
 
+    @Override
     public Subsystem getAsSubsystem() {
         return this;
+    }
+    
+    @Override
+    public Constants.Color getDetectedColor() {
+        Color colorDetected = detector.getColor();
+        ColorMatchResult matchedColor = matchProcessor.matchClosestColor(colorDetected);
+    
+        if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.RED)) {
+            return Constants.Color.RED;
+        } else if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.BLUE)){
+            return Constants.Color.BLUE;
+        } else {
+            return Constants.Color.NONE;
+        }
     }
 
     @Override
@@ -102,19 +134,6 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
             SmartDashBoard.putString("detected color", "NONE");
         }
         //*/
-    }
-
-    public Constants.Color getDetectedColor() {
-        Color colorDetected = detector.getColor();
-        ColorMatchResult matchedColor = matchProcessor.matchClosestColor(colorDetected);
-
-        if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.RED)) {
-            return Constants.Color.RED;
-        } else if (matchedColor.color == Constants.Color.toWpiColor(Constants.Color.BLUE)){
-            return Constants.Color.BLUE;
-        } else {
-            return Constants.Color.NONE;
-        }
     }
 
     @Override

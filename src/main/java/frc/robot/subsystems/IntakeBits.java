@@ -10,6 +10,8 @@ public interface IntakeBits {
 
     public void setMiddleVoltage(double percentOutput);
 
+    public void setArmVoltage(double percentOutput);
+
     public BeamState getLowBeamState();
 
     public BeamState getHighBeamState();
