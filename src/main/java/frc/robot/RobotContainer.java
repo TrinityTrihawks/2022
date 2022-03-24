@@ -26,6 +26,7 @@ import frc.robot.commands.DriveDoubleJoystick;
 import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveXFeetAuto;
 import frc.robot.commands.DriveZero;
+import frc.robot.commands.HallEffectTest;
 import frc.robot.commands.IntakeSmart;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ShootSmart;
@@ -236,7 +237,7 @@ public class RobotContainer {
                 new DriveXFeetAuto(drivetrain, 5),
                 new TurnXDegrees(drivetrain, 90)
         );
-        return intake2shoot2;
+        return new HallEffectTest(shootyBits);
         //return resetGyro.andThen(drive5feet_turn90degreees);
     }
     

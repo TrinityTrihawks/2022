@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -21,6 +22,8 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
 
     private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
     private final DigitalInput highBeamSensor = new DigitalInput(ShootyBitsConstants.kHighBeamPort);
+
+    private final Counter hallEffectCounter = new Counter();
 
     /**
      * Use this method to create a ShootyBits instance. This method ensures that the
@@ -43,6 +46,11 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
 
         shooterMotor.configFactoryDefault();
         shooterMotor.setNeutralMode(NeutralMode.Brake);
+
+        hallEffectCounter.setUpSource(0);
+        hallEffectCounter.setSemiPeriodMode(true);
+        hallEffectCounter.reset();
+
     }
 
     public void setIntakeVoltage(double percentOutput) {
@@ -63,6 +71,16 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
 
     public BeamState getHighBeamState() {
         return BeamState.fromBoolean(highBeamSensor.get());
+    }
+
+    public int getHallEffectCount() {
+        return hallEffectCounter.get();
+    }
+    public double getHallEffectPeriod() {
+        return hallEffectCounter.getPeriod();
+    }
+    public double getHallEffectRate() {
+        return hallEffectCounter.getRate();
     }
 
     public Subsystem getAsSubsystem() {
