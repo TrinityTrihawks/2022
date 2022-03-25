@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -63,6 +64,8 @@ public class RobotContainer {
 
     private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.5);
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
+
+    private final JoystickButton cancelButton = new JoystickButton(xboxController, 1);
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -159,19 +162,36 @@ public class RobotContainer {
     }
 
     private void configureXboxButtons() {
-        intakeVacuumTrigger.whenActive(new IntakeSmart(ShootyBits.getInstance()));
+        intakeVacuumTrigger.whenActive(new IntakeSmart(shootyBits));
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
         middleSpitButton.whileActiveOnce(runMiddleReverse);
-        shootOutTrigger.whenActive(new ShootSmart(ShootyBits.getInstance()));
+        shootOutTrigger.whenActive(new ShootSmart(shootyBits));
+
+        cancelButton.whenActive(
+            () -> {
+                Command curCmd = shootyBits.getCurrentCommand();
+                if (curCmd != null) {
+                    curCmd.cancel();
+                } else {
+                    System.out.println("no shootyBits cmds running");
+                }
+            },
+            shootyBits
+        );
     }
 
     private void configureDefaultCommands() {
         // Drivetrain default
-        drivetrain.setDefaultCommand(doubleDefault);
+        drivetrain.setDefaultCommand(new InstantCommand(
+            () -> {
+                rightJoystick.zero();
+                leftJoystick.zero();
+                System.out.println("zeroed");
+            }).andThen(singleDefault));
     }
 
     /**
-     * This method defines the button->command mappings. Buttons can be created by
+     * This method defines the button -> command mappings. Buttons can be created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
      * it to a {@link

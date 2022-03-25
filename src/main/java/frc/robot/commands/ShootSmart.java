@@ -75,7 +75,7 @@ public class ShootSmart extends CommandBase {
             );
 
         }
-        return null;
+        return new InstantCommand(() -> System.out.println("cant shoot" + shooter.getHighBeamState() + "," + shooter.getLowBeamState()), shooter.getAsSubsystem());
     }
 
     /**

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import frc.robot.Constants.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -84,7 +85,7 @@ public final class Constants {
         public static final double kYDeadZone = 0.1; // Front-Back
         public static final double kTwistDeadZone = 0.1; // Twist
 
-        public static final double kStaticThrottleScalar = 0.5; // multiple inputs values by this
+        public static final double kStaticThrottleScalar = 0.6; // multiple inputs values by this
 
         public static final int kZeroButtonId = 7;
         public static final int kSwitchDriveModeButtonId = 9;
@@ -95,8 +96,6 @@ public final class Constants {
         public static final int kMiddleMotorPort = 16;
         public static final int kShooterMotorPort = 18;
 
-        public static final double kShooterWheelSpeed = 0.8;
-        public static final double kMidWheelSpeed = 0.5;
         public static final int kLowBeamPort = 5;
         public static final int kHighBeamPort = 4;
 
@@ -104,6 +103,10 @@ public final class Constants {
         public static final double kMiddleRunSpeed = -0.3;
         public static final double kIntakeRunSpeed = -1;
         public static final double kShooterSlowSpeed = 0.1;
+        public static final Color kTargetColor = null;
+        public static final Color kRejectColor = null;
+        public static final int kArmMotorPort = 0;
+        public static final int kLimitPort = 0;
     }
 
     /**
@@ -127,8 +130,31 @@ public final class Constants {
             return state == OPEN.state ? CLOSED : OPEN;
         }
 
+        public String toString() {
+            return state == OPEN.state? "OPEN" : "CLOSED";
+        }
+
         public static BeamState fromBoolean(boolean bool) {
             return bool == OPEN.state ? OPEN : CLOSED;
+        }
+    }
+
+    public enum Color {
+        RED,
+        BLUE,
+        NONE;
+
+        private static final edu.wpi.first.wpilibj.util.Color red = new edu.wpi.first.wpilibj.util.Color(255, 0, 0);//TODO set colors
+        private static final edu.wpi.first.wpilibj.util.Color blue = new edu.wpi.first.wpilibj.util.Color(0, 0, 255);
+
+        public static edu.wpi.first.wpilibj.util.Color toWpiColor(Color c) {
+            if (c == RED) {
+                return red;
+            } else if (c == BLUE) {
+                return blue;
+            } else {
+                throw new IllegalArgumentException("cannot convert NONE to wpi Color");
+            }
         }
     }
     public interface GamepadInterface {
