@@ -65,7 +65,8 @@ public class RobotContainer {
     private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.5);
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
-    private final JoystickButton cancelButton = new JoystickButton(xboxController, 1);
+    private final JoystickButton cancelButton = new JoystickButton(xboxController, xboxPorts.x());
+    private final JoystickButton testButton = new JoystickButton(xboxController, xboxPorts.a());
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -138,6 +139,15 @@ public class RobotContainer {
 
             shootyBits);
 
+    private StartEndCommand shootyBitsTest = new StartEndCommand(
+            () -> {
+                shootyBits.setIntakeVoltage(ShootyBitsConstants.kIntakeRunSpeed);
+            },
+            () -> {
+                shootyBits.setIntakeVoltage(0);
+            },
+            shootyBits);
+
     private final NetworkTable subtable;
 
     /**
@@ -167,27 +177,29 @@ public class RobotContainer {
         middleSpitButton.whileActiveOnce(runMiddleReverse);
         shootOutTrigger.whenActive(new ShootSmart(shootyBits));
 
-        cancelButton.whenActive(
-            () -> {
-                Command curCmd = shootyBits.getCurrentCommand();
-                if (curCmd != null) {
-                    curCmd.cancel();
-                } else {
-                    System.out.println("no shootyBits cmds running");
-                }
-            },
-            shootyBits
-        );
+        cancelButton.whileActiveContinuous(
+                () -> {
+                    System.out.println(this + ": cancelling current shootyBits command");
+                    Command curCmd = CommandScheduler.getInstance().requiring(shootyBits);
+                    if (curCmd != null) {
+                        curCmd.cancel();
+                    } else {
+                        System.out.println(this + ": no shootyBits cmds running");
+                    }
+                },
+                shootyBits);
+        
+        testButton.whenActive(shootyBitsTest);
     }
 
     private void configureDefaultCommands() {
         // Drivetrain default
         drivetrain.setDefaultCommand(new InstantCommand(
-            () -> {
-                rightJoystick.zero();
-                leftJoystick.zero();
-                System.out.println("zeroed");
-            }).andThen(singleDefault));
+                () -> {
+                    rightJoystick.zero();
+                    leftJoystick.zero();
+                    System.out.println(this + ": zeroed joysticks");
+                }).andThen(doubleDefault));
     }
 
     /**
@@ -245,19 +257,17 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         Command resetGyro = new ResetGyro(drivetrain, DriveConstants.kGyroResetWaitTime);
-        
+
         Command intake2shoot2 = new SequentialCommandGroup(
                 newIntakeCommand(),
                 newIntakeCommand(),
-                newShootCommand()
-        );
+                newShootCommand());
 
         Command drive5feet_turn90degreees = new SequentialCommandGroup(
                 new DriveXFeetAuto(drivetrain, 5),
-                new TurnXDegrees(drivetrain, 90)
-        );
+                new TurnXDegrees(drivetrain, 90));
         return intake2shoot2;
-        //return resetGyro.andThen(drive5feet_turn90degreees);
+        // return resetGyro.andThen(drive5feet_turn90degreees);
     }
-    
+
 }

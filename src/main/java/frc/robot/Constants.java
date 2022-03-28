@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
-import frc.robot.Constants.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -99,13 +98,13 @@ public final class Constants {
         public static final int kLowBeamPort = 5;
         public static final int kHighBeamPort = 4;
 
-        public static final double kShooterRunSpeed = .5;
+        public static final double kShooterRunSpeed = -0.5;
         public static final double kMiddleRunSpeed = -0.3;
         public static final double kIntakeRunSpeed = -1;
         public static final double kShooterSlowSpeed = 0.1;
         public static final Color kTargetColor = null;
         public static final Color kRejectColor = null;
-        public static final int kArmMotorPort = 0;
+        public static final int kArmMotorPort = 19;
         public static final int kLimitPort = 0;
     }
 

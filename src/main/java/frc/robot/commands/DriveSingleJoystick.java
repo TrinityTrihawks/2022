@@ -20,8 +20,7 @@ public class DriveSingleJoystick extends CommandBase {
         xSupplier = x;
         ySupplier = y;
         twistSupplier = twist;
-        throttleSupplier = throttle; // todo: remove unnecessary thises
-
+        throttleSupplier = throttle; 
         addRequirements(drivetrain);
 
     }

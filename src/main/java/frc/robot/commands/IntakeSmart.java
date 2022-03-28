@@ -143,12 +143,8 @@ public class IntakeSmart extends CommandBase {
 
 	
 //#region IntakeSmart
-	private final double kSpitTime = 1.5;
-
 	private IntakeBits intakeBits;
 	private Command delegatedCmd;
-
-	private final boolean shouldColorDetect = false;
 
 	public IntakeSmart(IntakeBits intake) {
 		intakeBits = intake;
@@ -160,8 +156,10 @@ public class IntakeSmart extends CommandBase {
 	public void initialize() {
 		if (intakeBits.getHighBeamState() == BeamState.OPEN) {
 			delegatedCmd = new IntakeLowerSmart(intakeBits);
-		} else {
+		} else if (intakeBits.getLowBeamState() == BeamState.OPEN) {
 			delegatedCmd = new IntakeUpperSmart(intakeBits);
+		} else {
+			return;
 		}
 		System.out.println(delegatedCmd);
 		CommandScheduler.getInstance().schedule(delegatedCmd);
@@ -169,22 +167,7 @@ public class IntakeSmart extends CommandBase {
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
-	@SuppressWarnings("Dead code")
 	public void execute() {
-		Color detectedColor = intakeBits.getDetectedColor();
-		if (shouldColorDetect && detectedColor == ShootyBitsConstants.kRejectColor) {
-			delegatedCmd.cancel();
-			Command spit = new StartEndCommand(
-				() -> {
-					intakeBits.setMiddleVoltage(-ShootyBitsConstants.kMiddleRunSpeed);
-					intakeBits.setIntakeVoltage(-ShootyBitsConstants.kIntakeRunSpeed);
-				}, 
-				() -> {
-					intakeBits.setMiddleVoltage(0);
-					intakeBits.setIntakeVoltage(0);
-				}, intakeBits.getAsSubsystem()).withTimeout(kSpitTime);
-			cancel();
-		}
 	}
 
 	// Called once the command ends or is interrupted.
