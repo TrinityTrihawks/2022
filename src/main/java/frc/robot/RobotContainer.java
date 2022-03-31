@@ -28,6 +28,8 @@ import frc.robot.commands.DriveSingleJoystick;
 import frc.robot.commands.DriveXFeetAuto;
 import frc.robot.commands.DriveZero;
 import frc.robot.commands.IntakeSmart;
+import frc.robot.commands.IntakeSmartTakeTwo;
+import frc.robot.commands.RaisinTheBar;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ShootSmart;
 import frc.robot.commands.TurnXDegrees;
@@ -66,6 +68,8 @@ public class RobotContainer {
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
     private final JoystickButton cancelButton = new JoystickButton(xboxController, 1);
+
+    private final JoystickButton armButton = new JoystickButton(xboxController, xboxPorts.b());
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -162,10 +166,11 @@ public class RobotContainer {
     }
 
     private void configureXboxButtons() {
-        intakeVacuumTrigger.whenActive(new IntakeSmart(shootyBits));
+        intakeVacuumTrigger.whileActiveOnce(new IntakeSmartTakeTwo(shootyBits));
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
         middleSpitButton.whileActiveOnce(runMiddleReverse);
         shootOutTrigger.whenActive(new ShootSmart(shootyBits));
+        armButton.whileActiveOnce(new RaisinTheBar(shootyBits));
 
         cancelButton.whenActive(
             () -> {
