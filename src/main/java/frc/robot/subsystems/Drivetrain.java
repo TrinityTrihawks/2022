@@ -13,6 +13,7 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
@@ -37,11 +38,11 @@ public class Drivetrain extends SubsystemBase {
     private final RelativeEncoder backRightEncoder = rearRightSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, DriveConstants.kEncoderCPR);
 
     // The gyro sensor
-    private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
+    //private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
     
     // Odometry class for tracking robot pose
     private MecanumDriveOdometry mecanumOdometry = 
-        new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
+        new MecanumDriveOdometry(DriveConstants.kDriveKinematics, new Rotation2d(0));
 
     private SlewRateLimiter ylimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
     private SlewRateLimiter xlimiter = new SlewRateLimiter(DriveConstants.kSlewValue);
@@ -83,7 +84,7 @@ public class Drivetrain extends SubsystemBase {
 
     private void updateOdometry() {
         mecanumOdometry.update(
-                pigeon.getRotation2d(),
+                new Rotation2d(),
                 getCurrentWheelSpeeds());
     }
 
@@ -113,7 +114,7 @@ public class Drivetrain extends SubsystemBase {
      * @param pose The pose to which to set the odometry.
      */
     public void resetOdometry(Pose2d pose) {
-        mecanumOdometry.resetPosition(pose, pigeon.getRotation2d());
+        mecanumOdometry.resetPosition(pose, new Rotation2d());
     }
 
     /**
@@ -134,7 +135,7 @@ public class Drivetrain extends SubsystemBase {
         double rotSlew = zlimiter.calculate(rot);
 
         if (fieldRelative) {
-            mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew, pigeon.getAngle());
+            //mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew, pigeon.getAngle());
         } else {
             mecanumDrive.driveCartesian(xSlewSpeed, ySlewSpeed, rotSlew);
         }
@@ -175,15 +176,15 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void zeroHeading() {
-        pigeon.reset();
+        //pigeon.reset();
     }
 
     public double getHeading() {
-        return pigeon.getRotation2d().getDegrees();
+        return new Rotation2d().getDegrees();
     }
 
     public double getTurnRate() {
-        return pigeon.getRate();
+        return 0;
     }
 
     /**

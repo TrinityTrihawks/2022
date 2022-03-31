@@ -34,7 +34,7 @@ import frc.robot.subsystems.ShooterBits;
  */
 public class ShootSmart extends CommandBase {
     private final double kShooterShutdownTime = 1;
-    private final double kShooterWarmupTime = 1;
+    private final double kShooterWarmupTime = 1.2;
     private ShooterBits shooter;
     private Command delegatedCmd;
 
@@ -75,7 +75,7 @@ public class ShootSmart extends CommandBase {
             );
 
         }
-        return new InstantCommand(() -> System.out.println("cant shoot" + shooter.getHighBeamState() + "," + shooter.getLowBeamState()), shooter.getAsSubsystem());
+        return new InstantCommand(() -> System.out.println("can't shoot: " + shooter.getHighBeamState() + "," + shooter.getLowBeamState()), shooter.getAsSubsystem());
     }
 
     /**

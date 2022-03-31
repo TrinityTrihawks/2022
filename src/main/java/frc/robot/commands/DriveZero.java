@@ -25,6 +25,7 @@ public class DriveZero extends CommandBase {
 	@Override
 	public void execute() {
 		drive.drive(0, 0, 0, false);
+		System.out.println(this + ": not driving");
 	}
 
 	// Called once the command ends or is interrupted.
