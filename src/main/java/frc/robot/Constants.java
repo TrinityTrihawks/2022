@@ -68,7 +68,7 @@ public final class Constants {
         public static final double kGyroResetWaitTime = 4;
         public static final double kZStaticSlewScalar = 0.8;
 
-        public static final double feetToMetersConversionFactor = 0.3048;
+        public static final double kFeetToMetersConversionFactor = 0.3048;
     }
 
     /**
@@ -84,7 +84,7 @@ public final class Constants {
         public static final double kYDeadZone = 0.1; // Front-Back
         public static final double kTwistDeadZone = 0.1; // Twist
 
-        public static final double kStaticThrottleScalar = 0.6; // multiple inputs values by this
+        public static final double kStaticThrottleScalar = 1; // multiple inputs values by this
 
         public static final int kZeroButtonId = 7;
         public static final int kSwitchDriveModeButtonId = 9;
@@ -98,8 +98,8 @@ public final class Constants {
         public static final int kLowBeamPort = 5;
         public static final int kHighBeamPort = 4;
 
-        public static final double kShooterRunSpeed = -0.5;
-        public static final double kMiddleRunSpeed = -0.3;
+        public static final double kShooterRunSpeed = -0.46;
+        public static final double kMiddleRunSpeed = -0.4;
         public static final double kIntakeRunSpeed = -1;
         public static final double kShooterSlowSpeed = 0.1;
         public static final Color kTargetColor = null;
@@ -116,8 +116,8 @@ public final class Constants {
     }
 
     public enum BeamState {
-        OPEN(false),
-        CLOSED(true);
+        OPEN(true),
+        CLOSED(false);
 
         public final boolean state;
 

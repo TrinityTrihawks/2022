@@ -16,7 +16,6 @@ public class DriveXFeetAuto extends CommandBase {
   private double feetToDrive = 0;
   private Timer timer = new Timer();
 
-  /** Creates a new DriveXFeetAuto. */
   public DriveXFeetAuto(Drivetrain drivetrain, double feet) {
     this.drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -35,11 +34,11 @@ public class DriveXFeetAuto extends CommandBase {
     if (finished) {
       drivetrain.drive(0, 0, 0, false);
     } else if (Math.signum(feetToDrive) == 1) {
-      drivetrain.drive(0.2, 0, 0, true);
+      drivetrain.drive(0.2, 0, 0, false);
   } else if (Math.signum(feetToDrive) == -1) {
-    drivetrain.drive(-0.2, 0, 0, true);
+    drivetrain.drive(-0.2, 0, 0, false);
 }
-  if (drivetrain.getPose().getX() >= feetToDrive * DriveConstants.feetToMetersConversionFactor) { // meters
+  if (drivetrain.getPose().getX() >= feetToDrive * DriveConstants.kFeetToMetersConversionFactor) { // meters
       finished = true;
   }
   if ((timer.get() * 2) % 1 == 0) {
