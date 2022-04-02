@@ -170,7 +170,7 @@ public class RobotContainer {
         },
         () -> shootyBits.setArmVoltage(0),
         shootyBits
-    ).withTimeout(ShootyBitsConstants.kArmDownTime); 
+    ).withTimeout(ShootyBitsConstants.kArmDownTime).withInterrupt(() -> shootyBits.getArmLimit()); 
 
     private ParallelRaceGroup armBitUp = new StartEndCommand(
         () -> {

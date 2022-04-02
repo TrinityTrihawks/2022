@@ -21,6 +21,8 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
  */
 public final class Constants {
 
+    public static final double kOptimalVoltage = 12.7;
+    
     /**
      * Drive Constants
      */
@@ -105,7 +107,7 @@ public final class Constants {
         public static final Color kTargetColor = null;
         public static final Color kRejectColor = null;
         public static final int kArmMotorPort = 19;
-        public static final int kLimitPort = 0;
+        public static final int kLimitPort = 2;
         public static final double kArmDownSpeed = 0.3;
         public static final double kArmDownTime = 0.6;
         public static final double kArmUpSpeed = 0.5;
