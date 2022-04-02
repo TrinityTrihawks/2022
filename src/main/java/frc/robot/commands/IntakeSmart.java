@@ -64,8 +64,8 @@ public class IntakeSmart extends ProxyScheduleCommand {
 		}
 
 		private boolean shouldStop() {
-			return intakeBits.getLowBeamState() == BeamState.CLOSED 
-				&& lowerBeamHasBeenTriggered;
+			return intakeBits.getLowBeamState() == BeamState.CLOSED
+					&& lowerBeamHasBeenTriggered;
 		}
 
 		private void runWheels() {
@@ -140,8 +140,7 @@ public class IntakeSmart extends ProxyScheduleCommand {
 		}
 	}
 
-	
-//#region IntakeSmart
+	// #region IntakeSmart
 
 	public IntakeSmart(IntakeBits intake) {
 		super(getCommand(intake));
@@ -157,5 +156,5 @@ public class IntakeSmart extends ProxyScheduleCommand {
 		}
 	}
 
-//#endregion
+	// #endregion
 }
