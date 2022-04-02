@@ -328,7 +328,12 @@ public class RobotContainer {
                 (i) -> drivetrain.drive(0, 0, 0, false), 
                 () -> false, 
                 drivetrain
-            ).withTimeout(1)
+            ).withTimeout(1),
+            new InstantCommand(
+                () -> {
+                    leftJoystick.zero();
+                    rightJoystick.zero();
+                })
         );
 
         // return new SequentialCommandGroup(
