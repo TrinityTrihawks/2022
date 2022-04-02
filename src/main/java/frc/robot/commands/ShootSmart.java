@@ -5,9 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -32,46 +31,36 @@ import frc.robot.subsystems.ShooterBits;
  * 
  * all the while running the shooter wheel
  */
-public class ShootSmart extends CommandBase {
-    private final double kShooterShutdownTime = 1;
-    private final double kShooterWarmupTime = 1.2;
-    private ShooterBits shooter;
-    private Command delegatedCmd;
+public class ShootSmart extends ProxyScheduleCommand {
+    private final static double kShooterShutdownTime = 1;
+    private final static double kShooterWarmupTime = 1.2;
 
     public ShootSmart(ShooterBits shooter) {
-        this.shooter = shooter;
-        addRequirements(shooter.getAsSubsystem());
+        super(getCommand(shooter));
     }
 
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-        delegatedCmd = getCommand();
-        CommandScheduler.getInstance().schedule(delegatedCmd);
-    }
-
-    private Command getCommand() {
+    private static Command getCommand(ShooterBits shooter) {
 
         if (shooter.getHighBeamState() == BeamState.CLOSED && shooter.getLowBeamState() == BeamState.OPEN) {
 
             return new SequentialCommandGroup(
-                genStartShooter(),
+                genStartShooter(shooter),
 
-                genShoot1(),
+                genShoot1(shooter),
                 
-                genStopShooter()
+                genStopShooter(shooter)
             );
 
         } else if (shooter.getHighBeamState() == BeamState.OPEN && shooter.getLowBeamState() == BeamState.OPEN) {
 
             return new SequentialCommandGroup(
-                genStartShooter(),
+                genStartShooter(shooter),
 
-                genShoot1(),
+                genShoot1(shooter),
                 new WaitCommand(0.5),
-                genShoot1(),
+                genShoot1(shooter),
 
-                genStopShooter()
+                genStopShooter(shooter)
             );
 
         }
@@ -88,7 +77,7 @@ public class ShootSmart extends CommandBase {
      * if I'm wrong, feel free to introduce a
      * local variable to getCommand()
      */
-    private Command genStartShooter() {
+    private static Command genStartShooter(ShooterBits shooter) {
         return new SequentialCommandGroup(
             new InstantCommand(
                 () -> shooter.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
@@ -107,7 +96,7 @@ public class ShootSmart extends CommandBase {
      * if I'm wrong, feel free to introduce a
      * local variable to getCommand()
      */
-    private Command genShoot1() {
+    private static Command genShoot1(ShooterBits shooter) {
         return new StartEndCommand(
             () -> shooter.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed),
             () -> shooter.setMiddleVoltage(0),
@@ -125,28 +114,12 @@ public class ShootSmart extends CommandBase {
      * if I'm wrong, feel free to introduce a
      * local variable to getCommand()
      */
-    private Command genStopShooter() {
+    private static Command genStopShooter(ShooterBits shooter) {
         return new SequentialCommandGroup(
             new WaitCommand(kShooterShutdownTime),
             new InstantCommand(
                 () -> shooter.setShooterVoltage(0),
                 shooter.getAsSubsystem())
         );
-    } 
-
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute() {
-    }
-
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-    }
-
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-        return delegatedCmd.isFinished();
     }
 }

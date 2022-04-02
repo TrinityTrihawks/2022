@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -71,7 +72,6 @@ public class RobotContainer {
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
     private final JoystickButton cancelButton = new JoystickButton(xboxController, xboxPorts.x());
-    // private final JoystickButton testButton = new JoystickButton(xboxController, xboxPorts.a());
 
     private final JoystickButton warmupButton = new JoystickButton(xboxController, xboxPorts.b());
     private final JoystickButton shootRButton = new JoystickButton(xboxController, xboxPorts.a());
@@ -174,11 +174,11 @@ public class RobotContainer {
 
     private ParallelRaceGroup armBitUp = new StartEndCommand(
         () -> {
-            shootyBits.setArmVoltage(ShootyBitsConstants.kArmUpSpeed); // -0.5
+            shootyBits.setArmVoltage(ShootyBitsConstants.kArmUpSpeed); 
         },
         () -> shootyBits.setArmVoltage(0),
         shootyBits
-    ).withTimeout(ShootyBitsConstants.kArmUpTime); // 1.5
+    ).withTimeout(ShootyBitsConstants.kArmUpTime);
 
     private final NetworkTable subtable;
 
@@ -301,6 +301,8 @@ public class RobotContainer {
         Command drive5feet_turn90degreees = new SequentialCommandGroup(
                 new DriveXFeetAuto(drivetrain, 5),
                 new TurnXDegrees(drivetrain, 90));
+
+        
         return new SequentialCommandGroup(
             armBitDown,
             new ShootSmart(ShootyBits.getInstance()),

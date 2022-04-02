@@ -7,13 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 
 import static frc.robot.Constants.BeamState;
 import static frc.robot.Constants.ShootyBitsConstants;
 
-import frc.robot.Constants.Color;
 import frc.robot.subsystems.IntakeBits;
 
 /**
@@ -23,9 +22,9 @@ import frc.robot.subsystems.IntakeBits;
  * sub-delegates actual execution to inner classes depending on whether
  * there are one or no balls in the robot
  */
-public class IntakeSmart extends CommandBase {
+public class IntakeSmart extends ProxyScheduleCommand {
 
-	private class IntakeUpperSmart extends CommandBase {
+	private static class IntakeUpperSmart extends CommandBase {
 		private IntakeBits intakeBits;
 
 		private Timer delay = new Timer();
@@ -92,7 +91,7 @@ public class IntakeSmart extends CommandBase {
 		}
 	}
 
-	private class IntakeLowerSmart extends CommandBase {
+	private static class IntakeLowerSmart extends CommandBase {
 		private IntakeBits intakeBits;
 		private Timer timer = new Timer();
 
@@ -143,42 +142,20 @@ public class IntakeSmart extends CommandBase {
 
 	
 //#region IntakeSmart
-	private IntakeBits intakeBits;
-	private Command delegatedCmd;
 
 	public IntakeSmart(IntakeBits intake) {
-		intakeBits = intake;
-		addRequirements(intakeBits.getAsSubsystem());
+		super(getCommand(intake));
 	}
 
-	// Called when the command is initially scheduled.
-	@Override
-	public void initialize() {
+	private static Command getCommand(IntakeBits intakeBits) {
 		if (intakeBits.getHighBeamState() == BeamState.OPEN) {
-			delegatedCmd = new IntakeLowerSmart(intakeBits);
+			return new IntakeLowerSmart(intakeBits);
 		} else if (intakeBits.getLowBeamState() == BeamState.OPEN) {
-			delegatedCmd = new IntakeUpperSmart(intakeBits);
+			return new IntakeUpperSmart(intakeBits);
 		} else {
-			return;
+			return new InstantCommand();
 		}
-		// System.out.println(delegatedCmd);
-		CommandScheduler.getInstance().schedule(delegatedCmd);
 	}
 
-	// Called every time the scheduler runs while the command is scheduled.
-	@Override
-	public void execute() {
-	}
-
-	// Called once the command ends or is interrupted.
-	@Override
-	public void end(boolean interrupted) {
-	}
-
-	// Returns true when the command should end.
-	@Override
-	public boolean isFinished() {
-		return delegatedCmd.isFinished();
-	}
 //#endregion
 }
