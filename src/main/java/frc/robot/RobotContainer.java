@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
@@ -278,7 +279,7 @@ public class RobotContainer {
     }
 
     private Command newShootCommand() {
-        Command shootSmart = new ShootSmart(ShootyBits.getInstance());
+        Command shootSmart = ShootSmart.create(ShootyBits.getInstance());
         return new ParallelRaceGroup(
                 shootSmart,
                 new DriveZero(drivetrain));
@@ -305,7 +306,22 @@ public class RobotContainer {
         
         return new SequentialCommandGroup(
             armBitDown,
-            new ShootSmart(ShootyBits.getInstance()),
+            new SequentialCommandGroup(
+                new StartEndCommand(
+                    () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
+                    () -> {},
+                    shootyBits
+                ).withTimeout(1.2),
+                new StartEndCommand(
+                    () -> shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed),
+                    () -> {
+                        shootyBits.setMiddleVoltage(0);
+                        shootyBits.setShooterVoltage(0);
+                    },
+                    shootyBits
+                ).withTimeout(2)
+            ),
+            new PrintCommand(this + ": done shooting"),
             new FunctionalCommand(
                 () -> System.out.println(this + ": driving backwards"), 
                 () -> drivetrain.drive(-0.5, 0, 0, false), 
@@ -314,6 +330,17 @@ public class RobotContainer {
                 drivetrain
             ).withTimeout(1)
         );
+
+        // return new SequentialCommandGroup(
+        //     armBitDown,
+        //     new FunctionalCommand(
+        //             () -> System.out.println(this + ": driving backwards"), 
+        //             () -> drivetrain.drive(-0.5, 0, 0, false), 
+        //             (i) -> drivetrain.drive(0, 0, 0, false), 
+        //             () -> false, 
+        //             drivetrain
+        //         ).withTimeout(1));
+
         // return resetGyro.andThen(drive5feet_turn90degreees);
     }
 
