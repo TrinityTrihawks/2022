@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -35,8 +36,12 @@ public class ShootSmart extends ProxyScheduleCommand {
     private final static double kShooterShutdownTime = 1;
     private final static double kShooterWarmupTime = 1.2;
 
-    public ShootSmart(ShooterBits shooter) {
+    private ShootSmart(ShooterBits shooter) {
         super(getCommand(shooter));
+    }
+
+    public static Command create(ShooterBits shooter) {
+        return new ProxyScheduleCommand(getCommand(shooter));
     }
 
     private static Command getCommand(ShooterBits shooter) {
@@ -48,7 +53,9 @@ public class ShootSmart extends ProxyScheduleCommand {
 
                 genShoot1(shooter),
                 
-                genStopShooter(shooter)
+                genStopShooter(shooter),
+
+                new PrintCommand("ShootSmart: done shooting one")
             );
 
         } else if (shooter.getHighBeamState() == BeamState.OPEN && shooter.getLowBeamState() == BeamState.OPEN) {
