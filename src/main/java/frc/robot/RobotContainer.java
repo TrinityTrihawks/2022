@@ -51,6 +51,7 @@ public class RobotContainer {
     // Subsystems
     private final Drivetrain drivetrain = Drivetrain.getInstance();
     private final ShootyBits shootyBits = ShootyBits.getInstance();
+
     private final XboxPortProvider xboxPorts = new XboxPortProvider();
 
     private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor"); // Thor
@@ -70,12 +71,13 @@ public class RobotContainer {
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
     private final JoystickButton cancelButton = new JoystickButton(xboxController, xboxPorts.x());
-    private final JoystickButton testButton = new JoystickButton(xboxController, xboxPorts.a());
+    // private final JoystickButton testButton = new JoystickButton(xboxController, xboxPorts.a());
 
     private final JoystickButton warmupButton = new JoystickButton(xboxController, xboxPorts.b());
-    private final JoystickButton shootRButton = new JoystickButton(xboxController, 7);
+    private final JoystickButton shootRButton = new JoystickButton(xboxController, xboxPorts.a());
 
-    private final JoystickButton armButton = new JoystickButton(xboxController, xboxPorts.b());
+    private final JoystickButton armDownButton = new JoystickButton(xboxController, xboxPorts.y());
+    private final JoystickButton armUpButton = new JoystickButton(xboxController, 9);
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -161,6 +163,22 @@ public class RobotContainer {
                 shootyBits.setIntakeVoltage(0);
             },
             shootyBits);
+    
+    private ParallelRaceGroup armBitDown = new StartEndCommand(
+        () -> {
+            shootyBits.setArmVoltage(ShootyBitsConstants.kArmDownSpeed);
+        },
+        () -> shootyBits.setArmVoltage(0),
+        shootyBits
+    ).withTimeout(ShootyBitsConstants.kArmDownTime); 
+
+    private ParallelRaceGroup armBitUp = new StartEndCommand(
+        () -> {
+            shootyBits.setArmVoltage(ShootyBitsConstants.kArmUpSpeed); // -0.5
+        },
+        () -> shootyBits.setArmVoltage(0),
+        shootyBits
+    ).withTimeout(ShootyBitsConstants.kArmUpTime); // 1.5
 
     private final NetworkTable subtable;
 
@@ -186,17 +204,17 @@ public class RobotContainer {
     }
 
     private void configureXboxButtons() {
-        intakeVacuumTrigger.whileActiveOnce(new IntakeSmartTakeTwo(shootyBits));
+        intakeVacuumTrigger.whileActiveOnce(runIntake);
         intakeSpitButton.whileActiveOnce(runIntakeReverse);
         middleSpitButton.whileActiveOnce(runMiddleReverse);
-        shootOutTrigger.whenActive(new ShootSmart(shootyBits));
-        armButton.whileActiveOnce(new RaisinTheBar(shootyBits));
+        shootOutTrigger.whileActiveOnce(runAll);
+        // armDownButton.whenActive(armBitDown);
+        // armUpButton.whenActive(armBitUp);
         warmupButton.whileActiveOnce(runShooter);
         shootRButton.whileActiveOnce(runShooterReverse);
 
-        cancelButton.whileActiveContinuous(
+        cancelButton.whenActive(
                 () -> {
-                    System.out.println(this + ": cancelling current shootyBits command");
                     Command curCmd = CommandScheduler.getInstance().requiring(shootyBits);
                     if (curCmd != null) {
                         curCmd.cancel();
@@ -206,8 +224,6 @@ public class RobotContainer {
                 },
                 shootyBits);
         
-        testButton.whenActive(shootyBitsTest);
-
     }
 
     private void configureDefaultCommands() {
@@ -262,10 +278,10 @@ public class RobotContainer {
     }
 
     private Command newShootCommand() {
-        System.out.println(this + ": creating new ShootSmart");
+        Command shootSmart = new ShootSmart(ShootyBits.getInstance());
         return new ParallelRaceGroup(
-                new ShootSmart(ShootyBits.getInstance()),
-                new DriveZero(drivetrain).withTimeout(5));
+                shootSmart,
+                new DriveZero(drivetrain));
 
     }
 
@@ -286,9 +302,10 @@ public class RobotContainer {
                 new DriveXFeetAuto(drivetrain, 5),
                 new TurnXDegrees(drivetrain, 90));
         return new SequentialCommandGroup(
-            newShootCommand(),
+            armBitDown,
+            new ShootSmart(ShootyBits.getInstance()),
             new FunctionalCommand(
-                () -> System.out.println(this + ": driving"), 
+                () -> System.out.println(this + ": driving backwards"), 
                 () -> drivetrain.drive(-0.5, 0, 0, false), 
                 (i) -> drivetrain.drive(0, 0, 0, false), 
                 () -> false, 

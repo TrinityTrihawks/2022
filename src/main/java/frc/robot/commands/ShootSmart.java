@@ -52,7 +52,7 @@ public class ShootSmart extends CommandBase {
 
     private Command getCommand() {
 
-        if (shooter.getHighBeamState() == BeamState.OPEN && shooter.getLowBeamState() == BeamState.CLOSED) {
+        if (shooter.getHighBeamState() == BeamState.CLOSED && shooter.getLowBeamState() == BeamState.OPEN) {
 
             return new SequentialCommandGroup(
                 genStartShooter(),
@@ -75,7 +75,7 @@ public class ShootSmart extends CommandBase {
             );
 
         }
-        return new InstantCommand(() -> System.out.println("can't shoot: " + shooter.getHighBeamState() + "," + shooter.getLowBeamState()), shooter.getAsSubsystem());
+        return new InstantCommand();
     }
 
     /**

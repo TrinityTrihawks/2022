@@ -44,9 +44,9 @@ public class Drive5ftInAutoOdo extends CommandBase {
             finished = true;
         }
         if ((timer.get() * 2) % 1 == 0) {
-            System.out.println(drivetrain.getPose().getX() + "," +
-                               drivetrain.getPose().getY() + "," +
-                               drivetrain.getPose().getRotation().getDegrees());
+            // System.out.println(drivetrain.getPose().getX() + "," +
+            //                    drivetrain.getPose().getY() + "," +
+            //                    drivetrain.getPose().getRotation().getDegrees());
         }
     }
 

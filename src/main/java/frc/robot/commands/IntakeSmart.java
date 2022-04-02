@@ -161,7 +161,7 @@ public class IntakeSmart extends CommandBase {
 		} else {
 			return;
 		}
-		System.out.println(delegatedCmd);
+		// System.out.println(delegatedCmd);
 		CommandScheduler.getInstance().schedule(delegatedCmd);
 	}
 

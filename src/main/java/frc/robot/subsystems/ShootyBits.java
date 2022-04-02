@@ -20,7 +20,7 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     private final VictorSPX intakeMotor = new VictorSPX(ShootyBitsConstants.kIntakeMotorPort);
     private final VictorSPX shooterMotor = new VictorSPX(ShootyBitsConstants.kShooterMotorPort);
 
-    private final TalonSRX armMotor = new TalonSRX(ShootyBitsConstants.kArmMotorPort);
+    private final VictorSPX armMotor = new VictorSPX(ShootyBitsConstants.kArmMotorPort);
     private final DigitalInput limitSwitchUpper = new DigitalInput(ShootyBitsConstants.kLimitPort);
 
     private final DigitalInput midBeamSensor = new DigitalInput(ShootyBitsConstants.kLowBeamPort);
@@ -48,6 +48,9 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
         shooterMotor.configFactoryDefault();
         shooterMotor.setNeutralMode(NeutralMode.Brake);
 
+        armMotor.configFactoryDefault();
+
+
     }
 
     @Override
@@ -67,11 +70,11 @@ public class ShootyBits extends SubsystemBase implements IntakeBits, ShooterBits
     
     @Override
     public void setArmVoltage(double percentOutput) {
-        if (!limitSwitchUpper.get()) {// TODO add other limit
+        // if (!limitSwitchUpper.get()) {// TODO add other limit
             armMotor.set(ControlMode.PercentOutput, percentOutput);
-        } else {
-            armMotor.set(ControlMode.PercentOutput, 0);
-        }
+        // } else {
+            // armMotor.set(ControlMode.PercentOutput, 0);
+        // }
     }
     
     @Override

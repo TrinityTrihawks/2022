@@ -78,8 +78,8 @@ public class Drivetrain extends SubsystemBase {
     @Override
     public void periodic() {
         updateOdometry();  
-        putMotorRPMToSmartDashboard();
-        putGyroAngleToSmartDashboard();
+        //putGyroAngleToSmartDashboard();
+        //putMotorRPMToSmartDashboard();
     }
 
     private void updateOdometry() {

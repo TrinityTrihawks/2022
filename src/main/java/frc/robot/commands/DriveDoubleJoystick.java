@@ -66,10 +66,10 @@ public class DriveDoubleJoystick extends CommandBase {
         y = y * throttle * JoystickConstants.kStaticThrottleScalar * -1; //correct the y-axis (backwards is now backwards!)
         twist = twist * throttle * JoystickConstants.kStaticThrottleScalar;
 
-        SmartDashboard.putNumber("X", x);
-        SmartDashboard.putNumber("Y", y);
-        SmartDashboard.putNumber("Twistation", twist);
-        SmartDashboard.putNumber("Throttle", throttle);
+        // SmartDashboard.putNumber("X", x);
+        // SmartDashboard.putNumber("Y", y);
+        // SmartDashboard.putNumber("Twistation", twist);
+        // SmartDashboard.putNumber("Throttle", throttle);
 
         drivetrain.drive(y, x, twist, false);
     }

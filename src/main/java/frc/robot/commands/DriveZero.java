@@ -10,6 +10,7 @@ import frc.robot.subsystems.Drivetrain;
 public class DriveZero extends CommandBase {
 
 	private Drivetrain drive;
+	private boolean hasBeenInt = false;
 
 	public DriveZero(Drivetrain drivetrain) {
 		drive = drivetrain;
@@ -19,18 +20,20 @@ public class DriveZero extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+		System.out.println(this + ": beginning to not drive");
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		drive.drive(0, 0, 0, false);
 		System.out.println(this + ": not driving");
+		drive.drive(0, 0, 0, false);
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
+		hasBeenInt = interrupted;
 	}
 
 	// Returns true when the command should end.

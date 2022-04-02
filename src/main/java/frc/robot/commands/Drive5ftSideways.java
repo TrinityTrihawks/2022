@@ -34,7 +34,7 @@ public class Drive5ftSideways extends CommandBase {
 		if (drive.getPose().getY() >= 1.524) {
 			finished = true;
 		}
-		System.out.println(drive.getPose().getY() + "," + drive.getPose().getX());
+		//System.out.println(drive.getPose().getY() + "," + drive.getPose().getX());
 	}
 
 	// Called once the command ends or is interrupted.

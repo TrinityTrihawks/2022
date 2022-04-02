@@ -19,7 +19,6 @@ public class ZeroableJoystick extends Joystick {
         offsetY = getY();
         offsetTwist = getTwist();
         offsetThrottle = getThrottle();
-        System.out.println("00000000000000000 " + name + " ZEROED 00000000000000000");
     }
 
     public double getZeroedX() {
