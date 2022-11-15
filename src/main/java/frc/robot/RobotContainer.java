@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -73,13 +74,14 @@ public class RobotContainer {
     private final JoystickButton warmupButton = new JoystickButton(xboxController, xboxPorts.b());
     private final JoystickButton shootRButton = new JoystickButton(xboxController, xboxPorts.a());
     private final JoystickButton shootOverButton = new JoystickButton(xboxController, 9);
-    
+
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
     private final JoystickButton cancelButton = new JoystickButton(xboxController, xboxPorts.x());
 
     private final JoystickButton armDownButton = new JoystickButton(xboxController, xboxPorts.y());
-    // private final JoystickButton armUpButton = new JoystickButton(xboxController, 9);
+    // private final JoystickButton armUpButton = new JoystickButton(xboxController,
+    // 9);
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -132,11 +134,11 @@ public class RobotContainer {
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
             () -> shootyBits.setShooterVoltage(0),
             shootyBits);
-    
+
     private StartEndCommand runShooterReverse = new StartEndCommand(
-        () -> shootyBits.setShooterVoltage(-ShootyBitsConstants.kShooterSlowSpeed),
-        () -> shootyBits.setShooterVoltage(0),
-        shootyBits);
+            () -> shootyBits.setShooterVoltage(-ShootyBitsConstants.kShooterSlowSpeed),
+            () -> shootyBits.setShooterVoltage(0),
+            shootyBits);
 
     private StartEndCommand runShooterSlow = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterSlowSpeed),
@@ -165,22 +167,20 @@ public class RobotContainer {
                 shootyBits.setIntakeVoltage(0);
             },
             shootyBits);
-    
+
     private ParallelRaceGroup armBitDown = new StartEndCommand(
-        () -> {
-            shootyBits.setArmVoltage(ShootyBitsConstants.kArmDownSpeed);
-        },
-        () -> shootyBits.setArmVoltage(0),
-        shootyBits
-    ).withTimeout(ShootyBitsConstants.kArmDownTime).withInterrupt(() -> shootyBits.getArmLimit()); 
+            () -> {
+                shootyBits.setArmVoltage(ShootyBitsConstants.kArmDownSpeed);
+            },
+            () -> shootyBits.setArmVoltage(0),
+            shootyBits).withTimeout(ShootyBitsConstants.kArmDownTime).withInterrupt(() -> shootyBits.getArmLimit());
 
     private ParallelRaceGroup armBitUp = new StartEndCommand(
-        () -> {
-            shootyBits.setArmVoltage(ShootyBitsConstants.kArmUpSpeed); 
-        },
-        () -> shootyBits.setArmVoltage(0),
-        shootyBits
-    ).withTimeout(ShootyBitsConstants.kArmUpTime);
+            () -> {
+                shootyBits.setArmVoltage(ShootyBitsConstants.kArmUpSpeed);
+            },
+            () -> shootyBits.setArmVoltage(0),
+            shootyBits).withTimeout(ShootyBitsConstants.kArmUpTime);
 
     private StartEndCommand runShooterOverhead = new StartEndCommand(
             () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterOverheadSpeed),
@@ -230,7 +230,7 @@ public class RobotContainer {
                     }
                 },
                 shootyBits);
-        
+
     }
 
     private void configureDefaultCommands() {
@@ -304,53 +304,48 @@ public class RobotContainer {
                 newIntakeCommand(),
                 newIntakeCommand(),
                 newShootCommand());
-//isaac helped
+        // isaac helped
         Command drive5feet_turn90degreees = new SequentialCommandGroup(
                 new DriveXFeetAuto(drivetrain, 5),
                 new TurnXDegrees(drivetrain, 90));
 
-        
         return new SequentialCommandGroup(
-            armBitDown,
-            new SequentialCommandGroup(
-                new StartEndCommand(
-                    () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
-                    () -> {},
-                    shootyBits
-                ).withTimeout(1.2),
-                new StartEndCommand(
-                    () -> shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed),
-                    () -> {
-                        shootyBits.setMiddleVoltage(0);
-                        shootyBits.setShooterVoltage(0);
-                    },
-                    shootyBits
-                ).withTimeout(2)
-            ),
-            new PrintCommand(this + ": done shooting"),
-            new FunctionalCommand(
-                () -> System.out.println(this + ": driving backwards"), 
-                () -> drivetrain.drive(-0.5, 0, 0, false), 
-                (i) -> drivetrain.drive(0, 0, 0, false), 
-                () -> false, 
-                drivetrain
-            ).withTimeout(1),
-            new InstantCommand(
-                () -> {
-                    leftJoystick.zero();
-                    rightJoystick.zero();
-                })
-        );
+                armBitDown,
+                new SequentialCommandGroup(
+                        new StartEndCommand(
+                                () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
+                                () -> {
+                                },
+                                shootyBits).withTimeout(1.2),
+                        new StartEndCommand(
+                                () -> shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed),
+                                () -> {
+                                    shootyBits.setMiddleVoltage(0);
+                                    shootyBits.setShooterVoltage(0);
+                                },
+                                shootyBits).withTimeout(2)),
+                new PrintCommand(this + ": done shooting"),
+                new FunctionalCommand(
+                        () -> System.out.println(this + ": driving backwards"),
+                        () -> drivetrain.drive(-0.5, 0, 0, false),
+                        (i) -> drivetrain.drive(0, 0, 0, false),
+                        () -> false,
+                        drivetrain).withTimeout(1),
+                new InstantCommand(
+                        () -> {
+                            leftJoystick.zero();
+                            rightJoystick.zero();
+                        }));
 
         // return new SequentialCommandGroup(
-        //     armBitDown,
-        //     new FunctionalCommand(
-        //             () -> System.out.println(this + ": driving backwards"), 
-        //             () -> drivetrain.drive(-0.5, 0, 0, false), 
-        //             (i) -> drivetrain.drive(0, 0, 0, false), 
-        //             () -> false, 
-        //             drivetrain
-        //         ).withTimeout(1));
+        // armBitDown,
+        // new FunctionalCommand(
+        // () -> System.out.println(this + ": driving backwards"),
+        // () -> drivetrain.drive(-0.5, 0, 0, false),
+        // (i) -> drivetrain.drive(0, 0, 0, false),
+        // () -> false,
+        // drivetrain
+        // ).withTimeout(1));
 
         // return resetGyro.andThen(drive5feet_turn90degreees);
     }
