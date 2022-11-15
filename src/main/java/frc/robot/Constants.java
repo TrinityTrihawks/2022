@@ -21,7 +21,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
  */
 public final class Constants {
 
-    public static final double kOptimalVoltage = 12.7;
+    public static final double kOptimalVoltage = 12.8;
     
     /**
      * Drive Constants
@@ -101,9 +101,10 @@ public final class Constants {
         public static final int kHighBeamPort = 4;
 
         public static final double kShooterRunSpeed = -0.5;
+        public static final double kShooterSlowSpeed = 0.1;
+		public static final double kShooterOverheadSpeed = 0.8;
         public static final double kMiddleRunSpeed = -0.4;
         public static final double kIntakeRunSpeed = -1;
-        public static final double kShooterSlowSpeed = 0.1;
         public static final Color kTargetColor = null;
         public static final Color kRejectColor = null;
         public static final int kArmMotorPort = 19;

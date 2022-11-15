@@ -70,15 +70,16 @@ public class RobotContainer {
     private final JoystickButton intakeSpitButton = new JoystickButton(xboxController, xboxPorts.lb());
 
     private final Trigger shootOutTrigger = new Trigger(() -> xboxController.getRawAxis(xboxPorts.rt()) > 0.5);
+    private final JoystickButton warmupButton = new JoystickButton(xboxController, xboxPorts.b());
+    private final JoystickButton shootRButton = new JoystickButton(xboxController, xboxPorts.a());
+    private final JoystickButton shootOverButton = new JoystickButton(xboxController, 9);
+    
     private final JoystickButton middleSpitButton = new JoystickButton(xboxController, xboxPorts.rb());
 
     private final JoystickButton cancelButton = new JoystickButton(xboxController, xboxPorts.x());
 
-    private final JoystickButton warmupButton = new JoystickButton(xboxController, xboxPorts.b());
-    private final JoystickButton shootRButton = new JoystickButton(xboxController, xboxPorts.a());
-
     private final JoystickButton armDownButton = new JoystickButton(xboxController, xboxPorts.y());
-    private final JoystickButton armUpButton = new JoystickButton(xboxController, 9);
+    // private final JoystickButton armUpButton = new JoystickButton(xboxController, 9);
 
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
@@ -180,6 +181,11 @@ public class RobotContainer {
         () -> shootyBits.setArmVoltage(0),
         shootyBits
     ).withTimeout(ShootyBitsConstants.kArmUpTime);
+
+    private StartEndCommand runShooterOverhead = new StartEndCommand(
+            () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterOverheadSpeed),
+            () -> shootyBits.setShooterVoltage(0),
+            shootyBits);
 
     private final NetworkTable subtable;
 
