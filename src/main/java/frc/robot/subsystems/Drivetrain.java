@@ -171,11 +171,19 @@ public class Drivetrain extends SubsystemBase {
     public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
         return new MecanumDriveWheelSpeeds(
                 frontLeftEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60, // rotations per minute *
-                                                                                              // meters per rotation *
-                                                                                              // minute per seconds
+                // meters per rotation *
+                // minute per seconds
                 frontRightEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60,
                 backLeftEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60,
                 backRightEncoder.getVelocity() * DriveConstants.kMetersPerMotorRotation / 60);
+    }
+
+    public void setFR(double percent) {
+        frontRightSparkMax.set(percent);
+    }
+
+    public double getFRRPM() {
+        return frontRightEncoder.getVelocity();
     }
 
     /**
