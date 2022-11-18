@@ -32,6 +32,11 @@ public class SpinFRPID extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        SmartDashboard.putNumber("kp", 0);
+        SmartDashboard.putNumber("ki", 0);
+        SmartDashboard.putNumber("velErrTolerance", 0);
+        SmartDashboard.putNumber("target", 0);
+        SmartDashboard.putNumber("accErrTolerance", 0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
