@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.GamepadInterface;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.ShootyBitsConstants;
 import frc.robot.Constants.XboxPortProvider;
@@ -56,7 +57,7 @@ public class RobotContainer {
     private final Drivetrain drivetrain = Drivetrain.getInstance();
     private final ShootyBits shootyBits = ShootyBits.getInstance();
 
-    private final XboxPortProvider xboxPorts = new XboxPortProvider();
+    private final GamepadInterface xboxPorts = new XboxPortProvider();
 
     private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor"); // Thor
     private final ZeroableJoystick leftJoystick = new ZeroableJoystick(JoystickConstants.kLeftJoystickPort, "Loki"); // Loki
@@ -350,7 +351,7 @@ public class RobotContainer {
 
         // return resetGyro.andThen(drive5feet_turn90degreees);
 
-        return new SpinFRPID(drivetrain);
+        return new SequentialCommandGroup(new SpinFRPID(drivetrain));
     }
 
 }
