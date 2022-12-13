@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.GamepadInterface;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.ShootyBitsConstants;
 import frc.robot.Constants.XboxPortProvider;
@@ -37,6 +38,7 @@ import frc.robot.commands.IntakeSmartTakeTwo;
 import frc.robot.commands.RaisinTheBar;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.ShootSmart;
+import frc.robot.commands.SpinFRPID;
 import frc.robot.commands.TurnXDegrees;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ShootyBits;
@@ -55,7 +57,7 @@ public class RobotContainer {
     private final Drivetrain drivetrain = Drivetrain.getInstance();
     private final ShootyBits shootyBits = ShootyBits.getInstance();
 
-    private final XboxPortProvider xboxPorts = new XboxPortProvider();
+    private final GamepadInterface xboxPorts = new XboxPortProvider();
 
     private final ZeroableJoystick rightJoystick = new ZeroableJoystick(JoystickConstants.kRightJoystickPort, "Thor"); // Thor
     private final ZeroableJoystick leftJoystick = new ZeroableJoystick(JoystickConstants.kLeftJoystickPort, "Loki"); // Loki
@@ -309,33 +311,33 @@ public class RobotContainer {
                 new DriveXFeetAuto(drivetrain, 5),
                 new TurnXDegrees(drivetrain, 90));
 
-        return new SequentialCommandGroup(
-                armBitDown,
-                new SequentialCommandGroup(
-                        new StartEndCommand(
-                                () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
-                                () -> {
-                                },
-                                shootyBits).withTimeout(1.2),
-                        new StartEndCommand(
-                                () -> shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed),
-                                () -> {
-                                    shootyBits.setMiddleVoltage(0);
-                                    shootyBits.setShooterVoltage(0);
-                                },
-                                shootyBits).withTimeout(2)),
-                new PrintCommand(this + ": done shooting"),
-                new FunctionalCommand(
-                        () -> System.out.println(this + ": driving backwards"),
-                        () -> drivetrain.drive(-0.5, 0, 0, false),
-                        (i) -> drivetrain.drive(0, 0, 0, false),
-                        () -> false,
-                        drivetrain).withTimeout(1),
-                new InstantCommand(
-                        () -> {
-                            leftJoystick.zero();
-                            rightJoystick.zero();
-                        }));
+        // Command compAutonCmd = new SequentialCommandGroup(
+        // armBitDown,
+        // new SequentialCommandGroup(
+        // new StartEndCommand(
+        // () -> shootyBits.setShooterVoltage(ShootyBitsConstants.kShooterRunSpeed),
+        // () -> {
+        // },
+        // shootyBits).withTimeout(1.2),
+        // new StartEndCommand(
+        // () -> shootyBits.setMiddleVoltage(ShootyBitsConstants.kMiddleRunSpeed),
+        // () -> {
+        // shootyBits.setMiddleVoltage(0);
+        // shootyBits.setShooterVoltage(0);
+        // },
+        // shootyBits).withTimeout(2)),
+        // new PrintCommand(this + ": done shooting"),
+        // new FunctionalCommand(
+        // () -> System.out.println(this + ": driving backwards"),
+        // () -> drivetrain.drive(-0.5, 0, 0, false),
+        // (i) -> drivetrain.drive(0, 0, 0, false),
+        // () -> false,
+        // drivetrain).withTimeout(1),
+        // new InstantCommand(
+        // () -> {
+        // leftJoystick.zero();
+        // rightJoystick.zero();
+        // }));
 
         // return new SequentialCommandGroup(
         // armBitDown,
@@ -348,6 +350,8 @@ public class RobotContainer {
         // ).withTimeout(1));
 
         // return resetGyro.andThen(drive5feet_turn90degreees);
+
+        return new SequentialCommandGroup(new SpinFRPID(drivetrain));
     }
 
 }

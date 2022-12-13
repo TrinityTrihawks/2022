@@ -32,11 +32,11 @@ public class SpinFRPID extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        SmartDashboard.putNumber("kp", 0);
-        SmartDashboard.putNumber("ki", 0);
-        SmartDashboard.putNumber("velErrTolerance", 0);
-        SmartDashboard.putNumber("target", 0);
-        SmartDashboard.putNumber("accErrTolerance", 0);
+        // SmartDashboard.putNumber("kp", 0);
+        // SmartDashboard.putNumber("ki", 0);
+        // SmartDashboard.putNumber("velErrTolerance", 0);
+        // SmartDashboard.putNumber("target", 0);
+        // SmartDashboard.putNumber("accErrTolerance", 0);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -52,7 +52,8 @@ public class SpinFRPID extends CommandBase {
         controller.setI(ki);
         controller.setTolerance(velErrTolerance, accErrTolerance);
         controller.setSetpoint(target);
-        drivetrain.setFR(controller.calculate(drivetrain.getFRRPM()));
+        drivetrain.setFR(controller.calculate(drivetrain.getFRRPM()) / 5600 +
+                controller.getSetpoint() * 0.9); // hacky feedforward
     }
 
     // Called once the command ends or is interrupted.
