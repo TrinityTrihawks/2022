@@ -13,3 +13,6 @@
     * can store two balls
  * an undetermined climber system
  * an in-progress one ball auto
+
+ for one reason or another, our final competition code
+ ended up in the shootyBits branch
