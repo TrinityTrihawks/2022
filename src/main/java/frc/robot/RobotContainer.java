@@ -81,6 +81,7 @@ public class RobotContainer {
     private final JoystickButton armDownButton = new JoystickButton(xboxController, xboxPorts.y());
     // private final JoystickButton armUpButton = new JoystickButton(xboxController, 9);
 
+    //#region
     // Commands
     private DriveSingleJoystick singleDefault = new DriveSingleJoystick(
             drivetrain,
@@ -96,6 +97,7 @@ public class RobotContainer {
             () -> leftJoystick.getZeroedY(),
             () -> rightJoystick.getZeroedY(),
             () -> rightJoystick.getThrottle());
+    //#endregion
 
     private StartEndCommand runIntake = new StartEndCommand(
             () -> {
@@ -233,6 +235,7 @@ public class RobotContainer {
         
     }
 
+    //#region
     private void configureDefaultCommands() {
         // Drivetrain default
         drivetrain.setDefaultCommand(new InstantCommand(
@@ -242,6 +245,7 @@ public class RobotContainer {
                     System.out.println(this + ": zeroed joysticks");
                 }).andThen(doubleDefault));
     }
+    //#endregion
 
     /**
      * This method defines the button -> command mappings. Buttons can be created by
@@ -255,6 +259,7 @@ public class RobotContainer {
         bindSwitchDriveModeButton();
     }
 
+    //#region
     /**
      * Isaac helped more than Luca
      */
@@ -276,6 +281,7 @@ public class RobotContainer {
         };
         switchDriveModeButton.debounce(0.5).whenActive(switchDriveMode, drivetrain);
     }
+    //#endregion
 
     private Command newIntakeCommand() {
 

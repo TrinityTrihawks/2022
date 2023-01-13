@@ -73,6 +73,7 @@ public final class Constants {
         public static final double kFeetToMetersConversionFactor = 0.3048;
     }
 
+    //#region
     /**
      * Joystick Constants
      */
@@ -91,7 +92,7 @@ public final class Constants {
         public static final int kZeroButtonId = 7;
         public static final int kSwitchDriveModeButtonId = 9;
     }
-
+    //#endregion
     public static final class ShootyBitsConstants {
         public static final int kIntakeMotorPort = 17;
         public static final int kMiddleMotorPort = 16;
