@@ -2,25 +2,30 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
+//import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.Constants.JoystickConstants;
 
 public class DriveSingleJoystick extends CommandBase {
     private final Drivetrain drivetrain;
     private final DoubleSupplier xSupplier;
     private final DoubleSupplier ySupplier;
     private final DoubleSupplier twistSupplier;
+    private final DoubleSupplier throttleSupplier;
 
-    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist) {
+    public DriveSingleJoystick(Drivetrain drivetrain, DoubleSupplier x, DoubleSupplier y, DoubleSupplier twist, DoubleSupplier throttle) {
         this.drivetrain = drivetrain;
         this.xSupplier = x;
         this.ySupplier = y;
         this.twistSupplier = twist;
+        this.throttleSupplier = throttle;
+
         addRequirements(drivetrain);
 
     }
-
+    // isaac helped 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
@@ -31,20 +36,32 @@ public class DriveSingleJoystick extends CommandBase {
     @Override
     public void execute() {
         double x = xSupplier.getAsDouble();
-        x = Math.pow(x, 2) * Math.signum(x);
-
         double y = ySupplier.getAsDouble();
         double twist = twistSupplier.getAsDouble();
+        double throttle = throttleSupplier.getAsDouble();
+
+        // Deadzone Logic
+        x = x < JoystickConstants.kXDeadZone ? 0.0 : x;
+        y = y < JoystickConstants.kYDeadZone ? 0.0 : y;
+        twist = twist < JoystickConstants.kZDeadZone ? 0.0 : twist;
+
+        
+        // scale x, y, twist against throttle and throttle scalar
+        x = x * JoystickConstants.kStaticThrottleScalar;
+        y = y * JoystickConstants.kStaticThrottleScalar;
+        twist = twist * JoystickConstants.kStaticThrottleScalar;
 
         System.out.print("X: "+x+"; ");
         System.out.print("Y: "+y+"; ");
-        System.out.print("twistation: "+twist+"; ");
+        System.out.print("Twistation: "+twist+"; ");
+        System.out.print("Throttle:"+throttle+"; ");
         
         System.out.println();
 
         SmartDashboard.putNumber("X", x);
         SmartDashboard.putNumber("Y", y);
-        SmartDashboard.putNumber("twistation", twist);
+        SmartDashboard.putNumber("Twistation", twist);
+        SmartDashboard.putNumber("Throttle", throttle);
 
         drivetrain.drive(x, y, twist, false);
     }

@@ -25,20 +25,13 @@ public final class Constants {
      * Drive Constants
      */
     public static final class DriveConstants {
-        // TODO: Spark IDs
+        // Spark IDs
         public static final int kFrontLeftMotorId = 11;
         public static final int kFrontRightMotorId = 12;
         public static final int kBackLeftMotorId = 13;
         public static final int kBackRightMotorId = 14;
 
         public static final int kPigeonId = 0;
-
-        // TODO: Polarity (reversed or not)
-        // These should be either 1 to signify normal op or -1 for reversed
-        public static final int kFLPolarity = 1;
-        public static final int kFRPolarity = 1;
-        public static final int kBLPolarity = 1;
-        public static final int kBRPolarity = 1;
 
         // vvv From https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/mecanumcontrollercommand/Constants.java
 
@@ -54,8 +47,6 @@ public final class Constants {
         public static final boolean kFrontRightEncoderReversed = false;
         public static final boolean kBackRightEncoderReversed = true;
         
-        // TODO: Set these 
-        // AAG: set these assuming meters
         // Distance between centers of right and left wheels on robot    
         public static final double kTrackWidth = 0.56; // 22in
         // Distance between centers of front and back wheels on robot
@@ -81,11 +72,13 @@ public final class Constants {
     public static final class JoystickConstants {
 
         public static final int kMainJoystickPort = 0;
-        public static final int kAuxJoystickPort  = 0;
+        public static final int kAuxJoystickPort  = 1;
 
-        public static final double kXDeadZone = 0.0; // Left-Right
-        public static final double kYDeadZone = 0.0; // Front-Back
-        public static final double kZDeadZone = 0.0; // Twist
+        public static final double kXDeadZone = 0.4; // Left-Right
+        public static final double kYDeadZone = 0.4; // Front-Back
+        public static final double kZDeadZone = 0.4; // Twist
+
+        public static final double kStaticThrottleScalar = 0.3; // multiple inputs values by this
 
     }
 

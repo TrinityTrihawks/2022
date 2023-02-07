@@ -8,13 +8,14 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.MecanumDriveMotorVoltages;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import com.ctre.phoenix.sensors.WPI_PigeonIMU;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 
 public class Drivetrain extends SubsystemBase {
     private static Drivetrain subsystemInst = null;
@@ -34,67 +35,51 @@ public class Drivetrain extends SubsystemBase {
         }
     }
 
-    private final CANSparkMax m_frontLeft = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax m_rearLeft = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
-    private final CANSparkMax m_frontRight = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
-    private final CANSparkMax m_rearRight = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
+    private final CANSparkMax frontLeftSparkMax = new CANSparkMax(DriveConstants.kFrontLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearLeftSparkMax = new CANSparkMax(DriveConstants.kBackLeftMotorId, MotorType.kBrushless);
+    private final CANSparkMax frontRightSparkMax = new CANSparkMax(DriveConstants.kFrontRightMotorId, MotorType.kBrushless);
+    private final CANSparkMax rearRightSparkMax = new CANSparkMax(DriveConstants.kBackRightMotorId, MotorType.kBrushless);
 
-    private final MecanumDrive m_drive = new MecanumDrive(m_frontLeft, m_rearLeft, m_frontRight, m_rearRight);
+    private final MecanumDrive mecanumDrive = new MecanumDrive(frontLeftSparkMax, rearLeftSparkMax, frontRightSparkMax,rearRightSparkMax);
 
-    // The front-left-side drive encoder
-    private final Encoder m_frontLeftEncoder = new Encoder(
-            DriveConstants.kFrontLeftEncoderIds[0],
-            DriveConstants.kFrontLeftEncoderIds[1],
-            DriveConstants.kFrontLeftEncoderReversed);
-
-    // The rear-left-side drive encoder
-    private final Encoder m_rearLeftEncoder = new Encoder(
-            DriveConstants.kBackLeftEncoderIds[0],
-            DriveConstants.kBackLeftEncoderIds[1],
-            DriveConstants.kBackLeftEncoderReversed);
-
-    // The front-right--side drive encoder
-    private final Encoder m_frontRightEncoder = new Encoder(
-            DriveConstants.kFrontRightEncoderIds[0],
-            DriveConstants.kFrontRightEncoderIds[1],
-            DriveConstants.kFrontRightEncoderReversed);
-
-    // The rear-right-side drive encoder
-    private final Encoder m_rearRightEncoder = new Encoder(
-            DriveConstants.kBackRightEncoderIds[0],
-            DriveConstants.kBackRightEncoderIds[1],
-            DriveConstants.kBackRightEncoderReversed);
-
+    private final RelativeEncoder frontLeftEncoder = frontLeftSparkMax.getEncoder();
+    private final RelativeEncoder frontRightEncoder = frontRightSparkMax.getEncoder();
+    private final RelativeEncoder backLeftEncoder = rearLeftSparkMax.getEncoder();
+    private final RelativeEncoder backRightEncoder = rearRightSparkMax.getEncoder();
     // The gyro sensor
-    private final WPI_PigeonIMU m_gyro = new WPI_PigeonIMU(DriveConstants.kPigeonId);
+    private final WPI_PigeonIMU pigeon = new WPI_PigeonIMU(DriveConstants.kPigeonId);
 
     // Odometry class for tracking robot pose
-    MecanumDriveOdometry m_odometry = new MecanumDriveOdometry(DriveConstants.kDriveKinematics, m_gyro.getRotation2d());
+    MecanumDriveOdometry mecanumOdometry = new MecanumDriveOdometry(DriveConstants.kDriveKinematics, pigeon.getRotation2d());
 
-    /** Creates a new DriveSubsystem. */
+    /** Creates a new Drivetrain. */
     public Drivetrain() {
         // Sets the distance per pulse for the encoders
-        m_frontLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-        m_rearLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-        m_frontRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-        m_rearRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        // frontLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        // backLeftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        // frontRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+        // backRightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
         // We need to invert one side of the drivetrain so that positive voltages
         // result in both sides moving forward. Depending on how your robot's
         // gearbox is constructed, you might have to invert the left side instead.
-        m_frontRight.setInverted(true);
-        m_rearRight.setInverted(true);
+        frontRightSparkMax.setInverted(true);
+        rearRightSparkMax.setInverted(true);
     }
 
     @Override
     public void periodic() {
         // Update the odometry in the periodic block
-        m_odometry.update(
-                m_gyro.getRotation2d(),
+        mecanumOdometry.update(
+                pigeon.getRotation2d(),
                 new MecanumDriveWheelSpeeds(
-                        m_frontLeftEncoder.getRate(),
-                        m_rearLeftEncoder.getRate(),
-                        m_frontRightEncoder.getRate(),
-                        m_rearRightEncoder.getRate()));
+                        frontLeftEncoder.getVelocity(),
+                        backLeftEncoder.getVelocity(),
+                        frontRightEncoder.getVelocity(),
+                        backRightEncoder.getVelocity()));
+        SmartDashboard.putNumber("FLEnc", frontLeftEncoder.getVelocity());
+        SmartDashboard.putNumber("FREnc", frontRightEncoder.getVelocity());
+        SmartDashboard.putNumber("BLEnc", backLeftEncoder.getVelocity());
+        SmartDashboard.putNumber("BREnc", backRightEncoder.getVelocity());
     }
 
     /**
@@ -103,7 +88,7 @@ public class Drivetrain extends SubsystemBase {
      * @return The pose.
      */
     public Pose2d getPose() {
-        return m_odometry.getPoseMeters();
+        return mecanumOdometry.getPoseMeters();
     }
 
     /**
@@ -112,7 +97,7 @@ public class Drivetrain extends SubsystemBase {
      * @param pose The pose to which to set the odometry.
      */
     public void resetOdometry(Pose2d pose) {
-        m_odometry.resetPosition(pose, m_gyro.getRotation2d());
+        mecanumOdometry.resetPosition(pose, pigeon.getRotation2d());
     }
 
     /**
@@ -129,26 +114,26 @@ public class Drivetrain extends SubsystemBase {
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
         if (fieldRelative) {
-            m_drive.driveCartesian(ySpeed, xSpeed, rot, -m_gyro.getAngle());
+            mecanumDrive.driveCartesian(ySpeed, xSpeed, rot, -pigeon.getAngle());
         } else {
-            m_drive.driveCartesian(ySpeed, xSpeed, rot);
+            mecanumDrive.driveCartesian(ySpeed, xSpeed, rot);
         }
     }
 
     /** Sets the front left drive MotorController to a voltage. */
     public void setDriveMotorControllersVolts(MecanumDriveMotorVoltages volts) {
-        m_frontLeft.setVoltage(volts.frontLeftVoltage);
-        m_rearLeft.setVoltage(volts.rearLeftVoltage);
-        m_frontRight.setVoltage(volts.frontRightVoltage);
-        m_rearRight.setVoltage(volts.rearRightVoltage);
+        frontLeftSparkMax.setVoltage(volts.frontLeftVoltage);
+        rearLeftSparkMax.setVoltage(volts.rearLeftVoltage);
+        frontRightSparkMax.setVoltage(volts.frontRightVoltage);
+        rearRightSparkMax.setVoltage(volts.rearRightVoltage);
     }
 
     /** Resets the drive encoders to currently read a position of 0. */
     public void resetEncoders() {
-        m_frontLeftEncoder.reset();
-        m_rearLeftEncoder.reset();
-        m_frontRightEncoder.reset();
-        m_rearRightEncoder.reset();
+        frontLeftEncoder.setPosition(0);
+        backLeftEncoder.setPosition(0);
+        frontRightEncoder.setPosition(0);
+        backRightEncoder.setPosition(0);
     }
 
     /**
@@ -156,8 +141,8 @@ public class Drivetrain extends SubsystemBase {
      *
      * @return the front left drive encoder
      */
-    public Encoder getFrontLeftEncoder() {
-        return m_frontLeftEncoder;
+    public RelativeEncoder getFrontLeftEncoder() {
+        return frontLeftEncoder;
     }
 
     /**
@@ -165,8 +150,8 @@ public class Drivetrain extends SubsystemBase {
      *
      * @return the rear left drive encoder
      */
-    public Encoder getRearLeftEncoder() {
-        return m_rearLeftEncoder;
+    public RelativeEncoder getRearLeftEncoder() {
+        return backLeftEncoder;
     }
 
     /**
@@ -174,8 +159,8 @@ public class Drivetrain extends SubsystemBase {
      *
      * @return the front right drive encoder
      */
-    public Encoder getFrontRightEncoder() {
-        return m_frontRightEncoder;
+    public RelativeEncoder getFrontRightEncoder() {
+        return frontRightEncoder;
     }
 
     /**
@@ -183,8 +168,8 @@ public class Drivetrain extends SubsystemBase {
      *
      * @return the rear right encoder
      */
-    public Encoder getRearRightEncoder() {
-        return m_rearRightEncoder;
+    public RelativeEncoder getRearRightEncoder() {
+        return backRightEncoder;
     }
 
     /**
@@ -194,10 +179,10 @@ public class Drivetrain extends SubsystemBase {
      */
     public MecanumDriveWheelSpeeds getCurrentWheelSpeeds() {
         return new MecanumDriveWheelSpeeds(
-                m_frontLeftEncoder.getRate(),
-                m_rearLeftEncoder.getRate(),
-                m_frontRightEncoder.getRate(),
-                m_rearRightEncoder.getRate());
+                frontLeftEncoder.getVelocity(),
+                backLeftEncoder.getVelocity(),
+                frontRightEncoder.getVelocity(),
+                backRightEncoder.getVelocity());
     }
 
     /**
@@ -207,12 +192,12 @@ public class Drivetrain extends SubsystemBase {
      * @param maxOutput the maximum output to which the drive will be constrained
      */
     public void setMaxOutput(double maxOutput) {
-        m_drive.setMaxOutput(maxOutput);
+        mecanumDrive.setMaxOutput(maxOutput);
     }
 
     /** Zeroes the heading of the robot. */
     public void zeroHeading() {
-        m_gyro.reset();
+        pigeon.reset();
     }
 
     /**
@@ -221,7 +206,7 @@ public class Drivetrain extends SubsystemBase {
      * @return the robot's heading in degrees, from -180 to 180
      */
     public double getHeading() {
-        return m_gyro.getRotation2d().getDegrees();
+        return pigeon.getRotation2d().getDegrees();
     }
 
     /**
@@ -230,6 +215,6 @@ public class Drivetrain extends SubsystemBase {
      * @return The turn rate of the robot, in degrees per second
      */
     public double getTurnRate() {
-        return -m_gyro.getRate();
+        return -pigeon.getRate();
     }
 }
